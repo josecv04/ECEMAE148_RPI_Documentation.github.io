@@ -97,7 +97,7 @@ See **Section 9** of the documentation. Each team must set a unique `ROS_DOMAIN_
 | Team 2 | 2 |
 | Team 3 | 3 |
 | … | … |
-| Team 30 | 30 |
+| Team 15 | 15 |
 
 Teams set this in two places:
 - The `docker run` command: `-e ROS_DOMAIN_ID=N`
