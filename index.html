@@ -641,7 +641,7 @@ figcaption {
       <div class="step-body">
         <div class="step-title">SSH into Your Pi</div>
         <div class="step-desc">Replace the hostname with your robot's assigned name. The <code>.local</code> suffix uses mDNS (Bonjour/Avahi) to find the Pi on the local network without needing an IP address.</div>
-        <div class="cb"><div class="cb-header"><span class="cb-label">Terminal — your laptop</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">ssh</span> pi@ucsdrobocar-148-TA.local</pre></div>
+        <div class="cb"><div class="cb-header"><span class="cb-label">Terminal — your laptop</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">ssh</span> pi@ucsdrobocar-148-XX.local</pre></div>
       </div>
     </div>
 
@@ -783,10 +783,10 @@ figcaption {
 
   <h3>Step 3 — Connect via SSH with Forwarding Enabled</h3>
   <div class="cb"><div class="cb-header"><span class="cb-label">Your laptop terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Trusted forwarding — RECOMMENDED (use this if -X causes issues)</span>
-<span class="k">ssh</span> <span class="f">-Y</span> pi@ucsdrobocar-148-TA.local
+<span class="k">ssh</span> <span class="f">-Y</span> pi@ucsdrobocar-148-XX.local
 
 <span class="c"># Untrusted forwarding — stricter security</span>
-<span class="k">ssh</span> <span class="f">-X</span> pi@ucsdrobocar-148-TA.local</pre></div>
+<span class="k">ssh</span> <span class="f">-X</span> pi@ucsdrobocar-148-XX.local</pre></div>
   <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">Why -Y instead of -X?</div><div class="callout-text">The Docker container runs as <code>root</code>, which is a different user than the <code>pi</code> user on the host. The <code>-X</code> flag (untrusted) blocks connections from different users for security reasons. The <code>-Y</code> flag (trusted) allows it. If calibration windows won't open inside Docker but xeyes works on the Pi host, switch to <code>-Y</code>.</div></div></div>
 
   <h3>Step 4 — Test X11 Before Entering Docker</h3>
@@ -834,8 +834,8 @@ figcaption {
 
 <span class="c"># Exit and re-SSH with trusted forwarding</span>
 <span class="k">exit</span>
-<span class="k">ssh</span> <span class="f">-Y</span> pi@ucsdrobocar-148-TA.local</pre></div>
-  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Xauthority Lock Error</div><div class="callout-text">If you see "timeout in locking authority file", the file is corrupt. Delete it and start fresh:<br><code>rm ~/.Xauthority && ssh -Y pi@ucsdrobocar-148-TA.local</code></div></div></div>
+<span class="k">ssh</span> <span class="f">-Y</span> pi@ucsdrobocar-148-XX.local</pre></div>
+  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Xauthority Lock Error</div><div class="callout-text">If you see "timeout in locking authority file", the file is corrupt. Delete it and start fresh:<br><code>rm ~/.Xauthority && ssh -Y pi@ucsdrobocar-148-XX.local</code></div></div></div>
 </section>
 
 <!-- ══════════════════════════════════
