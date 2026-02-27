@@ -133,12 +133,6 @@ body::before {
   padding: 4px 12px; border-radius: 20px; letter-spacing: 0.5px;
   background: var(--surface2); border: 1px solid var(--border-lt); color: var(--text-muted);
 }
-#menu-toggle {
-  display: none; background: none; border: 1px solid var(--border);
-  color: var(--text-muted); padding: 6px 10px; border-radius: var(--r);
-  cursor: pointer; font-size: 16px; flex-shrink: 0;
-}
-
 
 /* ─── PAGE SWITCHER ──────────────────────────── */
 .page-switcher {
@@ -161,9 +155,6 @@ body::before {
   cursor: pointer; font-size: 16px; flex-shrink: 0;
 }
 
-
-
-  
 /* ─── SIDEBAR ────────────────────────────────── */
 .sidebar {
   position: fixed; top: 0; left: 0; bottom: 0; z-index: 150;
@@ -569,8 +560,11 @@ figcaption {
     <div class="topbar-divider"></div>
     <span class="topbar-breadcrumb">Setup & Calibration Guide</span>
     <div class="topbar-spacer"></div>
-    <span class="topbar-pill">ROS2 · Docker</span>
-    <button id="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+    <div class="page-switcher">
+      <a href="./index.html" class="ps-link active">ROS Setup</a>
+      <a href="./gps_laps.html" class="ps-link">GPS Laps</a>
+    </div>
+    <button id="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
   </div>
 </header>
 
@@ -666,7 +660,7 @@ figcaption {
       <div class="step-body">
         <div class="step-title">SSH into Your Pi</div>
         <div class="step-desc">Replace the hostname with your robot's assigned name. The <code>.local</code> suffix uses mDNS (Bonjour/Avahi) to find the Pi on the local network without needing an IP address.</div>
-        <div class="cb"><div class="cb-header"><span class="cb-label">Terminal — your laptop</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">ssh</span> pi@ucsdrobocar-148-XX.local</pre></div>
+        <div class="cb"><div class="cb-header"><span class="cb-label">Terminal — your laptop</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">ssh</span> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5b2b321b2e38283f29343934383a29766a6f63760303753734383a37">[email&#160;protected]</a></pre></div>
       </div>
     </div>
 
@@ -808,10 +802,10 @@ figcaption {
 
   <h3>Step 3 — Connect via SSH with Forwarding Enabled</h3>
   <div class="cb"><div class="cb-header"><span class="cb-label">Your laptop terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Trusted forwarding — RECOMMENDED (use this if -X causes issues)</span>
-<span class="k">ssh</span> <span class="f">-Y</span> pi@ucsdrobocar-148-XX.local
+<span class="k">ssh</span> <span class="f">-Y</span> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="23534a6356405047514c414c4042510e12171b0e7b7b0d4f4c40424f">[email&#160;protected]</a>
 
 <span class="c"># Untrusted forwarding — stricter security</span>
-<span class="k">ssh</span> <span class="f">-X</span> pi@ucsdrobocar-148-XX.local</pre></div>
+<span class="k">ssh</span> <span class="f">-X</span> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="14647d5461776770667b767b7775663925202c394c4c3a787b777578">[email&#160;protected]</a></pre></div>
   <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">Why -Y instead of -X?</div><div class="callout-text">The Docker container runs as <code>root</code>, which is a different user than the <code>pi</code> user on the host. The <code>-X</code> flag (untrusted) blocks connections from different users for security reasons. The <code>-Y</code> flag (trusted) allows it. If calibration windows won't open inside Docker but xeyes works on the Pi host, switch to <code>-Y</code>.</div></div></div>
 
   <h3>Step 4 — Test X11 Before Entering Docker</h3>
@@ -843,7 +837,7 @@ figcaption {
   <div class="tw"><table>
     <thead><tr><th>Error Message</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td>"cannot open display"</td><td>SSH was not started with <code>-Y</code> flag. Exit and reconnect: <code>ssh -Y pi@hostname.local</code></td></tr>
+      <tr><td>"cannot open display"</td><td>SSH was not started with <code>-Y</code> flag. Exit and reconnect: <code>ssh -Y <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="56263f163e39252238373b33783a3935373a">[email&#160;protected]</a></code></td></tr>
       <tr><td>"No protocol specified"</td><td>Run on the Pi host: <code>xhost +local:</code> then retry inside Docker</td></tr>
       <tr><td>"Authorization required"</td><td>The <code>.Xauthority</code> file is not mounted in Docker. Check your <code>--volume</code> flag in the docker run command.</td></tr>
       <tr><td>xeyes opens on Pi host but not inside Docker</td><td>Switch from <code>ssh -X</code> to <code>ssh -Y</code> and restart the container.</td></tr>
@@ -859,8 +853,8 @@ figcaption {
 
 <span class="c"># Exit and re-SSH with trusted forwarding</span>
 <span class="k">exit</span>
-<span class="k">ssh</span> <span class="f">-Y</span> pi@ucsdrobocar-148-XX.local</pre></div>
-  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Xauthority Lock Error</div><div class="callout-text">If you see "timeout in locking authority file", the file is corrupt. Delete it and start fresh:<br><code>rm ~/.Xauthority && ssh -Y pi@ucsdrobocar-148-XX.local</code></div></div></div>
+<span class="k">ssh</span> <span class="f">-Y</span> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2b5b426b5e48584f59444944484a59061a1f13067373054744484a47">[email&#160;protected]</a></pre></div>
+  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Xauthority Lock Error</div><div class="callout-text">If you see "timeout in locking authority file", the file is corrupt. Delete it and start fresh:<br><code>rm ~/.Xauthority && ssh -Y <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="42322b0237213126302d202d2123306f73767a6f1a1a6c2e2d21232e">[email&#160;protected]</a></code></div></div></div>
 </section>
 
 <!-- ══════════════════════════════════
@@ -995,7 +989,7 @@ setup(
     name=package_name, version=<span class="s">'0.0.0'</span>,
     packages=[package_name], data_files=data_files,
     install_requires=[<span class="s">'setuptools'</span>], zip_safe=True,
-    maintainer=<span class="s">'root'</span>, maintainer_email=<span class="s">'root@todo.todo'</span>,
+    maintainer=<span class="s">'root'</span>, maintainer_email=<span class="s">'<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="176578786357637873783963787378">[email&#160;protected]</a>'</span>,
     description=<span class="s">'Nav2 launch/config package for UCSD RoboCar'</span>,
     license=<span class="s">'TODO'</span>, tests_require=[<span class="s">'pytest'</span>],
     entry_points={<span class="s">'console_scripts'</span>: []},
@@ -1619,7 +1613,7 @@ class CameraSubscriberNode(Node):
   <div class="tw"><table>
     <thead><tr><th>Error</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td>"cannot open display"</td><td>SSH with <code>-Y</code> flag: <code>ssh -Y pi@hostname.local</code></td></tr>
+      <tr><td>"cannot open display"</td><td>SSH with <code>-Y</code> flag: <code>ssh -Y <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7b0b123b1314080f151a161e551714181a17">[email&#160;protected]</a></code></td></tr>
       <tr><td>"No protocol specified"</td><td>Run on Pi host: <code>xhost +local:</code></td></tr>
       <tr><td>"Authorization required" inside Docker</td><td>Ensure <code>--volume $HOME/.Xauthority:/root/.Xauthority:rw</code> is in docker run</td></tr>
       <tr><td>GUI works on host but not inside container</td><td>Switch from <code>ssh -X</code> to <code>ssh -Y</code> and restart the container</td></tr>
@@ -1672,7 +1666,7 @@ class CameraSubscriberNode(Node):
 
 <button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── COPY BUTTON ──────────────────────────
 function doCopy(btn) {
   const pre = btn.closest('.cb').querySelector('pre');
@@ -1718,36 +1712,35 @@ const io = new IntersectionObserver(entries => {
     if (e.isIntersecting) {
       navLinks.forEach(l => l.classList.remove('active'));
       const a = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
-      if (a) { a.classList.add('active'); a.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+      if (a) { a.classList.add('active');
     }
   });
-}, { rootMargin: '-20% 0px -70% 0px' });
+}, { rootMargin: '-60px 0px -80% 0px' });
 anchors.forEach(a => io.observe(a));
 
 // ── NAV SEARCH ────────────────────────────
 function filterNav(q) {
-  q = q.toLowerCase().trim();
-  navLinks.forEach(l => {
-    const text = l.textContent.toLowerCase();
-    l.style.display = (!q || text.includes(q)) ? '' : 'none';
+  const term = q.toLowerCase();
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.style.display = l.textContent.toLowerCase().includes(term) ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-group-label').forEach(g => {
+    let next = g.nextElementSibling;
+    let hasVisible = false;
+    while (next && !next.classList.contains('nav-group-label')) {
+      if (next.style.display !== 'none') hasVisible = true;
+      next = next.nextElementSibling;
+    }
+    g.style.display = hasVisible ? '' : 'none';
   });
 }
 
-// ── CLOSE SIDEBAR ON MOBILE TAP ───────────
-navLinks.forEach(l => l.addEventListener('click', () => {
-  if (window.innerWidth <= 768) document.querySelector('.sidebar').classList.remove('open');
-}));
-
-// ── TEAM GRID ─────────────────────────────
-const grid = document.getElementById('team-grid');
-for (let i = 1; i <= 15; i++) {
-  const c = document.createElement('div');
-  c.className = 'tc';
-  c.innerHTML = `<div class="tc-num">${i}</div><div class="tc-label">Team ${i}</div>`;
-  c.title = `Domain ID: ${i}`;
-  grid.appendChild(c);
-}
+// ── MOBILE MENU CLOSE ON LINK CLICK ───────
+document.querySelectorAll('.nav-link').forEach(l => {
+  l.addEventListener('click', () => {
+    document.getElementById('sidebar').classList.remove('open');
+  });
+});
 </script>
-
 </body>
 </html>
