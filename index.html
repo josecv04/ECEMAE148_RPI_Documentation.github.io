@@ -614,7 +614,7 @@ figcaption {
   <div class="hero-chips">
     <div class="hero-chip"><span class="hero-chip-icon">🍓</span>Raspberry Pi 5</div>
     <div class="hero-chip"><span class="hero-chip-icon">🐳</span>Docker</div>
-    <div class="hero-chip"><span class="hero-chip-icon">🤖</span>ROS2 Foxy/Humble</div>
+    <div class="hero-chip"><span class="hero-chip-icon">🤖</span>ROS2 Foxy</div>
   </div>
 </div>
 
@@ -1011,7 +1011,7 @@ alias source_ros2=<span class="s">'source /home/projects/ros2_ws/install/setup.b
 alias build_ros2=<span class="s">'cd /home/projects/ros2_ws && colcon build --symlink-install && source install/setup.bash && echo "[ROS2] Build complete ✓"'</span>
 
 <span class="c"># ── Source global ROS2 base install ──</span>
-source /opt/ros/foxy/setup.bash 2>/dev/null || source /opt/ros/humble/setup.bash 2>/dev/null</pre></div>
+source /opt/ros/foxy/setup.bash 2>/dev/null</pre></div>
   <div class="cb"><div class="cb-header"><span class="cb-label">Activate and test</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">source</span> ~/.bashrc
 <span class="k">source_ros2</span>    <span class="c"># Should print: [ROS2] Workspace sourced ✓</span>
 <span class="k">build_ros2</span>     <span class="c"># Should print: [ROS2] Build complete ✓</span></pre></div>
