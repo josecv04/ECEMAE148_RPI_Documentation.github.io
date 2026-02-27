@@ -127,13 +127,6 @@ body::before {
   padding: 4px 12px; border-radius: 20px; letter-spacing: 0.5px;
   background: var(--surface2); border: 1px solid var(--border-lt); color: var(--text-muted);
 }
-#menu-toggle {
-  display: none; background: none; border: 1px solid var(--border);
-  color: var(--text-muted); padding: 6px 10px; border-radius: var(--r);
-  cursor: pointer; font-size: 16px; flex-shrink: 0;
-}
-
-
 
 /* ─── PAGE SWITCHER ──────────────────────────── */
 .page-switcher {
@@ -156,9 +149,6 @@ body::before {
   cursor: pointer; font-size: 16px; flex-shrink: 0;
 }
 
-
-
-  
 /* ─── SIDEBAR ────────────────────────────────── */
 .sidebar {
   position: fixed; top: 0; left: 0; bottom: 0; z-index: 150;
@@ -541,7 +531,10 @@ figcaption {
     <div class="topbar-divider"></div>
     <span class="topbar-breadcrumb">GPS Laps: PointOneNav &amp; DonkeyCar Guide</span>
     <div class="topbar-spacer"></div>
-    <span class="topbar-pill">GPS · RTK · DonkeyCar</span>
+    <div class="page-switcher">
+      <a href="./index.html" class="ps-link">ROS Setup</a>
+      <a href="./gps_laps.html" class="ps-link active">GPS Laps</a>
+    </div>
     <button id="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
   </div>
 </header>
@@ -645,7 +638,7 @@ figcaption {
       <div class="step-num">2</div>
       <div class="step-body">
         <div class="step-title">Power the Antenna with the ALLWEI Battery</div>
-        <div class="step-desc">Connect the ALLWEI portable power station to the antenna using the provided cable. <strong>This battery is dedicated to the antenna only — do not use it to charge phones, laptops, or other devices.</strong></div>
+        <div class="step-desc">Connect the ALLWEI portable power station to the antenna using the provided cable. <strong>This battery is dedicated to the antenna only — do not use it to charge phones, laptops, or other devices.</strong> Draining it partway through a session will drop your GPS to meter-level accuracy.</div>
       </div>
     </div>
   </div>
@@ -682,23 +675,23 @@ figcaption {
       <div class="step-num">1</div>
       <div class="step-body">
         <div class="step-title">Mount the GPS Antenna on Top of the Car</div>
-        <div class="step-desc">The black magnetic patch antenna (connected to the green PointOneNav board via the SMA coaxial cable) must have a clear, unobstructed view of the sky. Mount it flat on the highest point of the car. <strong>Do not place it inside the chassis or near metal objects</strong> that reflect or attenuate signals.</div>
+        <div class="step-desc">The black magnetic patch antenna (connected to the pink PointOneNav board via the SMA coaxial cable) must have a clear, unobstructed view of the sky. Mount it flat on the highest point of the car. <strong>Do not place it inside the chassis or near metal objects</strong> that reflect or attenuate signals.</div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-body">
         <div class="step-title">Connect USB to the Raspberry Pi</div>
-        <div class="step-desc">Plug the PointOneNav board into the Pi via USB cable. The system will enumerate as <code>/dev/ttyUSB0</code> or <code>/dev/ttyUSB1</code> depending on what else is connected. You will configure the exact port in later steps.</div>
+        <div class="step-desc">Plug the PointOneNav board into the Pi via the white USB cable. The system will enumerate as <code>/dev/ttyUSB0</code> or <code>/dev/ttyUSB1</code> depending on what else is connected. You will configure the exact port in later steps.</div>
       </div>
     </div>
   </div>
 
   <figure>
     <div class="fig-wrap">
-      <img src="./images/fig_gps_unit.png" alt="PointOneNav GPS board in green enclosure connected to black magnetic patch antenna via coaxial SMA cable">
+      <img src="./images/fig_gps_unit.png" alt="PointOneNav GPS board in pink enclosure connected to black magnetic patch antenna via coaxial SMA cable">
     </div>
-    <figcaption><span class="fig-label">Fig 1.4</span> PointOneNav GPS unit (green enclosure, S000018) with magnetic patch antenna and SMA coaxial cable. USB cable connects to Raspberry Pi <span class="fig-key">images/fig_gps_unit.png</span></figcaption>
+    <figcaption><span class="fig-label">Fig 1.4</span> PointOneNav GPS unit (pink enclosure, S000018) with magnetic patch antenna and SMA coaxial cable. USB cable connects to Raspberry Pi <span class="fig-key">images/fig_gps_unit.png</span></figcaption>
   </figure>
 
   <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Indoor Signal Warning</div><div class="callout-text">If you test indoors, the GPS will output <code>[LLA=nan, nan, nan]</code> — this is expected. Step outside to Warren Mall before expecting valid coordinate data. Allow 30–60 seconds after going outside for the RTK fix to converge.</div></div></div>
