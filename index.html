@@ -9,21 +9,21 @@
 <!--
   ╔══════════════════════════════════════════════════════════════╗
   ║  IMAGE REPLACEMENT GUIDE                                     ║
-  ║  All images live in ./images/ as .jpg files.                 ║
-  ║  To update a figure, drop a new .jpg with the SAME name      ║
+  ║  All images live in ./images/ as .png files.                 ║
+  ║  To update a figure, drop a new .png with the SAME name      ║
   ║  into ./images/ and push to GitHub. Site rebuilds in <2 min. ║
   ║                                                              ║
   ║  FILE → SECTION → DESCRIPTION                                ║
-  ║  fig_xeyes.jpg          → §3  X11 test screenshot            ║
-  ║  fig_hsv_chart.jpg      → §11 HSV color spectrum             ║
-  ║  fig_mask_default.jpg   → §11 Default mask sliders           ║
-  ║  fig_mask_yellow.jpg    → §11 Yellow-tuned mask              ║
-  ║  fig_bw_calibration.jpg → §11 Noise reduction sliders        ║
-  ║  fig_line_calibration.jpg → §12 Line detection view          ║
-  ║  fig_error_threshold.jpg  → §12 Error threshold bars         ║
-  ║  fig_camera_align.jpg   → §12 Camera alignment               ║
-  ║  fig_throttle_steering.jpg → §13 Throttle/steering GUI       ║
-  ║  fig_system_response.jpg   → §13 System response plot        ║
+  ║  fig_xeyes.png          → §3  X11 test screenshot            ║
+  ║  fig_hsv_chart.png      → §11 HSV color spectrum             ║
+  ║  fig_mask_default.png   → §11 Default mask sliders           ║
+  ║  fig_mask_yellow.png    → §11 Yellow-tuned mask              ║
+  ║  fig_bw_calibration.png → §11 Noise reduction sliders        ║
+  ║  fig_line_calibration.png → §12 Line detection view          ║
+  ║  fig_error_threshold.png  → §12 Error threshold bars         ║
+  ║  fig_camera_align.png   → §12 Camera alignment               ║
+  ║  fig_throttle_steering.png → §13 Throttle/steering GUI       ║
+  ║  fig_system_response.png   → §13 System response plot        ║
   ╚══════════════════════════════════════════════════════════════╝
 -->
 
@@ -544,8 +544,7 @@ figcaption {
     <div class="topbar-divider"></div>
     <span class="topbar-breadcrumb">Setup & Calibration Guide</span>
     <div class="topbar-spacer"></div>
-    <div class="topbar-status"><div class="status-dot"></div>v2025 TA Edition</div>
-    <span class="topbar-pill">ROS2 · Docker · OAK-D</span>
+    <span class="topbar-pill">ROS2 · Docker</span>
     <button id="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
   </div>
 </header>
@@ -611,14 +610,11 @@ figcaption {
 <div class="hero" id="hero">
   <div class="hero-eyebrow"><div class="hero-eyebrow-dot"></div>UCSD Jacobs School of Engineering</div>
   <h1>Robocar Framework<br><span>Setup & Calibration</span></h1>
-  <p class="hero-desc">Complete reference for ECE/MAE 148 — covering Docker environment setup, X11 display forwarding, OAK-D camera calibration, VESC motor tuning, PID controller configuration, multi-team ROS2 isolation, and custom node development.</p>
+  <p class="hero-desc">Complete reference for ECE/MAE 148 — covering Docker environment setup, X11 display forwarding, OAK-D camera calibration, VESC motor tuning, PID controller configuration, and custom node development.</p>
   <div class="hero-chips">
-    <div class="hero-chip"><span class="hero-chip-icon">🍓</span>Raspberry Pi 4/5</div>
+    <div class="hero-chip"><span class="hero-chip-icon">🍓</span>Raspberry Pi 5</div>
     <div class="hero-chip"><span class="hero-chip-icon">🐳</span>Docker</div>
     <div class="hero-chip"><span class="hero-chip-icon">🤖</span>ROS2 Foxy/Humble</div>
-    <div class="hero-chip"><span class="hero-chip-icon">📷</span>OAK-D Camera</div>
-    <div class="hero-chip"><span class="hero-chip-icon">⚡</span>VESC 6 ESC</div>
-    <div class="hero-chip"><span class="hero-chip-icon">🖥</span>X11 Forwarding</div>
   </div>
 </div>
 
@@ -798,9 +794,9 @@ figcaption {
 <span class="c"># A pair of animated eyes should appear on YOUR LAPTOP SCREEN</span>
 <span class="c"># The eyes follow your mouse cursor</span></pre></div>
 
-  <figure data-img-key="fig_xeyes.jpg">
-    <div class="fig-wrap"><img src="images/fig_xeyes.jpg" alt="xeyes GUI window forwarded via X11 SSH to laptop screen" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 3.1</span> Successful X11 test — xeyes renders on your laptop screen, forwarded from the Pi over SSH <span class="fig-key">images/fig_xeyes.jpg</span></figcaption>
+  <figure data-img-key="fig_xeyes.png">
+    <div class="fig-wrap"><img src="images/fig_xeyes.png" alt="xeyes GUI window forwarded via X11 SSH to laptop screen" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 3.1</span> Successful X11 test — xeyes renders on your laptop screen, forwarded from the Pi over SSH <span class="fig-key">images/fig_xeyes.png</span></figcaption>
   </figure>
 
   <h3>Step 5 — Why These Docker Flags Are Required for X11</h3>
@@ -1198,9 +1194,9 @@ source /opt/ros/foxy/setup.bash 2>/dev/null || source /opt/ros/humble/setup.bash
   </div>
   <p>The lane detection pipeline converts each camera frame to HSV (Hue, Saturation, Value) color space and applies a threshold. Pixels whose HSV values fall within your specified range become white (detected road markers); everything else becomes black (background). Tuning these ranges correctly for your specific track lighting is essential for reliable lane following.</p>
 
-  <figure data-img-key="fig_hsv_chart.jpg">
-    <div class="fig-wrap"><img src="images/fig_hsv_chart.jpg" alt="HSV color spectrum showing Hue 0-180 in OpenCV" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 11.1</span> HSV Hue spectrum (0–180 in OpenCV). Red=0, Yellow≈30, Green≈60, Blue≈120. Divide standard 360° hue values by 2 for OpenCV. <span class="fig-key">images/fig_hsv_chart.jpg</span></figcaption>
+  <figure data-img-key="fig_hsv_chart.png">
+    <div class="fig-wrap"><img src="images/fig_hsv_chart.png" alt="HSV color spectrum showing Hue 0-180 in OpenCV" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 11.1</span> HSV Hue spectrum (0–180 in OpenCV). Red=0, Yellow≈30, Green≈60, Blue≈120. Divide standard 360° hue values by 2 for OpenCV. <span class="fig-key">images/fig_hsv_chart.png</span></figcaption>
   </figure>
 
   <div class="tw"><table>
@@ -1212,14 +1208,14 @@ source /opt/ros/foxy/setup.bash 2>/dev/null || source /opt/ros/humble/setup.bash
     </tbody>
   </table></div>
 
-  <figure data-img-key="fig_mask_default.jpg">
-    <div class="fig-wrap"><img src="images/fig_mask_default.jpg" alt="Default HSV mask sliders — entire image passes as white" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 11.2</span> Default slider values (lowH=0, highH=179, all S and V at extremes) — the entire image passes through as white. <span class="fig-key">images/fig_mask_default.jpg</span></figcaption>
+  <figure data-img-key="fig_mask_default.png">
+    <div class="fig-wrap"><img src="images/fig_mask_default.png" alt="Default HSV mask sliders — entire image passes as white" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 11.2</span> Default slider values (lowH=0, highH=179, all S and V at extremes) — the entire image passes through as white. <span class="fig-key">images/fig_mask_default.png</span></figcaption>
   </figure>
 
-  <figure data-img-key="fig_mask_yellow.jpg">
-    <div class="fig-wrap"><img src="images/fig_mask_yellow.jpg" alt="HSV mask tuned for yellow road dots showing only yellow as white" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 11.3</span> Tuned for yellow road dots: lowH=25, highH=35, lowS≈56, lowV≈112. Only the yellow dashes appear white. <span class="fig-key">images/fig_mask_yellow.jpg</span></figcaption>
+  <figure data-img-key="fig_mask_yellow.png">
+    <div class="fig-wrap"><img src="images/fig_mask_yellow.png" alt="HSV mask tuned for yellow road dots showing only yellow as white" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 11.3</span> Tuned for yellow road dots: lowH=25, highH=35, lowS≈56, lowV≈112. Only the yellow dashes appear white. <span class="fig-key">images/fig_mask_yellow.png</span></figcaption>
   </figure>
 
   <h3>Step-by-Step Tuning Procedure</h3>
@@ -1231,9 +1227,9 @@ source /opt/ros/foxy/setup.bash 2>/dev/null || source /opt/ros/humble/setup.bash
     <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Remove Remaining Speckle Noise</div><div class="step-desc">Use <strong>gray_thresh</strong> (eliminates near-gray pixels), <strong>erosion_iterations</strong> (shrinks pixel blobs — removes small noise), and <strong>dilation_iterations</strong> (expands blobs back — restores valid markers after erosion).</div></div></div>
   </div>
 
-  <figure data-img-key="fig_bw_calibration.jpg">
-    <div class="fig-wrap"><img src="images/fig_bw_calibration.jpg" alt="Noise reduction calibration sliders: gray_thresh, erosion, dilation" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 11.4</span> Noise reduction sliders. The preview shows a single clean white rectangle (road marker) against a black background after proper tuning. <span class="fig-key">images/fig_bw_calibration.jpg</span></figcaption>
+  <figure data-img-key="fig_bw_calibration.png">
+    <div class="fig-wrap"><img src="images/fig_bw_calibration.png" alt="Noise reduction calibration sliders: gray_thresh, erosion, dilation" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 11.4</span> Noise reduction sliders. The preview shows a single clean white rectangle (road marker) against a black background after proper tuning. <span class="fig-key">images/fig_bw_calibration.png</span></figcaption>
   </figure>
 
   <h3>Color Quick Reference</h3>
@@ -1262,9 +1258,9 @@ source /opt/ros/foxy/setup.bash 2>/dev/null || source /opt/ros/humble/setup.bash
   </div>
   <p>After the HSV filter produces a binary black-and-white image, the lane detection algorithm finds contours (groups of connected white pixels), measures their widths, and computes a centroid position. This section configures how those contours are selected and how the centroid translates into a steering error signal.</p>
 
-  <figure data-img-key="fig_line_calibration.jpg">
-    <div class="fig-wrap"><img src="images/fig_line_calibration.jpg" alt="Line calibration view showing green detected line segments and blue centroid dot" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 12.1</span> Line calibration view: green segments = valid detected lines, blue dot = computed centroid, green vertical bar = camera centerline reference. <span class="fig-key">images/fig_line_calibration.jpg</span></figcaption>
+  <figure data-img-key="fig_line_calibration.png">
+    <div class="fig-wrap"><img src="images/fig_line_calibration.png" alt="Line calibration view showing green detected line segments and blue centroid dot" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 12.1</span> Line calibration view: green segments = valid detected lines, blue dot = computed centroid, green vertical bar = camera centerline reference. <span class="fig-key">images/fig_line_calibration.png</span></figcaption>
   </figure>
 
   <div class="tw"><table>
@@ -1277,9 +1273,9 @@ source /opt/ros/foxy/setup.bash 2>/dev/null || source /opt/ros/humble/setup.bash
   </table></div>
 
   <h3>Error Threshold — The Dead Band</h3>
-  <figure data-img-key="fig_error_threshold.jpg">
-    <div class="fig-wrap"><img src="images/fig_error_threshold.jpg" alt="Error threshold red vertical bars in lane calibration view" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 12.2</span> The two red vertical bars define the error threshold dead band. Lines within this zone produce zero steering correction. Lines outside it trigger PID response. <span class="fig-key">images/fig_error_threshold.jpg</span></figcaption>
+  <figure data-img-key="fig_error_threshold.png">
+    <div class="fig-wrap"><img src="images/fig_error_threshold.png" alt="Error threshold red vertical bars in lane calibration view" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 12.2</span> The two red vertical bars define the error threshold dead band. Lines within this zone produce zero steering correction. Lines outside it trigger PID response. <span class="fig-key">images/fig_error_threshold.png</span></figcaption>
   </figure>
   <p>The error threshold defines a "dead band" around the camera centerline. If the computed lane centroid falls within this zone, the robot considers the error as zero and makes no steering correction. This prevents constant micro-corrections on straight roads.</p>
   <div class="tw"><table>
@@ -1291,9 +1287,9 @@ source /opt/ros/foxy/setup.bash 2>/dev/null || source /opt/ros/humble/setup.bash
   </table></div>
 
   <h3>Camera Alignment & Cropping</h3>
-  <figure data-img-key="fig_camera_align.jpg">
-    <div class="fig-wrap"><img src="images/fig_camera_align.jpg" alt="Camera centerline alignment with green bar and red error threshold bars" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 12.3</span> Camera alignment view: green bar = zero-error centerline reference (align to car physical center), red bars = error threshold bounds. <span class="fig-key">images/fig_camera_align.jpg</span></figcaption>
+  <figure data-img-key="fig_camera_align.png">
+    <div class="fig-wrap"><img src="images/fig_camera_align.png" alt="Camera centerline alignment with green bar and red error threshold bars" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 12.3</span> Camera alignment view: green bar = zero-error centerline reference (align to car physical center), red bars = error threshold bounds. <span class="fig-key">images/fig_camera_align.png</span></figcaption>
   </figure>
   <div class="tw"><table>
     <thead><tr><th>Parameter</th><th>Effect</th></tr></thead>
@@ -1319,9 +1315,9 @@ source /opt/ros/foxy/setup.bash 2>/dev/null || source /opt/ros/humble/setup.bash
     </div>
   </div>
 
-  <figure data-img-key="fig_throttle_steering.jpg">
-    <div class="fig-wrap"><img src="images/fig_throttle_steering.jpg" alt="Throttle and steering calibration GUI with sliders" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 13.1</span> Actuator calibration GUI. Set steering physical limits first (modes 0/1/2), then throttle limits, then fine-tune PID gains. <span class="fig-key">images/fig_throttle_steering.jpg</span></figcaption>
+  <figure data-img-key="fig_throttle_steering.png">
+    <div class="fig-wrap"><img src="images/fig_throttle_steering.png" alt="Throttle and steering calibration GUI with sliders" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 13.1</span> Actuator calibration GUI. Set steering physical limits first (modes 0/1/2), then throttle limits, then fine-tune PID gains. <span class="fig-key">images/fig_throttle_steering.png</span></figcaption>
   </figure>
 
   <h3>Steering Physical Limits (Set First)</h3>
@@ -1345,9 +1341,9 @@ source /opt/ros/foxy/setup.bash 2>/dev/null || source /opt/ros/humble/setup.bash
     </tbody>
   </table></div>
 
-  <figure data-img-key="fig_system_response.jpg">
-    <div class="fig-wrap"><img src="images/fig_system_response.jpg" alt="System response plot showing throttle scheduling based on lane tracking error" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 13.2</span> Throttle scheduling: car runs at max_throttle when tracking error is low (straight), and decreases linearly to min_throttle when error is high (sharp curve). This prevents overrunning curves. <span class="fig-key">images/fig_system_response.jpg</span></figcaption>
+  <figure data-img-key="fig_system_response.png">
+    <div class="fig-wrap"><img src="images/fig_system_response.png" alt="System response plot showing throttle scheduling based on lane tracking error" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 13.2</span> Throttle scheduling: car runs at max_throttle when tracking error is low (straight), and decreases linearly to min_throttle when error is high (sharp curve). This prevents overrunning curves. <span class="fig-key">images/fig_system_response.png</span></figcaption>
   </figure>
 
   <h3>PID Steering Gains</h3>
@@ -1720,7 +1716,7 @@ navLinks.forEach(l => l.addEventListener('click', () => {
 
 // ── TEAM GRID ─────────────────────────────
 const grid = document.getElementById('team-grid');
-for (let i = 1; i <= 30; i++) {
+for (let i = 1; i <= 15; i++) {
   const c = document.createElement('div');
   c.className = 'tc';
   c.innerHTML = `<div class="tc-num">${i}</div><div class="tc-label">Team ${i}</div>`;
