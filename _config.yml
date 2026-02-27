@@ -1,3 +1,4 @@
-theme: null
 # GitHub Pages config for UCSD Robocar Documentation
 # Site is a plain HTML file — no Jekyll theme needed
+# theme: null  ← REMOVED: "null" is a YAML keyword and causes Jekyll to error
+#               Leave theme unset for plain HTML sites on GitHub Pages
