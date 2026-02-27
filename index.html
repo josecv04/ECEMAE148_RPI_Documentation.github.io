@@ -454,10 +454,8 @@ figcaption .fig-key {
     <h1>UCSD Robocar Framework<br>Complete Setup & Calibration Guide</h1>
     <p>Full documentation for Docker setup, X11 forwarding, camera calibration, PID tuning, ROS2 node development, and multi-team camera isolation.</p>
     <div class="hero-meta">
-      <div class="hero-meta-item"><div class="hero-meta-dot"></div> Raspberry Pi 4</div>
+      <div class="hero-meta-item"><div class="hero-meta-dot"></div> Raspberry Pi 5</div>
       <div class="hero-meta-item"><div class="hero-meta-dot"></div> ROS2 Foxy/Humble</div>
-      <div class="hero-meta-item"><div class="hero-meta-dot"></div> OAK-D Camera</div>
-      <div class="hero-meta-item"><div class="hero-meta-dot"></div> VESC 6 ESC</div>
     </div>
   </div>
 
@@ -1656,7 +1654,7 @@ navLinks.forEach(l => l.addEventListener('click', () => {
 
 // ── GENERATE TEAM GRID ───────────────────────────────────
 const grid = document.getElementById('team-grid');
-for (let i = 1; i <= 30; i++) {
+for (let i = 1; i <= 15; i++) {
   const cell = document.createElement('div');
   cell.className = 'team-id-cell';
   cell.innerHTML = `<div class="id-num">${i}</div><div>Team ${i}</div>`;
