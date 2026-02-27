@@ -1082,7 +1082,6 @@ source /opt/ros/foxy/setup.bash 2>/dev/null || source /opt/ros/humble/setup.bash
       <h2>Camera Isolation — Prevent Cross-Team Interference</h2>
       <div class="sec-subtitle">Fix the multi-team problem where students connect to the wrong robot's camera</div>
     </div>
-    <div class="sec-badges"><span class="badge badge-new">New</span><span class="badge badge-critical">Critical</span></div>
   </div>
 
   <div class="callout error"><div class="callout-icon">✗</div><div class="callout-body"><div class="callout-title">Critical Lab Issue — Read Before Starting Any Calibration</div><div class="callout-text">All robots running ROS2 on the same WiFi network are visible to each other by default. During a lab session with 10+ teams, Team 1's calibration GUI may be controlling Team 7's camera. Your <code>/cmd_vel</code> commands could be sending steering signals to a different team's VESC. Your lane detection node might be subscribing to a neighbor's camera feed. This causes completely baffling behavior that looks like a software bug but is actually a network isolation issue.</div></div></div>
