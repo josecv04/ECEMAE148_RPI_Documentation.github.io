@@ -15,16 +15,16 @@ Hosted via GitHub Pages:
 /
 ├── index.html          ← Main documentation site (single page)
 ├── images/             ← All figures — replace files here to update images
-│   ├── fig_xeyes.jpg
-│   ├── fig_hsv_chart.jpg
-│   ├── fig_mask_default.jpg
-│   ├── fig_mask_yellow.jpg
-│   ├── fig_bw_calibration.jpg
-│   ├── fig_line_calibration.jpg
-│   ├── fig_error_threshold.jpg
-│   ├── fig_camera_align.jpg
-│   ├── fig_throttle_steering.jpg
-│   └── fig_system_response.jpg
+│   ├── fig_xeyes.png
+│   ├── fig_hsv_chart.png
+│   ├── fig_mask_default.png
+│   ├── fig_mask_yellow.png
+│   ├── fig_bw_calibration.png
+│   ├── fig_line_calibration.png
+│   ├── fig_error_threshold.png
+│   ├── fig_camera_align.png
+│   ├── fig_throttle_steering.png
+│   └── fig_system_response.png
 ├── _config.yml         ← GitHub Pages config
 └── README.md           ← This file
 ```
@@ -38,22 +38,22 @@ Each figure in the documentation has a labeled `images/` key shown in its captio
 **To replace any figure:**
 
 1. Take or prepare your new screenshot/photo.
-2. Rename it to exactly match the filename shown in the figure caption (e.g., `fig_hsv_chart.jpg`).
+2. Rename it to exactly match the filename shown in the figure caption (e.g., `fig_hsv_chart.png`).
 3. Drop the file into the `images/` folder, overwriting the old one.
 4. Commit and push — GitHub Pages rebuilds automatically (< 2 min).
 
 **To add a brand-new figure:**
 
-1. Add your image to `images/` with a descriptive name (e.g., `fig_lidar_scan.jpg`).
+1. Add your image to `images/` with a descriptive name (e.g., `fig_lidar_scan.png`).
 2. In `index.html`, insert the following block where you want the figure:
 
 ```html
-<!-- IMAGE REPLACE: swap images/fig_lidar_scan.jpg to update this figure -->
-<figure data-img-key="fig_lidar_scan.jpg">
+<!-- IMAGE REPLACE: swap images/fig_lidar_scan.png to update this figure -->
+<figure data-img-key="fig_lidar_scan.png">
   <div class="fig-img-wrap">
-    <img src="images/fig_lidar_scan.jpg" alt="Description of figure" loading="lazy">
+    <img src="images/fig_lidar_scan.png" alt="Description of figure" loading="lazy">
   </div>
-  <figcaption>Figure X.Y — Your caption here <span class="fig-key">images/fig_lidar_scan.jpg</span></figcaption>
+  <figcaption>Figure X.Y — Your caption here <span class="fig-key">images/fig_lidar_scan.png</span></figcaption>
 </figure>
 ```
 
@@ -63,16 +63,16 @@ Each figure in the documentation has a labeled `images/` key shown in its captio
 
 | Key | Section | Description |
 |-----|---------|-------------|
-| `fig_xeyes.jpg` | §3 X11 Forwarding | xeyes window forwarded to laptop |
-| `fig_hsv_chart.jpg` | §11 Color Calibration | HSV color wheel (H: 0–180) |
-| `fig_mask_default.jpg` | §11 Color Calibration | Default mask sliders (all pass) |
-| `fig_mask_yellow.jpg` | §11 Color Calibration | Tuned for yellow road dots |
-| `fig_bw_calibration.jpg` | §11 Color Calibration | Noise reduction slider GUI |
-| `fig_line_calibration.jpg` | §12 Line Calibration | Line detection view |
-| `fig_error_threshold.jpg` | §12 Line Calibration | Error threshold red bars |
-| `fig_camera_align.jpg` | §12 Line Calibration | Camera centerline alignment |
-| `fig_throttle_steering.jpg` | §13 Actuator Calibration | Throttle/steering GUI |
-| `fig_system_response.jpg` | §13 Actuator Calibration | Throttle scheduling plot |
+| `fig_xeyes.png` | §3 X11 Forwarding | xeyes window forwarded to laptop |
+| `fig_hsv_chart.png` | §11 Color Calibration | HSV color wheel (H: 0–180) |
+| `fig_mask_default.png` | §11 Color Calibration | Default mask sliders (all pass) |
+| `fig_mask_yellow.png` | §11 Color Calibration | Tuned for yellow road dots |
+| `fig_bw_calibration.png` | §11 Color Calibration | Noise reduction slider GUI |
+| `fig_line_calibration.png` | §12 Line Calibration | Line detection view |
+| `fig_error_threshold.png` | §12 Line Calibration | Error threshold red bars |
+| `fig_camera_align.png` | §12 Line Calibration | Camera centerline alignment |
+| `fig_throttle_steering.png` | §13 Actuator Calibration | Throttle/steering GUI |
+| `fig_system_response.png` | §13 Actuator Calibration | Throttle scheduling plot |
 
 ---
 
