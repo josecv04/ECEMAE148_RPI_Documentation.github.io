@@ -354,8 +354,8 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
     <span class="topbar-breadcrumb">Setup & Calibration Guide</span>
     <div class="topbar-spacer"></div>
     <div class="page-switcher">
-      <a href="./index.html" class="ps-link">ROS Setup</a>
-      <a href="./vesc_setup.html" class="ps-link active">VESC Setup</a>
+      <a href="./index.html" class="ps-link active">ROS Setup</a>
+      <a href="./vesc_setup.html" class="ps-link">VESC Setup</a>
       <a href="./gps_laps.html" class="ps-link">GPS Laps</a>
       <a href="./donkeycar.html" class="ps-link">DonkeyCar</a>
     </div>
@@ -452,7 +452,7 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
       <div class="step-body">
         <div class="step-title">SSH into Your Pi</div>
         <div class="step-desc">Replace the hostname with your robot's assigned name. The <code>.local</code> suffix uses mDNS (Bonjour/Avahi) to find the Pi on the local network without needing an IP address.</div>
-        <div class="cb"><div class="cb-header"><span class="cb-label">Terminal — your laptop</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">ssh</span> pi@ucsdrobocar-148-XX.local</pre></div>
+        <div class="cb"><div class="cb-header"><span class="cb-label">Terminal — your laptop</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">ssh</span> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b6c6dff6c3d5c5d2c4d9d4d9d5d7c49b87828e9beeee98dad9d5d7da">[email&#160;protected]</a></pre></div>
       </div>
     </div>
 
@@ -597,10 +597,10 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
 
   <h3>Step 3 — Connect via SSH with Forwarding Enabled</h3>
   <div class="cb"><div class="cb-header"><span class="cb-label">Your laptop terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Trusted forwarding — RECOMMENDED (use this if -X causes issues)</span>
-<span class="k">ssh</span> <span class="f">-Y</span> pi@ucsdrobocar-148-XX.local
+<span class="k">ssh</span> <span class="f">-Y</span> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="285841685d4b5b4c5a474a474b495a05191c100570700644474b4944">[email&#160;protected]</a>
 
 <span class="c"># Untrusted forwarding — stricter security</span>
-<span class="k">ssh</span> <span class="f">-X</span> pi@ucsdrobocar-148-XX.local</pre></div>
+<span class="k">ssh</span> <span class="f">-X</span> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ddadb49da8beaeb9afb2bfb2bebcaff0ece9e5f08585f3b1b2bebcb1">[email&#160;protected]</a></pre></div>
   <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">Why -Y instead of -X?</div><div class="callout-text">The Docker container runs as <code>root</code>, which is a different user than the <code>pi</code> user on the host. The <code>-X</code> flag (untrusted) blocks connections from different users for security reasons. The <code>-Y</code> flag (trusted) allows it. If calibration windows won't open inside Docker but xeyes works on the Pi host, switch to <code>-Y</code>.</div></div></div>
 
   <h3>Step 4 — Test X11 Before Entering Docker</h3>
@@ -632,7 +632,7 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
   <div class="tw"><table>
     <thead><tr><th>Error Message</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td>"cannot open display"</td><td>SSH was not started with <code>-Y</code> flag. Exit and reconnect: <code>ssh -Y pi@hostname.local</code></td></tr>
+      <tr><td>"cannot open display"</td><td>SSH was not started with <code>-Y</code> flag. Exit and reconnect: <code>ssh -Y <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3949507951564a4d5758545c1755565a5855">[email&#160;protected]</a></code></td></tr>
       <tr><td>"No protocol specified"</td><td>Run on the Pi host: <code>xhost +local:</code> then retry inside Docker</td></tr>
       <tr><td>"Authorization required"</td><td>The <code>.Xauthority</code> file is not mounted in Docker. Check your <code>--volume</code> flag in the docker run command.</td></tr>
       <tr><td>xeyes opens on Pi host but not inside Docker</td><td>Switch from <code>ssh -X</code> to <code>ssh -Y</code> and restart the container.</td></tr>
@@ -648,8 +648,8 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
 
 <span class="c"># Exit and re-SSH with trusted forwarding</span>
 <span class="k">exit</span>
-<span class="k">ssh</span> <span class="f">-Y</span> pi@ucsdrobocar-148-XX.local</pre></div>
-  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Xauthority Lock Error</div><div class="callout-text">If you see "timeout in locking authority file", the file is corrupt. Delete it and start fresh:<br><code>rm ~/.Xauthority &amp;&amp; ssh -Y pi@ucsdrobocar-148-XX.local</code></div></div></div>
+<span class="k">ssh</span> <span class="f">-Y</span> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="087861487d6b7b6c7a676a676b697a25393c302550502664676b6964">[email&#160;protected]</a></pre></div>
+  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Xauthority Lock Error</div><div class="callout-text">If you see "timeout in locking authority file", the file is corrupt. Delete it and start fresh:<br><code>rm ~/.Xauthority &amp;&amp; ssh -Y <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4d3d240d382e3e293f222f222e2c3f607c79756015156321222e2c21">[email&#160;protected]</a></code></div></div></div>
 </section>
 
 <!-- §4 — Run Container -->
@@ -778,7 +778,7 @@ setup(
     name=package_name, version=<span class="s">'0.0.0'</span>,
     packages=[package_name], data_files=data_files,
     install_requires=[<span class="s">'setuptools'</span>], zip_safe=True,
-    maintainer=<span class="s">'root'</span>, maintainer_email=<span class="s">'root@todo.todo'</span>,
+    maintainer=<span class="s">'root'</span>, maintainer_email=<span class="s">'<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8efce1e1facefae1eae1a0fae1eae1">[email&#160;protected]</a>'</span>,
     description=<span class="s">'Nav2 launch/config package for UCSD RoboCar'</span>,
     license=<span class="s">'TODO'</span>, tests_require=[<span class="s">'pytest'</span>],
     entry_points={<span class="s">'console_scripts'</span>: []},
@@ -1315,7 +1315,7 @@ if __name__ == <span class="s">'__main__'</span>:
   <div class="tw"><table>
     <thead><tr><th>Error</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td>"cannot open display"</td><td>SSH with <code>-Y</code> flag: <code>ssh -Y pi@hostname.local</code></td></tr>
+      <tr><td>"cannot open display"</td><td>SSH with <code>-Y</code> flag: <code>ssh -Y <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f18198b1999e82859f909c94df9d9e92909d">[email&#160;protected]</a></code></td></tr>
       <tr><td>"No protocol specified"</td><td>Run on Pi host: <code>xhost +local:</code></td></tr>
       <tr><td>"Authorization required" inside Docker</td><td>Ensure <code>--volume $HOME/.Xauthority:/root/.Xauthority:rw</code> is in docker run</td></tr>
       <tr><td>GUI works on host but not inside container</td><td>Switch from <code>ssh -X</code> to <code>ssh -Y</code> and restart the container</td></tr>
@@ -1368,7 +1368,7 @@ if __name__ == <span class="s">'__main__'</span>:
 
 <button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── COPY BUTTON ──────────────────────────────────────────────────
 function doCopy(btn) {
   const pre = btn.closest('.cb').querySelector('pre');
