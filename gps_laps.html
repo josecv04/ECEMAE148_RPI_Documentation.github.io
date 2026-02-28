@@ -455,11 +455,6 @@ figcaption {
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
 }
 .fig-label { color: var(--ucsd-gold); font-weight: 600; }
-.fig-key {
-  margin-left: auto; background: var(--surface2); border: 1px solid var(--border);
-  padding: 2px 8px; border-radius: 3px; font-size: 10px; color: var(--text-dim);
-  white-space: nowrap;
-}
 
 /* ─── DIVIDER ────────────────────────────────── */
 .divider { height: 1px; background: var(--border); margin: 48px 0; }
@@ -618,86 +613,86 @@ figcaption {
     <span class="sec-num">01</span>
     <div class="sec-title-block">
       <h2>Hardware Setup &amp; Location</h2>
-      <div class="sec-subtitle">Establish a strong GPS signal and WiFi connection for high-precision positioning</div>
+      <div class="sec-subtitle">Establish a strong GPS signal and stable WiFi connection for high-precision positioning</div>
     </div>
   </div>
 
-  <p>Before any software configuration, the physical hardware must be correctly positioned. GPS accuracy depends heavily on clear sky view and a stable RTK correction data stream over WiFi. This section covers where to set up and how to connect all hardware components.</p>
+  <p>Before any software configuration, the physical hardware must be correctly positioned. GPS accuracy depends heavily on a clear, unobstructed view of the sky and a stable RTK correction data stream delivered over WiFi. This section covers where to set up and how to connect all hardware components.</p>
 
-  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">Testing Location</div><div class="callout-text">The recommended testing area is near <strong>Fallen Star</strong> (the crooked house) and <strong>Warren Mall</strong> at UCSD. These areas offer open sky for GPS reception and line-of-sight to EBU2 for the WiFi extender.</div></div></div>
+  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">Recommended Testing Location</div><div class="callout-text">Set up near <strong>Fallen Star</strong> (the crooked house) and <strong>Warren Mall</strong> at UCSD. These areas provide open sky for GPS reception and a clear line-of-sight to EBU2 for the WiFi extender.</div></div></div>
 
   <h3>Step 1 — WiFi Extender Placement</h3>
-  <p>The WiFi extender bridges the campus network to the car's Raspberry Pi, allowing RTK correction data to stream continuously from the Polaris network. Signal strength is the single most impactful factor for GPS accuracy.</p>
+  <p>The WiFi extender bridges the campus network to the car's Raspberry Pi, allowing RTK correction data to stream continuously from the Polaris network. Signal strength is the single most important factor for GPS accuracy — a weak connection causes the correction stream to drop and degrades precision from centimeters to meters.</p>
 
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-body">
         <div class="step-title">Mount the White Antenna on the Tripod</div>
-        <div class="step-desc">Place the white cylindrical antenna (Ubiquiti airMAX or similar) on the tripod and secure it firmly. <strong>Point the face of the antenna directly toward EBU2</strong> (the engineering building). The flat face, circled in the reference photo below, is the radiating element — it must face the signal source.</div>
+        <div class="step-desc">Place the white cylindrical antenna (Ubiquiti airMAX or similar) on the tripod and secure it firmly. <strong>Point the flat face of the antenna directly toward EBU2</strong> (the engineering building). The flat face, circled in red in the photo below, is the radiating element — it must face the signal source to receive the campus WiFi signal.</div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-body">
         <div class="step-title">Power the Antenna with the ALLWEI Battery</div>
-        <div class="step-desc">Connect the ALLWEI portable power station to the antenna using the provided cable. <strong>This battery is dedicated to the antenna only — do not use it to charge phones, laptops, or other devices.</strong> Draining it partway through a session will drop your GPS to meter-level accuracy.</div>
+        <div class="step-desc">Connect the ALLWEI portable power station to the antenna using the provided cable. <strong>This battery is dedicated to the antenna only — do not use it to charge phones, laptops, or other devices.</strong> Draining it mid-session will drop your GPS precision to meter-level accuracy.</div>
       </div>
     </div>
   </div>
 
   <figure>
     <div class="fig-wrap">
-      <img src="./images/fig_wifi_extender.png" alt="WiFi extender white antenna mounted on a black tripod inside EBU2 hallway">
+      <img src="./images/fig_wifi_extender.png" alt="WiFi extender white antenna mounted on a black tripod, with the flat radiating face circled in red">
     </div>
-    <figcaption><span class="fig-label">Fig 1.1</span> WiFi extender (white cylindrical antenna, circled in red) mounted on tripod — the face must point toward EBU2 to receive the university WiFi signal <span class="fig-key">images/fig_wifi_extender.png</span></figcaption>
+    <figcaption><span class="fig-label">Fig 1.1</span> WiFi extender mounted on tripod. The flat radiating face (circled in red) must point toward EBU2 to receive the campus WiFi signal.</figcaption>
   </figure>
 
   <figure>
     <div class="fig-wrap">
       <img src="./images/fig_allwei_battery.png" alt="ALLWEI portable power station with blue tape label reading Only For Tower, No Batteries">
     </div>
-    <figcaption><span class="fig-label">Fig 1.2</span> ALLWEI portable power station — labeled "ONLY FOR TOWER / NO BATTERIES" to prevent misuse. From Silberman's Lab, UCSD MAE EBU2 <span class="fig-key">images/fig_allwei_battery.png</span></figcaption>
+    <figcaption><span class="fig-label">Fig 1.2</span> ALLWEI portable power station, labeled "ONLY FOR TOWER / NO BATTERIES." Use this battery exclusively to power the WiFi antenna.</figcaption>
   </figure>
 
   <h3>Step 2 — Testing Area Map</h3>
-  <p>The two circled areas on the map below show the recommended driving loops in Warren Mall. Both loops provide open sky exposure and enough clear pavement for a smooth path-following run. Stay within these areas to maintain WiFi signal and avoid pedestrian hazards.</p>
+  <p>The two circled areas on the map below show the recommended driving loops in Warren Mall. Both provide open sky exposure and enough clear pavement for a smooth path-following run. Stay within these areas to maintain WiFi signal strength and avoid pedestrian hazards.</p>
 
   <figure>
     <div class="fig-wrap">
-      <img src="./images/fig_warren_mall_map.png" alt="Google Maps aerial view of Warren Mall at UCSD with two driving loop areas circled in red">
+      <img src="./images/fig_warren_mall_map.png" alt="Google Maps aerial view of Warren Mall at UCSD with two recommended driving loop areas circled in red">
     </div>
-    <figcaption><span class="fig-label">Fig 1.3</span> Warren Mall aerial view — the two red-circled areas are the recommended GPS driving loops, located directly south of Fallen Star <span class="fig-key">images/fig_warren_mall_map.png</span></figcaption>
+    <figcaption><span class="fig-label">Fig 1.3</span> Warren Mall aerial view. The two red-circled areas are the recommended GPS driving loops, located directly south of Fallen Star.</figcaption>
   </figure>
 
   <h3>Step 3 — GPS Unit (PointOneNav) Placement</h3>
-  <p>The PointOneNav unit does <strong>not</strong> require any manual configuration on first use — it streams NMEA data immediately upon power-up. However, physical placement matters enormously for accuracy.</p>
+  <p>The PointOneNav unit does <strong>not</strong> require any manual configuration on first use — it streams NMEA data immediately upon power-up. However, where you physically mount the antenna has a large impact on accuracy.</p>
 
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-body">
         <div class="step-title">Mount the GPS Antenna on Top of the Car</div>
-        <div class="step-desc">The black magnetic patch antenna (connected to the pink PointOneNav board via the SMA coaxial cable) must have a clear, unobstructed view of the sky. Mount it flat on the highest point of the car. <strong>Do not place it inside the chassis or near metal objects</strong> that reflect or attenuate signals.</div>
+        <div class="step-desc">The black magnetic patch antenna connects to the pink PointOneNav board via the thin SMA coaxial cable. It must have a clear, unobstructed view of the sky. Mount it flat on the highest point of the car. <strong>Do not place it inside the chassis or near metal objects</strong> — metal reflects and attenuates GPS signals, reducing accuracy.</div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-body">
         <div class="step-title">Connect USB to the Raspberry Pi</div>
-        <div class="step-desc">Plug the PointOneNav board into the Pi via the white USB cable. The system will enumerate as <code>/dev/ttyUSB0</code> or <code>/dev/ttyUSB1</code> depending on what else is connected. You will configure the exact port in later steps.</div>
+        <div class="step-desc">Plug the PointOneNav board into the Pi using the white USB cable. Depending on what else is connected, the system will assign the device as <code>/dev/ttyUSB0</code> or <code>/dev/ttyUSB1</code>. You will configure the exact port in later steps.</div>
       </div>
     </div>
   </div>
 
   <figure>
     <div class="fig-wrap">
-      <img src="./images/fig_gps_unit.png" alt="PointOneNav GPS board in pink enclosure connected to black magnetic patch antenna via coaxial SMA cable">
+      <img src="./images/fig_gps_unit.png" alt="PointOneNav GPS board in a pink enclosure connected to a black magnetic patch antenna via a coaxial SMA cable">
     </div>
-    <figcaption><span class="fig-label">Fig 1.4</span> PointOneNav GPS unit (pink enclosure, S000018) with magnetic patch antenna and SMA coaxial cable. USB cable connects to Raspberry Pi <span class="fig-key">images/fig_gps_unit.png</span></figcaption>
+    <figcaption><span class="fig-label">Fig 1.4</span> PointOneNav GPS unit (pink enclosure) with its magnetic patch antenna and SMA coaxial cable. The white USB cable connects to the Raspberry Pi.</figcaption>
   </figure>
 
-  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Indoor Signal Warning</div><div class="callout-text">If you test indoors, the GPS will output <code>[LLA=nan, nan, nan]</code> — this is expected. Step outside to Warren Mall before expecting valid coordinate data. Allow 30–60 seconds after going outside for the RTK fix to converge.</div></div></div>
+  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Indoor Signal Warning</div><div class="callout-text">If you test indoors, the GPS will output <code>[LLA=nan, nan, nan]</code> — this is expected behavior, not an error. Step outside to Warren Mall before expecting valid coordinate data. Allow 30–60 seconds after going outside for the RTK fix to converge.</div></div></div>
 </section>
 
 <!-- ══════════════════════════════════
@@ -714,42 +709,42 @@ figcaption {
     <div class="sec-badges"><span class="badge badge-warn">Terminal 1</span></div>
   </div>
 
-  <p>The GPS software requires two things before it can run: (1) your Pi user must be in the <code>dialout</code> group so it can open serial/USB ports without <code>sudo</code>, and (2) a Miniforge-managed Python 3.7 environment to host the GPS drivers without polluting the system Python.</p>
+  <p>The GPS software requires two things before it can run: (1) your Pi user must be in the <code>dialout</code> group so it can open serial/USB ports without <code>sudo</code>, and (2) a Miniforge-managed Python 3.7 environment to host the GPS drivers without conflicting with the system Python or the DonkeyCar environment.</p>
 
-  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">Two-Terminal Architecture</div><div class="callout-text">This entire setup requires <strong>two terminal sessions running simultaneously</strong>. Terminal 1 runs the GPS correction stream (must stay open forever). Terminal 2 runs DonkeyCar. This section covers Terminal 1 prerequisites.</div></div></div>
+  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">Two-Terminal Architecture</div><div class="callout-text">This setup requires <strong>two terminal sessions running simultaneously</strong>. Terminal 1 runs the GPS correction stream and must remain open for the entire session. Terminal 2 runs DonkeyCar. This section covers the Terminal 1 prerequisites.</div></div></div>
 
   <h3>Step 1 — Grant USB Device Permissions</h3>
-  <p>Linux restricts access to serial ports (<code>/dev/ttyUSB*</code>) to members of the <code>dialout</code> group. Without this, you will get a <code>Permission denied</code> error when the GPS tries to open the port.</p>
+  <p>Linux restricts access to serial ports (<code>/dev/ttyUSB*</code>) to members of the <code>dialout</code> group. Without this, you will get a <code>Permission denied</code> error when the GPS driver tries to open the port.</p>
 
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — Terminal 1</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo adduser</span> pi dialout   <span class="c"># Add 'pi' user to the dialout group</span>
-<span class="k">sudo reboot now</span>           <span class="c"># Group membership only takes effect after reboot</span></pre></div>
+<span class="k">sudo reboot now</span>           <span class="c"># Group membership only takes effect after a reboot</span></pre></div>
 
-  <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">Already in the Group?</div><div class="callout-text">Run <code>groups</code> to check. If <code>dialout</code> is listed, the reboot is optional — but rebooting is safer and ensures a clean state for the session ahead.</div></div></div>
+  <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">Already in the Group?</div><div class="callout-text">Run <code>groups</code> to check. If <code>dialout</code> is already listed, the reboot is optional — but rebooting ensures a clean state for the session ahead.</div></div></div>
 
   <h3>Step 2 — Clone the Quectel Repository</h3>
-  <p>The PointOneNav runner lives inside the <code>quectel/p1_runner</code> directory. This repository contains the config tool, the runner script, and all supporting files.</p>
+  <p>The PointOneNav runner script lives inside the <code>quectel/p1_runner</code> directory. This repository contains the configuration tool, the runner script, and all supporting files needed to receive RTK corrections.</p>
 
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — after reboot</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">git clone</span> https://github.com/UCSD-ECEMAE-148/quectel
 <span class="k">cd</span> quectel/p1_runner</pre></div>
 
   <h3>Step 3 — Install Miniforge</h3>
-  <p>Miniforge provides <code>conda</code>/<code>mamba</code> — a fast, lightweight environment manager. We use it to create a sandboxed Python 3.7 environment for the GPS software so it never conflicts with DonkeyCar's Python 3 stack or system packages.</p>
+  <p>Miniforge provides <code>conda</code> and <code>mamba</code> — fast, lightweight Python environment managers. We use Miniforge to create a sandboxed Python 3.7 environment specifically for the GPS software, so it never conflicts with DonkeyCar's Python stack or system packages.</p>
 
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — inside quectel/p1_runner</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Download Miniforge installer for the current architecture (ARM64 on Pi)</span>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — inside quectel/p1_runner</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Download the Miniforge installer for the current architecture (ARM64 on a 64-bit Pi)</span>
 <span class="k">wget</span> <span class="s">"https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"</span>
 
-<span class="c"># Run the installer (follow on-screen prompts — accept the license, confirm defaults)</span>
+<span class="c"># Run the installer — accept the license and confirm all defaults when prompted</span>
 <span class="k">bash</span> Miniforge3-Linux-aarch64.sh
 
-<span class="c"># Reboot so conda is added to your PATH</span>
+<span class="c"># Reboot so that conda is added to your PATH</span>
 <span class="k">sudo reboot now</span></pre></div>
 
-  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Architecture Mismatch Bug</div><div class="callout-text">The <code>$(uname -m)</code> substitution produces <code>aarch64</code> on a 64-bit Pi. If you get a "file not found" error, your Pi may be running a 32-bit OS. Verify with <code>uname -m</code> — if it shows <code>armv7l</code>, download the <code>armv7l</code> installer manually from the Miniforge GitHub releases page.</div></div></div>
+  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Architecture Mismatch</div><div class="callout-text">The <code>$(uname -m)</code> substitution produces <code>aarch64</code> on a 64-bit Pi. If you get a "file not found" error, your Pi may be running a 32-bit OS. Verify with <code>uname -m</code> — if it shows <code>armv7l</code>, download the <code>armv7l</code> installer manually from the Miniforge GitHub releases page.</div></div></div>
 
-  <h3>Validation Test — Miniforge Installed Correctly</h3>
+  <h3>Validation — Miniforge Installed Correctly</h3>
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — after reboot</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">conda</span> <span class="f">--version</span>   <span class="c"># Expected: conda 23.x.x or similar</span>
 <span class="k">mamba</span> <span class="f">--version</span>   <span class="c"># Expected: mamba x.x.x</span>
-<span class="c"># If both print version numbers, Miniforge is installed correctly.</span></pre></div>
+<span class="c"># If both commands print version numbers, Miniforge is installed correctly.</span></pre></div>
 </section>
 
 <!-- ══════════════════════════════════
@@ -761,69 +756,72 @@ figcaption {
     <span class="sec-num">03</span>
     <div class="sec-title-block">
       <h2>Python Environment &amp; GPS Configuration</h2>
-      <div class="sec-subtitle">Create the py37 sandbox and configure the GPS hardware output format</div>
+      <div class="sec-subtitle">Create the py37 sandbox, install GPS libraries in both environments, and configure the GPS hardware output format</div>
     </div>
     <div class="sec-badges"><span class="badge badge-warn">Terminal 1</span></div>
   </div>
 
-  <p>With Miniforge installed, we create an isolated Python 3.7 environment named <code>py37</code> and install the GPS client libraries. We then use the <code>config_tool.py</code> script to reset the GPS to factory defaults and configure it to output NMEA GGA sentences over USB — the format DonkeyCar reads.</p>
+  <p>With Miniforge installed, we create an isolated Python 3.7 environment named <code>py37</code> and install the GPS client libraries into it. We then install those same libraries into the DonkeyCar virtual environment (<code>~/env</code>) so that DonkeyCar can also read the GPS serial data independently. Finally, we use the <code>config_tool.py</code> script to reset the GPS to factory defaults and configure it to output NMEA GGA sentences over USB — the format DonkeyCar reads.</p>
 
-  <h3>Step 1 — Create the py37 Environment</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — SSH back in after reboot</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">mamba create</span> <span class="f">-n</span> py37 <span class="f">-c</span> conda-forge python=3.7 pip   <span class="c"># Create sandbox</span>
-<span class="k">mamba activate</span> py37                                        <span class="c"># Enter the sandbox</span>
+  <h3>Step 1 — Create the py37 Environment and Install GPS Libraries</h3>
+  <p>This environment is used exclusively by the <code>runner.py</code> script in Terminal 1 to receive RTK correction data from the Polaris network.</p>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — SSH back in after reboot</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">mamba create</span> <span class="f">-n</span> py37 <span class="f">-c</span> conda-forge python=3.7 pip   <span class="c"># Create the sandboxed environment</span>
+<span class="k">mamba activate</span> py37                                        <span class="c"># Enter the environment</span>
 
-<span class="c"># Install GPS client libraries inside the py37 environment</span>
+<span class="c"># Install GPS client libraries inside py37</span>
 <span class="k">pip install</span> pyserial fusion_engine_client pynmea ntripstreams websockets</pre></div>
 
-  <p><strong>Why Python 3.7?</strong> The <code>fusion_engine_client</code> library from PointOneNav uses type annotation syntax compatible with Python 3.7. Higher versions may work, but have caused silent import failures in testing on the Pi's ARM architecture.</p>
+  <p><strong>Why Python 3.7?</strong> The <code>fusion_engine_client</code> library from PointOneNav was written for Python 3.7. Higher versions may work, but have caused silent import failures during testing on the Pi's ARM architecture.</p>
 
-  <h3>Step 2 — Install Requirements and Configure the GPS Hardware</h3>
-  <p>The GPS module ships with its firmware configured for a different output format. We must reset it to factory settings and then enable NMEA GGA output on UART2 (which maps to the USB connection). The <code>save</code> command writes these settings to non-volatile memory so they persist across power cycles.</p>
+  <h3>Step 2 — Install GPS Libraries into the DonkeyCar Environment</h3>
+  <p>DonkeyCar reads GPS data directly from the serial port using its own process. That means the DonkeyCar virtual environment (<code>~/env</code>) also needs the GPS libraries installed. This step is separate from Step 1 — you are installing the same packages into a different environment.</p>
 
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — inside py37 env, in quectel/p1_runner directory</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Deactivate everything to start clean</span>
-<span class="k">conda deactivate</span>   <span class="c"># Repeat until prompt shows no (base) or (py37)</span>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — DonkeyCar venv (~/env), in quectel/p1_runner directory</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Deactivate py37 and any other active environment first</span>
+<span class="k">conda deactivate</span>   <span class="c"># Repeat until neither (base) nor (py37) appears in the prompt</span>
 
-<span class="c"># Re-enter the donkeycar venv first, then py37</span>
-<span class="k">source</span> ~/env/bin/activate   <span class="c"># You should see (env) in your prompt</span>
+<span class="c"># Activate the DonkeyCar virtual environment</span>
+<span class="k">source</span> ~/env/bin/activate   <span class="c"># Prompt should now show (env)</span>
 
 <span class="k">cd</span> ~/quectel/p1_runner
 
-<span class="c"># Install/upgrade build tools inside the venv</span>
+<span class="c"># Upgrade build tools, then install project requirements</span>
 <span class="k">python</span> <span class="f">-m pip install</span> <span class="f">-U</span> pip setuptools wheel
 <span class="k">python</span> <span class="f">-m pip install</span> <span class="f">-r</span> requirements.txt
+
+<span class="c"># Install the GPS libraries into the DonkeyCar environment</span>
 <span class="k">pip install</span> pyserial fusion_engine_client pynmea ntripstreams websockets
 
 <span class="c"># ── GPS HARDWARE CONFIGURATION ────────────────────────────────────────────────</span>
-<span class="c"># 1. Wipe old settings that may cause conflicts</span>
+<span class="c"># 1. Reset the GPS to factory defaults to clear any conflicting settings</span>
 <span class="k">python3</span> bin/config_tool.py reset factory
 
-<span class="c"># 2. Tell the GPS to send NMEA GGA sentences over USB (UART2)</span>
+<span class="c"># 2. Configure the GPS to output NMEA GGA sentences over USB (UART2)</span>
 <span class="k">python3</span> bin/config_tool.py apply uart2_message_rate nmea gga on
 
-<span class="c"># 3. Persist the settings to non-volatile memory</span>
+<span class="c"># 3. Save the settings to non-volatile memory so they persist across power cycles</span>
 <span class="k">python3</span> bin/config_tool.py save</pre></div>
 
-  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">Why These Three Commands?</div><div class="callout-text"><strong>reset factory</strong> — clears any previous custom configuration that could interfere. <strong>uart2_message_rate nmea gga on</strong> — enables GGA sentences (latitude, longitude, fix quality, altitude) at default rate on the USB output. <strong>save</strong> — writes the new config to flash; without this the GPS reverts to the old config on the next power cycle.</div></div></div>
+  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">What Each Configuration Command Does</div><div class="callout-text"><strong>reset factory</strong> — clears any previous custom configuration that could interfere with the setup. <strong>uart2_message_rate nmea gga on</strong> — enables GGA sentences (latitude, longitude, fix quality, and altitude) at the default output rate on the USB port. <strong>save</strong> — writes the new configuration to flash memory; without this, the GPS reverts to its old settings on the next power cycle.</div></div></div>
 
-  <h3>Step 3 — Activate Both Environments (Required for Running)</h3>
-  <p>The runner must be able to see both the DonkeyCar venv libraries and the py37 GPS libraries. Activate in this exact order:</p>
+  <h3>Step 3 — Activate the Correct Environment Before Running</h3>
+  <p>Terminal 1 (the GPS runner) uses the <code>py37</code> conda environment. Terminal 2 (DonkeyCar) uses only the DonkeyCar venv (<code>~/env</code>). Keep these terminals separate — do not mix environments between them. The commands below show how to set up Terminal 1 correctly before launching the runner in §4.</p>
 
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — environment activation sequence</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Start clean</span>
-<span class="k">deactivate</span>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Terminal 1 — environment activation for the GPS runner</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Start from a clean state</span>
+<span class="k">deactivate</span>            <span class="c"># Exits any active virtualenv (e.g., ~/env)</span>
+<span class="k">conda deactivate</span>      <span class="c"># Exits any active conda environment</span>
 
-<span class="c"># Re-activate — prompt should show (env)(py37) when complete</span>
+<span class="c"># Activate py37 for the runner</span>
 <span class="k">conda activate</span> py37
-<span class="k">source</span> ~/env/bin/activate
 
-<span class="c"># Verify</span>
-<span class="k">python</span> <span class="f">--version</span>   <span class="c"># Should print Python 3.7.x</span></pre></div>
+<span class="c"># Verify — should print Python 3.7.x</span>
+<span class="k">python</span> <span class="f">--version</span></pre></div>
 
-  <h3>Validation Test — GPS Config Applied Correctly</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — quick sanity check</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># List available serial ports — GPS should appear as /dev/ttyUSB0 or /dev/ttyUSB1</span>
+  <h3>Validation — GPS Hardware Configured Correctly</h3>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — quick sanity check</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># List available serial ports — the GPS should appear as /dev/ttyUSB0 or /dev/ttyUSB1</span>
 <span class="k">python3</span> <span class="f">-c</span> <span class="s">"import serial.tools.list_ports; print(list(serial.tools.list_ports.comports()))"</span>
 
-<span class="c"># If the GPS port appears in the list above, the hardware is connected correctly.</span>
-<span class="c"># Expected output example: [&lt;serial.tools.list_ports_linux.SysfsPort object&gt; - /dev/ttyUSB1 'CP2102 USB to UART Bridge']</span></pre></div>
+<span class="c"># Example of a successful response:</span>
+<span class="c"># [&lt;serial.tools.list_ports_linux.SysfsPort object&gt; - /dev/ttyUSB1 'CP2102 USB to UART Bridge']</span></pre></div>
 </section>
 
 <!-- ══════════════════════════════════
@@ -840,41 +838,42 @@ figcaption {
     <div class="sec-badges"><span class="badge badge-warn">Terminal 1</span><span class="badge badge-critical">Keep Open</span></div>
   </div>
 
-  <p>Standard GPS has 2–5 meters of error — enough to miss a curb by a car width. RTK (Real-Time Kinematic) corrections bring this down to 1–3 <em>centimeters</em> by streaming differential correction data from a fixed base station. The PointOneNav Polaris service provides this correction stream over the internet.</p>
+  <p>Standard GPS has 2–5 meters of positional error — enough to miss a curb by a full car width. RTK (Real-Time Kinematic) corrections reduce this to 1–3 <em>centimeters</em> by streaming differential correction data from a fixed reference station. The PointOneNav Polaris service provides this correction stream over the internet.</p>
 
   <h3>Step 1 — Launch the Runner</h3>
-  <p>Each robot has a unique <strong>Device ID</strong> and <strong>Polaris Password</strong> assigned for the class. Find yours in the credentials table below and substitute them into the command. The <code>--device-port</code> flag specifies which USB port the GPS is connected to.</p>
+  <p>Each robot has a unique <strong>Device ID</strong> and <strong>Polaris Password</strong> assigned for the class. Look up your robot's credentials in the table at the bottom of this section and substitute them into the command below. The <code>--device-port</code> flag specifies which USB port the GPS receiver is connected to.</p>
 
-  <div class="cb"><div class="cb-header"><span class="cb-label">Terminal 1 — inside py37 env, quectel/p1_runner directory</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Primary command — use USB1 first</span>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Terminal 1 — py37 env active, inside quectel/p1_runner</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Replace --device-id and --polaris with YOUR robot's credentials from the table below</span>
+<span class="c"># Try USB1 first — this is the most common port assignment</span>
 <span class="k">python3</span> bin/runner.py \
-  <span class="f">--device-id</span>   <span class="v">yZ952ezI</span> \
-  <span class="f">--polaris</span>     <span class="v">3gGOrFMX</span> \
+  <span class="f">--device-id</span>   <span class="v">YOUR_DEVICE_ID</span> \
+  <span class="f">--polaris</span>     <span class="v">YOUR_POLARIS_PASSWORD</span> \
   <span class="f">--device-port</span> /dev/ttyUSB1
 
-<span class="c"># If the above fails with "no such file" or "device busy", try USB0:</span>
+<span class="c"># If the above fails with "no such file" or "device busy", try USB0 instead:</span>
 <span class="k">python3</span> bin/runner.py \
-  <span class="f">--device-id</span>   <span class="v">yZ952ezI</span> \
-  <span class="f">--polaris</span>     <span class="v">3gGOrFMX</span> \
+  <span class="f">--device-id</span>   <span class="v">YOUR_DEVICE_ID</span> \
+  <span class="f">--polaris</span>     <span class="v">YOUR_POLARIS_PASSWORD</span> \
   <span class="f">--device-port</span> /dev/ttyUSB0</pre></div>
 
-  <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">Detecting the Correct USB Port</div><div class="callout-text">Run <code>ls /dev/ttyUSB*</code> before and after plugging in the GPS. The new entry that appears is the GPS port. If LiDAR is also plugged in, the GPS is usually on the higher-numbered port.</div></div></div>
+  <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">Finding the Correct USB Port</div><div class="callout-text">Run <code>ls /dev/ttyUSB*</code> before and after plugging in the GPS. The new entry that appears is the GPS port. If a LiDAR is also connected, the GPS is usually on the higher-numbered port.</div></div></div>
 
   <h3>Step 2 — Verify Output</h3>
   <div class="tw"><table>
     <thead><tr><th>What You See</th><th>What It Means</th><th>Action</th></tr></thead>
     <tbody>
       <tr><td><code>Device reset complete. Starting data logging.</code></td><td>GPS is communicating correctly with the Pi</td><td>✓ Good — proceed</td></tr>
-      <tr><td><code>[LLA=nan, nan, nan]</code></td><td>No satellite signal (indoors)</td><td>Step outside and wait 30–60 s</td></tr>
-      <tr><td><code>[LLA=32.88xxx, -117.23xxx, xxx]</code></td><td>Valid fix — UCSD coordinates</td><td>✓ Excellent — RTK is working</td></tr>
-      <tr><td><code>Connection refused</code> or timeout</td><td>No internet / WiFi extender not connected</td><td>Check WiFi extender is on and facing EBU2</td></tr>
+      <tr><td><code>[LLA=nan, nan, nan]</code></td><td>No satellite signal — car is indoors</td><td>Step outside and wait 30–60 s</td></tr>
+      <tr><td><code>[LLA=32.88xxx, -117.23xxx, xxx]</code></td><td>Valid RTK fix — UCSD coordinates</td><td>✓ Excellent — RTK is working</td></tr>
+      <tr><td><code>Connection refused</code> or timeout</td><td>No internet — WiFi extender not connected</td><td>Check that the extender is powered and facing EBU2</td></tr>
     </tbody>
   </table></div>
 
-  <div class="callout error"><div class="callout-icon">🚫</div><div class="callout-body"><div class="callout-title">Never Close Terminal 1</div><div class="callout-text">Terminal 1 must stay running for the entire session. If it closes, the GPS loses RTK corrections and degrades to meter-level accuracy within seconds. Open all other work in Terminal 2 or new SSH sessions.</div></div></div>
+  <div class="callout error"><div class="callout-icon">🚫</div><div class="callout-body"><div class="callout-title">Never Close Terminal 1</div><div class="callout-text">Terminal 1 must remain running for the entire session. If it closes, the GPS loses RTK corrections and degrades to meter-level accuracy within seconds. Do all other work in Terminal 2 or additional SSH sessions.</div></div></div>
 
   <h3>Class Credentials Reference</h3>
   <div class="tw"><table>
-    <thead><tr><th>Robot #</th><th>Username (--device-id)</th><th>Password (--polaris)</th></tr></thead>
+    <thead><tr><th>Robot #</th><th>Device ID (--device-id)</th><th>Polaris Password (--polaris)</th></tr></thead>
     <tbody>
       <tr><td>1</td><td><code>yZ952ezI</code></td><td><code>3gGOrFMX</code></td></tr>
       <tr><td>2</td><td><code>Ghhiex3O</code></td><td><code>keH10zzC</code></td></tr>
@@ -904,103 +903,103 @@ figcaption {
   <p>With Terminal 1 running the GPS corrections, open a <strong>new terminal</strong> (Terminal 2). We will create a DonkeyCar application using the <code>follow-path</code> template — a specialized template built for GPS waypoint navigation — and configure it with the correct serial ports, motor settings, and controller button mappings.</p>
 
   <h3>Step 1 — Create the Car Directory</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Terminal 2 — new SSH session</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Ensure you are NOT in py37 — must be in the DonkeyCar venv only</span>
-<span class="k">conda deactivate</span>   <span class="c"># Repeat until no (base)/(py37) in prompt</span>
-<span class="k">source</span> ~/env/bin/activate   <span class="c"># Activate DonkeyCar venv — prompt shows (env)</span>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Terminal 2 — new SSH session</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># This terminal uses the DonkeyCar venv only — do NOT activate py37 here</span>
+<span class="k">conda deactivate</span>   <span class="c"># Repeat until neither (base) nor (py37) appears in the prompt</span>
+<span class="k">source</span> ~/env/bin/activate   <span class="c"># Activate the DonkeyCar venv — prompt shows (env)</span>
 
 <span class="c"># Create the GPS car directory using the follow-path template</span>
 <span class="k">donkey createcar</span> <span class="f">--template-path</span> follow-path <span class="f">--path</span> ~/gpscar</pre></div>
 
-  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">Why follow-path?</div><div class="callout-text">DonkeyCar has multiple templates (camera-based lane following, imitation learning, etc.). The <code>follow-path</code> template is the only one with built-in GPS waypoint recording and playback parts. Using any other template will be missing the <code>PathFollower</code> and <code>GPSController</code> parts.</div></div></div>
+  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">Why the follow-path Template?</div><div class="callout-text">DonkeyCar has multiple templates (camera-based lane following, imitation learning, etc.). The <code>follow-path</code> template is the only one with built-in GPS waypoint recording and playback. Using any other template will be missing the <code>PathFollower</code> and <code>GPSController</code> parts required for autonomous GPS laps.</div></div></div>
 
   <h3>Step 2 — Edit myconfig.py</h3>
-  <p>The <code>myconfig.py</code> file overrides default DonkeyCar settings. Open it and add or uncomment the following groups of settings. Every line commented with a <code>#</code> explanation describes <em>why</em> that value was chosen.</p>
+  <p>The <code>myconfig.py</code> file overrides DonkeyCar's default settings. Open it and add or uncomment the following blocks. Each setting includes an inline comment explaining why that value was chosen.</p>
 
   <div class="cb"><div class="cb-header"><span class="cb-label">Terminal 2</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">nano</span> ~/gpscar/myconfig.py</pre></div>
 
   <h3>A — GPS Settings</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">~/gpscar/myconfig.py — GPS block</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># GPS_SERIAL: The port the PointOneNav streams NMEA GGA data on.
-# Use USB0 if USB1 was used for the runner in Terminal 1, or vice versa.
-# Rule: GPS_SERIAL must be the OPPOSITE port from --device-port in the runner.</span>
+  <div class="cb"><div class="cb-header"><span class="cb-label">~/gpscar/myconfig.py — GPS block</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># GPS_SERIAL: The port the PointOneNav uses to stream NMEA GGA data to DonkeyCar.
+# This must be the OPPOSITE port from --device-port used in the runner (Terminal 1).
+# Example: if the runner uses /dev/ttyUSB1, set this to /dev/ttyUSB0.</span>
 GPS_SERIAL = <span class="s">"/dev/ttyUSB0"</span>
 
-<span class="c"># Baud rate required for PointOneNav. DO NOT change this value —
-# 460800 is the fixed output rate set by config_tool.py in §3.</span>
+<span class="c"># Baud rate for the PointOneNav. Do NOT change this value —
+# 460800 is the fixed output rate configured by config_tool.py in §3.</span>
 GPS_SERIAL_BAUDRATE = <span class="v">460800</span>
 
-<span class="c"># Enables verbose GPS output in the console for debugging.
+<span class="c"># Prints GPS coordinate data to the console — useful for debugging.
 # Set to False once everything is working to reduce terminal noise.</span>
 GPS_DEBUG = True
 
-<span class="c"># Master switch — must be True or DonkeyCar ignores all GPS settings above.</span>
+<span class="c"># Master switch — must be True or DonkeyCar ignores all GPS settings.</span>
 HAVE_GPS = True
 
-<span class="c"># NMEA_PATH: Only needed for file-based GPS replay. Leave as None for live GPS.</span>
+<span class="c"># Only needed for file-based GPS replay. Leave as None for live GPS operation.</span>
 GPS_NMEA_PATH = None</pre></div>
 
   <h3>B — VESC Motor Settings</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">~/gpscar/myconfig.py — VESC block</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Selects the VESC motor controller driver. Other options: SERVO, DC_STEER, etc.</span>
+  <div class="cb"><div class="cb-header"><span class="cb-label">~/gpscar/myconfig.py — VESC block</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Selects the VESC motor controller driver.</span>
 DRIVE_TRAIN_TYPE = <span class="s">"VESC"</span>
 
 <span class="c"># Caps throttle at 50% of the VESC's maximum to prevent crashes during testing.
-# Increase in small increments (0.55, 0.60…) only after stable autonomous runs.</span>
+# Increase in small increments (0.55, 0.60…) only after several stable autonomous runs.</span>
 VESC_MAX_SPEED_PERCENT = <span class="v">0.5</span>
 
 <span class="c"># The USB-serial port the VESC enumerates as. Usually ttyACM0, sometimes ttyACM1.</span>
 VESC_SERIAL_PORT = <span class="s">"/dev/ttyACM0"</span>
 VESC_BAUDRATE = <span class="v">115200</span>
 
-<span class="c"># Steering scale: maps the [-1, 1] steering command to actual servo PWM range.
-# 0.5 means only the middle half of servo travel is used — reduces overcorrection.</span>
+<span class="c"># Steering scale: maps the [-1, 1] steering command to the actual servo PWM range.
+# 0.5 means only the middle half of the servo's travel is used, reducing overcorrection.</span>
 VESC_STEERING_SCALE = <span class="v">0.5</span>
 
-<span class="c"># Steering offset: 0.5 is the mechanical center of the servo.
-# Adjust by ±0.02 increments if the car drifts straight ahead.</span>
+<span class="c"># Steering offset: 0.5 corresponds to the mechanical center of the servo.
+# Adjust by ±0.02 increments if the car consistently drifts on a straight path.</span>
 VESC_STEERING_OFFSET = <span class="v">0.5</span></pre></div>
 
   <h3>C — Joystick / Controller Settings</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">~/gpscar/myconfig.py — Joystick block</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Enable joystick as the primary control source (required for recording laps).</span>
+  <div class="cb"><div class="cb-header"><span class="cb-label">~/gpscar/myconfig.py — Joystick block</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Enable the joystick as the primary control input (required for recording laps).</span>
 USE_JOYSTICK_AS_DEFAULT = True
 
-<span class="c"># Limits manual throttle to 50% — match VESC_MAX_SPEED_PERCENT for consistency.</span>
+<span class="c"># Limits manual throttle to 50%. Keep this in sync with VESC_MAX_SPEED_PERCENT.</span>
 JOYSTICK_MAX_THROTTLE = <span class="v">0.5</span>
 
-<span class="c"># Controller type. Change to 'xbox', 'F710', or 'custom' if using a different gamepad.</span>
+<span class="c"># Controller type. Change to 'xbox', 'F710', or 'custom' for other gamepads.</span>
 CONTROLLER_TYPE = <span class="s">'ps4'</span>
 
-<span class="c"># The Linux input device file for the controller.
+<span class="c"># Linux input device file for the controller.
 # Run: ls /dev/input/js* to confirm the correct device number.</span>
 JOYSTICK_DEVICE_FILE = <span class="s">"/dev/input/js0"</span></pre></div>
 
   <h3>D — Button Mappings</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">~/gpscar/myconfig.py — Button mapping block</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># R1: Save the currently recorded waypoints to a CSV file on disk.</span>
+  <div class="cb"><div class="cb-header"><span class="cb-label">~/gpscar/myconfig.py — Button mapping block</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># R1: Write the currently recorded waypoints to a CSV file on disk.</span>
 SAVE_PATH_BTN = <span class="s">"R1"</span>
 
-<span class="c"># X: Reload the saved path from disk — use at start of autonomous run.</span>
+<span class="c"># X: Load the saved path from disk into memory — press this before autonomous playback.</span>
 LOAD_PATH_BTN = <span class="s">"X"</span>
 
-<span class="c"># B: Set the car's current GPS location as coordinate (0, 0) on the local map.
-# Press this BEFORE recording and again at the start of autonomous playback.</span>
+<span class="c"># B: Set the car's current GPS position as the local coordinate origin (0, 0).
+# Press this BEFORE recording a new path and again before each autonomous run.</span>
 RESET_ORIGIN_BTN = <span class="s">"B"</span>
 
-<span class="c"># Y: Clear all waypoints from memory without saving — useful for re-runs.</span>
+<span class="c"># Y: Clear all waypoints from memory without saving — useful for discarding a bad run.</span>
 ERASE_PATH_BTN = <span class="s">"Y"</span>
 
-<span class="c"># L1: Toggle recording on/off. Press once to start recording, again to stop.</span>
+<span class="c"># L1: Toggle waypoint recording on/off. Press once to start, again to stop.</span>
 TOGGLE_RECORDING_BTN = <span class="s">"L1"</span>
 
-<span class="c"># PID buttons — set to None to disable runtime adjustments.</span>
+<span class="c"># PID adjustment buttons — set to None to disable runtime PID changes via controller.</span>
 INC_PID_D_BTN = None
 DEC_PID_D_BTN = None
-INC_PID_P_BTN = <span class="s">"None"</span>
-DEC_PID_P_BTN = <span class="s">"None"</span></pre></div>
+INC_PID_P_BTN = None
+DEC_PID_P_BTN = None</pre></div>
 
   <h3>E — Camera Type</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">~/gpscar/myconfig.py — Camera block</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># MOCK disables the camera pipeline entirely. GPS laps do not use camera input.
-# Using MOCK prevents startup errors if no camera is physically connected.</span>
+  <div class="cb"><div class="cb-header"><span class="cb-label">~/gpscar/myconfig.py — Camera block</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># MOCK disables the camera pipeline entirely. GPS laps do not require a camera.
+# Using MOCK prevents startup errors if no camera is physically attached to the Pi.</span>
 CAMERA_TYPE = <span class="s">"MOCK"</span></pre></div>
 
-  <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">Verify USB Port Assignments Before Saving</div><div class="callout-text">Run <code>ls /dev/ttyUSB* /dev/ttyACM*</code> and confirm: the GPS NMEA port goes into <code>GPS_SERIAL</code>, the VESC port into <code>VESC_SERIAL_PORT</code>. Mixing them up is the most common configuration mistake and causes a silent failure where neither device responds.</div></div></div>
+  <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">Verify USB Port Assignments Before Saving</div><div class="callout-text">Run <code>ls /dev/ttyUSB* /dev/ttyACM*</code> and confirm your assignments: the GPS NMEA port goes into <code>GPS_SERIAL</code>, the VESC port into <code>VESC_SERIAL_PORT</code>. Mixing these up is the most common configuration mistake and causes a silent failure where neither device responds.</div></div></div>
 </section>
 
 <!-- ══════════════════════════════════
@@ -1012,12 +1011,12 @@ CAMERA_TYPE = <span class="s">"MOCK"</span></pre></div>
     <span class="sec-num">06</span>
     <div class="sec-title-block">
       <h2>Driving &amp; Recording a Path</h2>
-      <div class="sec-subtitle">Manually drive the car to teach it the track waypoints</div>
+      <div class="sec-subtitle">Manually drive the car once around the loop to teach it the route</div>
     </div>
     <div class="sec-badges"><span class="badge badge-new">Terminal 2</span></div>
   </div>
 
-  <p>DonkeyCar's path-following system is driven by recorded GPS waypoints, not a pre-defined map. You physically drive the car around the loop once to "teach" it the route. The car samples its GPS position at regular intervals and saves each position as a waypoint. Autonomous playback then steers toward each waypoint in sequence.</p>
+  <p>DonkeyCar's path-following system is built on recorded GPS waypoints, not a pre-defined map. You physically drive the car around the loop once to teach it the route. As you drive, the car samples its GPS position at regular intervals and saves each position as a waypoint. During autonomous playback, the car steers toward each waypoint in sequence to reproduce the driven path.</p>
 
   <h3>Step 1 — Launch DonkeyCar</h3>
   <div class="cb"><div class="cb-header"><span class="cb-label">Terminal 2</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">cd</span> ~/gpscar
@@ -1030,50 +1029,50 @@ CAMERA_TYPE = <span class="s">"MOCK"</span></pre></div>
       <div class="step-num">1</div>
       <div class="step-body">
         <div class="step-title">Drive to the Starting Line</div>
-        <div class="step-desc">Physically position the car at the exact point on the loop where you want autonomous laps to begin and end. This point becomes coordinate (0, 0) in the local map.</div>
+        <div class="step-desc">Position the car at the exact point on the loop where you want autonomous laps to begin and end. This point will become coordinate (0, 0) on the local map.</div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-body">
-        <div class="step-title">Erase Old Data, Then Reset Origin</div>
-        <div class="step-desc">Press <strong>Y</strong> (ERASE_PATH_BTN) to clear any previously recorded waypoints from memory, then press <strong>B</strong> (RESET_ORIGIN_BTN) to set your current GPS position as the local (0, 0) reference. Do both before every new recording session — skipping this causes the path to be offset from the actual loop.</div>
+        <div class="step-title">Erase Old Data, Then Reset the Origin</div>
+        <div class="step-desc">Press <strong>Y</strong> (ERASE_PATH_BTN) to clear any previously recorded waypoints from memory, then press <strong>B</strong> (RESET_ORIGIN_BTN) to set your current GPS position as the local (0, 0) reference point. Always do both before every new recording session — skipping either step causes the recorded path to be offset from the actual loop.</div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-body">
         <div class="step-title">Start Recording</div>
-        <div class="step-desc">Press <strong>L1</strong> (TOGGLE_RECORDING_BTN). The terminal will log that recording has started. GPS waypoints are now being sampled continuously as you drive.</div>
+        <div class="step-desc">Press <strong>L1</strong> (TOGGLE_RECORDING_BTN). The terminal will confirm that recording has started. GPS waypoints are now being sampled continuously as you drive.</div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-body">
         <div class="step-title">Drive the Loop Smoothly</div>
-        <div class="step-desc">Drive the car manually around the full loop. Drive at a moderate, consistent speed — erratic speed changes create a high-density cluster of waypoints in some areas and sparse waypoints in others, which causes jerky autonomous behavior. Aim to stop exactly where you started to close the loop.</div>
+        <div class="step-desc">Drive the car around the full loop at a moderate, consistent speed. Erratic speed changes create dense clusters of waypoints in some areas and large gaps in others, which causes jerky autonomous behavior. Aim to stop at exactly the same point where you started in order to close the loop cleanly.</div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">5</div>
       <div class="step-body">
         <div class="step-title">Stop Recording and Save</div>
-        <div class="step-desc">Press <strong>L1</strong> again to stop recording, then press <strong>R1</strong> (SAVE_PATH_BTN) to write the waypoints to the CSV file defined in your config. Confirm the file was written before proceeding.</div>
+        <div class="step-desc">Press <strong>L1</strong> again to stop recording, then press <strong>R1</strong> (SAVE_PATH_BTN) to write the waypoints to the CSV file. Confirm the file was written before proceeding to autonomous playback.</div>
       </div>
     </div>
   </div>
 
   <h3>Validate the Saved Path</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — check path file exists and has data</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Default path file location — check it exists and is non-empty</span>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — check that the path file exists and contains data</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Confirm the file exists and is not empty</span>
 <span class="k">ls</span> <span class="f">-lh</span> ~/gpscar/path.csv
 
-<span class="c"># Peek at the first few waypoints (columns: x, y or lat, lon depending on config)</span>
+<span class="c"># Preview the first few waypoints (columns are x, y or lat/lon depending on config)</span>
 <span class="k">head</span> <span class="f">-5</span> ~/gpscar/path.csv
 
-<span class="c"># Count total waypoints — a typical 100m loop at default sample rate has 200–600 points</span>
+<span class="c"># Count total waypoints — a typical 100 m loop at the default sample rate produces 200–600 points</span>
 <span class="k">wc</span> <span class="f">-l</span> ~/gpscar/path.csv</pre></div>
 
-  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Too Few Waypoints?</div><div class="callout-text">If <code>wc -l</code> returns fewer than 50, the GPS may have lost fix during recording (check Terminal 1 for nan values) or recording was not properly started. Re-run the entire recording procedure in a fresh session.</div></div></div>
+  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Too Few Waypoints?</div><div class="callout-text">If <code>wc -l</code> returns fewer than 50 waypoints, the GPS likely lost its fix during recording (check Terminal 1 for <code>nan</code> values) or recording was not properly started. Re-run the entire recording procedure from a fresh DonkeyCar session.</div></div></div>
 </section>
 
 <!-- ══════════════════════════════════
@@ -1089,44 +1088,44 @@ CAMERA_TYPE = <span class="s">"MOCK"</span></pre></div>
     </div>
   </div>
 
-  <p>Autonomous playback loads the saved CSV path and uses a PID controller to steer the car toward each successive waypoint. The car computes its cross-track error (lateral distance from the path) and heading error, then sends corrective steering commands to the VESC.</p>
+  <p>Autonomous playback loads the saved CSV path and uses a PID controller to steer the car toward each successive waypoint. The car computes its cross-track error (lateral distance from the ideal path line) and its heading error, then sends corrective steering commands to the VESC.</p>
 
-  <div class="callout error"><div class="callout-icon">🚫</div><div class="callout-body"><div class="callout-title">Pre-Flight Checklist</div><div class="callout-text">Before enabling autopilot: (1) Terminal 1 must be running and showing valid coordinates. (2) The area ahead must be clear of pedestrians. (3) Someone must have their hand near the controller to kill throttle immediately if the car drifts.</div></div></div>
+  <div class="callout error"><div class="callout-icon">🚫</div><div class="callout-body"><div class="callout-title">Pre-Flight Checklist</div><div class="callout-text">Before enabling autopilot: (1) Terminal 1 must be running and showing valid coordinates. (2) The area ahead must be clear of pedestrians. (3) Keep one hand near the controller at all times to cut throttle immediately if the car deviates from the path.</div></div></div>
 
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-body">
-        <div class="step-title">Position at Exact Start Point</div>
-        <div class="step-desc">Place the car at the same physical starting line used during recording. Sub-meter positioning matters — even 50 cm of offset can cause the car to cut the first corner.</div>
+        <div class="step-title">Position the Car at the Starting Line</div>
+        <div class="step-desc">Place the car at the same physical point used as the starting line during recording. Precise placement matters — even 50 cm of offset can cause the car to cut the first corner or steer wide.</div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-body">
-        <div class="step-title">Reset Origin</div>
-        <div class="step-desc">Press <strong>B</strong> (RESET_ORIGIN_BTN). This re-establishes (0,0) at your current location and aligns the saved waypoints with the real-world coordinate system for this session.</div>
+        <div class="step-title">Reset the Origin</div>
+        <div class="step-desc">Press <strong>B</strong> (RESET_ORIGIN_BTN). This re-establishes (0, 0) at your current GPS position and aligns the saved waypoints with the real-world coordinate system for this session. Always reset the origin before loading the path.</div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-body">
         <div class="step-title">Load the Path</div>
-        <div class="step-desc">Press <strong>X</strong> (LOAD_PATH_BTN) to read the waypoints from <code>path.csv</code> into memory. You should see a confirmation in the terminal showing how many waypoints were loaded.</div>
+        <div class="step-desc">Press <strong>X</strong> (LOAD_PATH_BTN) to read the waypoints from <code>path.csv</code> into memory. The terminal will confirm how many waypoints were loaded.</div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-body">
         <div class="step-title">Engage Autopilot</div>
-        <div class="step-desc">Switch the controller to autopilot mode (typically the <strong>Start</strong> button or a mode-toggle button depending on your controller config). The car will immediately begin steering and applying throttle — stand clear and be ready to override.</div>
+        <div class="step-desc">Switch the controller to autopilot mode (typically the <strong>Start</strong> button or a dedicated mode-toggle button, depending on your controller configuration). The car will immediately begin steering and applying throttle — stand clear and be ready to override at any moment.</div>
       </div>
     </div>
   </div>
 
-  <h3>Improved: Detecting Autopilot Engagement</h3>
-  <p>Add this snippet to monitor when autopilot is active by checking the terminal output — look for mode switches logged by the DonkeyCar framework:</p>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Terminal 2 — monitor mode in a split terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># In a third SSH session, tail the DonkeyCar log for mode changes</span>
+  <h3>Optional: Monitor Autopilot Mode in a Separate Terminal</h3>
+  <p>To see when autopilot is engaged and disengaged, tail the DonkeyCar log file in a third SSH session. This is useful during initial testing to confirm the mode switch is registering correctly.</p>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Third SSH session — monitor mode changes</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Tail the DonkeyCar log and filter for mode-change messages</span>
 <span class="k">tail</span> <span class="f">-f</span> ~/gpscar/logs/donkey.log | <span class="k">grep</span> <span class="f">-i</span> <span class="s">"mode\|autopilot\|pilot"</span>
 
 <span class="c"># Expected output when autopilot is engaged:</span>
@@ -1146,57 +1145,57 @@ CAMERA_TYPE = <span class="s">"MOCK"</span></pre></div>
     </div>
   </div>
 
-  <p>If the car oscillates side-to-side, cuts corners, or drifts wide, the PID gains in <code>myconfig.py</code> need adjustment. PID tuning is iterative — follow the strategy below in order and do not adjust multiple gains simultaneously.</p>
+  <p>If the car oscillates side-to-side, cuts corners, or drifts wide on straights, the PID gains in <code>myconfig.py</code> need adjustment. PID tuning is an iterative process — follow the strategy below in order and only adjust one gain at a time.</p>
 
   <h3>Understanding the Gains</h3>
   <div class="tw"><table>
     <thead><tr><th>Gain</th><th>Role</th><th>Too Low</th><th>Too High</th></tr></thead>
     <tbody>
-      <tr><td><strong>P (Proportional)</strong></td><td>Immediate correction force proportional to the current cross-track error</td><td>Car turns too slowly, misses corners (understeer)</td><td>Car weaves wildly, oscillates around the path</td></tr>
-      <tr><td><strong>D (Derivative)</strong></td><td>Dampens corrections based on the rate of change of error — anticipates overshoot</td><td>No damping — P oscillations persist</td><td>Jerky, over-damped steering — car feels sluggish</td></tr>
-      <tr><td><strong>I (Integral)</strong></td><td>Corrects for sustained long-term drift by accumulating error over time</td><td>Persistent one-side drift if wheel sizes differ</td><td>Slow, creeping oscillation that builds over many seconds</td></tr>
+      <tr><td><strong>P (Proportional)</strong></td><td>Applies an immediate correction force proportional to the current cross-track error (how far the car is from the path)</td><td>Car turns too slowly, misses corners (understeer)</td><td>Car weaves wildly, oscillating around the path</td></tr>
+      <tr><td><strong>D (Derivative)</strong></td><td>Dampens corrections based on the rate of change of the error — anticipates and counters overshoot</td><td>No damping — P-driven oscillations persist</td><td>Jerky, over-damped steering; car feels sluggish and unresponsive</td></tr>
+      <tr><td><strong>I (Integral)</strong></td><td>Corrects for sustained long-term drift by accumulating error over time</td><td>Persistent one-sided drift if wheel geometry is uneven</td><td>Slow, creeping oscillation that builds over many seconds</td></tr>
     </tbody>
   </table></div>
 
-  <h3>Tuning Strategy (Follow In Order)</h3>
+  <h3>Tuning Strategy (Follow in Order)</h3>
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-body">
-        <div class="step-title">Zero Out D and I — Tune P Alone</div>
-        <div class="step-desc">Set <code>PID_D = 0.0</code> and <code>PID_I = 0.0</code> in <code>myconfig.py</code>. Start with a small P (e.g., <code>PID_P = 0.1</code>). Run the car and increase P in increments of 0.05 until the car follows the path but has noticeable side-to-side oscillation. That oscillation point is your P reference.</div>
+        <div class="step-title">Zero Out D and I — Tune P Alone First</div>
+        <div class="step-desc">Set <code>PID_D = 0.0</code> and <code>PID_I = 0.0</code> in <code>myconfig.py</code>. Start with a small P value (e.g., <code>PID_P = 0.1</code>). Run the car and increase P in increments of 0.05 until the car follows the path but shows noticeable side-to-side oscillation. That oscillation point is your P reference value.</div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-body">
-        <div class="step-title">Add D to Dampen Oscillations</div>
-        <div class="step-desc">With P set, increase D from 0 in increments of 0.1. The oscillations should reduce. A good starting point: D is often 2–5× the value of P. Continue until the car tracks smoothly without weaving.</div>
+        <div class="step-title">Add D to Dampen the Oscillations</div>
+        <div class="step-desc">With P set, increase D from 0 in increments of 0.1. The oscillations should reduce with each increase. A good starting point: D is often 2–5× the value of P. Continue until the car tracks the path smoothly without weaving.</div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-body">
         <div class="step-title">Add I Only If There Is Persistent Drift</div>
-        <div class="step-desc">If the car consistently drifts to one side even on a straight with P and D tuned, add a small I (e.g., <code>PID_I = 0.01</code>). For most applications on flat pavement with equal wheels, I can stay at 0.</div>
+        <div class="step-desc">If the car consistently drifts to one side on a straight section even after P and D are tuned, add a small I value (e.g., <code>PID_I = 0.01</code>). For most setups on flat pavement with balanced wheels, I can safely remain at 0.</div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-body">
         <div class="step-title">Increase Speed and Re-Tune</div>
-        <div class="step-desc">Once stable at 50% throttle, increase <code>VESC_MAX_SPEED_PERCENT</code> by 0.05. Higher speed means the car covers more distance per PID cycle, effectively increasing the impact of P — you may need to reduce P slightly at higher speeds and re-tune D.</div>
+        <div class="step-desc">Once stable at 50% throttle, increase <code>VESC_MAX_SPEED_PERCENT</code> by 0.05. At higher speeds the car covers more distance per PID cycle, which amplifies the effect of P. You may need to reduce P slightly at higher speeds and re-tune D accordingly.</div>
       </div>
     </div>
   </div>
 
   <h3>PID Values in myconfig.py</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">~/gpscar/myconfig.py — PID block</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Starting values for a typical UCSD Warren Mall loop at 50% throttle</span>
-PID_P = <span class="v">0.15</span>   <span class="c"># Increase until car follows path but oscillates</span>
-PID_D = <span class="v">0.6</span>    <span class="c"># Increase to dampen oscillations (aim for ~3-5× P value)</span>
-PID_I = <span class="v">0.0</span>    <span class="c"># Leave at 0 unless experiencing consistent lateral drift</span></pre></div>
+  <div class="cb"><div class="cb-header"><span class="cb-label">~/gpscar/myconfig.py — PID block</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Suggested starting values for a Warren Mall loop at 50% throttle</span>
+PID_P = <span class="v">0.15</span>   <span class="c"># Increase until the car follows the path but begins to oscillate</span>
+PID_D = <span class="v">0.6</span>    <span class="c"># Increase to dampen oscillations (target ~3–5× the P value)</span>
+PID_I = <span class="v">0.0</span>    <span class="c"># Leave at 0 unless experiencing consistent one-sided drift</span></pre></div>
 
-  <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">Rule of Thumb</div><div class="callout-text">In GPS path-following applications, D is almost always much larger than P. A ratio of D = 4 × P is a common stable starting point. Do not tune to suppress oscillations purely by reducing P — that just makes the car slow to respond to curves.</div></div></div>
+  <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">Rule of Thumb</div><div class="callout-text">In GPS path-following, D is almost always much larger than P. A ratio of D = 4 × P is a common stable starting point. Do not suppress oscillations by simply reducing P — that just makes the car slow to react to corners.</div></div></div>
 </section>
 
 <!-- ══════════════════════════════════
@@ -1207,7 +1206,7 @@ PID_I = <span class="v">0.0</span>    <span class="c"># Leave at 0 unless experi
   <div class="sec-header">
     <span class="sec-num">09</span>
     <div class="sec-title-block">
-      <h2>Troubleshooting &amp; Known Bugs</h2>
+      <h2>Troubleshooting &amp; Known Issues</h2>
       <div class="sec-subtitle">Quick reference for the most common GPS and DonkeyCar failure modes</div>
     </div>
   </div>
@@ -1216,11 +1215,11 @@ PID_I = <span class="v">0.0</span>    <span class="c"># Leave at 0 unless experi
   <div class="tw"><table>
     <thead><tr><th>Problem</th><th>Root Cause</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td><code>Permission denied: /dev/ttyUSB1</code></td><td>User not in <code>dialout</code> group</td><td><code>sudo adduser pi dialout &amp;&amp; sudo reboot</code></td></tr>
-      <tr><td><code>[LLA=nan, nan, nan]</code> outdoors</td><td>GPS antenna obstructed or RTK stream dropped</td><td>Check Terminal 1 is connected to Polaris; re-seat SMA connector on antenna</td></tr>
-      <tr><td><code>serial.SerialException: [Errno 2] No such file</code></td><td>Wrong port number (USB0 vs USB1)</td><td>Run <code>ls /dev/ttyUSB*</code> and update <code>--device-port</code> in runner or <code>GPS_SERIAL</code> in config</td></tr>
-      <tr><td>GPS coordinates not updating (frozen)</td><td>Runner silently crashed</td><td>Check Terminal 1 for error messages; restart runner</td></tr>
-      <tr><td>Polaris authentication fails</td><td>Wrong username/password pair</td><td>Cross-check credentials table in §4; each robot has a unique pair</td></tr>
+      <tr><td><code>Permission denied: /dev/ttyUSB1</code></td><td>User not in <code>dialout</code> group</td><td>Run <code>sudo adduser pi dialout &amp;&amp; sudo reboot</code></td></tr>
+      <tr><td><code>[LLA=nan, nan, nan]</code> outdoors</td><td>GPS antenna obstructed or RTK stream dropped</td><td>Verify Terminal 1 is connected to Polaris; re-seat the SMA connector on the antenna</td></tr>
+      <tr><td><code>serial.SerialException: [Errno 2] No such file</code></td><td>Wrong port number (USB0 vs USB1)</td><td>Run <code>ls /dev/ttyUSB*</code> and update <code>--device-port</code> in the runner command or <code>GPS_SERIAL</code> in myconfig.py</td></tr>
+      <tr><td>GPS coordinates frozen — not updating</td><td>Runner process silently crashed</td><td>Check Terminal 1 for error messages and restart the runner</td></tr>
+      <tr><td>Polaris authentication fails</td><td>Wrong device ID or password</td><td>Cross-check the credentials table in §4; each robot has a unique pair</td></tr>
     </tbody>
   </table></div>
 
@@ -1228,12 +1227,12 @@ PID_I = <span class="v">0.0</span>    <span class="c"># Leave at 0 unless experi
   <div class="tw"><table>
     <thead><tr><th>Problem</th><th>Root Cause</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td><code>manage.py drive</code> exits immediately</td><td>Missing HAVE_GPS or wrong DRIVE_TRAIN_TYPE in myconfig.py</td><td>Verify all settings in §5; check for typos in variable names</td></tr>
-      <tr><td>Path CSV is empty after recording</td><td>TOGGLE_RECORDING_BTN not pressed, or GPS had no fix</td><td>Confirm green "recording" output in terminal; ensure Terminal 1 shows valid LLA</td></tr>
-      <tr><td>Car ignores path during autonomous mode</td><td>Origin not reset before playback; path loaded before reset</td><td>Always press B (Reset Origin) BEFORE pressing X (Load Path)</td></tr>
-      <tr><td>VESC not responding — car doesn't move</td><td>Wrong serial port for VESC, or VESC not powered</td><td>Run <code>ls /dev/ttyACM*</code>; confirm VESC ESC LED is solid green</td></tr>
-      <tr><td>Controller buttons don't work</td><td>Wrong CONTROLLER_TYPE or js device number</td><td>Run <code>ls /dev/input/js*</code> and test with <code>jstest /dev/input/js0</code></td></tr>
-      <tr><td>Car drifts sideways even on straight path</td><td>Steering offset wrong or wheel sizes unequal</td><td>Adjust <code>VESC_STEERING_OFFSET</code> by ±0.02; add small PID_I value</td></tr>
+      <tr><td><code>manage.py drive</code> exits immediately</td><td><code>HAVE_GPS</code> missing or wrong <code>DRIVE_TRAIN_TYPE</code> in myconfig.py</td><td>Verify all settings from §5; check for typos in variable names</td></tr>
+      <tr><td>Path CSV is empty after recording</td><td>Recording was not started, or GPS had no fix during the run</td><td>Confirm a "recording started" message appeared in the terminal; verify Terminal 1 is showing valid LLA coordinates</td></tr>
+      <tr><td>Car ignores the path during autonomous mode</td><td>Origin was not reset before loading the path</td><td>Always press <strong>B</strong> (Reset Origin) BEFORE pressing <strong>X</strong> (Load Path)</td></tr>
+      <tr><td>VESC not responding — car does not move</td><td>Wrong serial port for VESC, or VESC not powered</td><td>Run <code>ls /dev/ttyACM*</code>; confirm the VESC ESC LED is solid green</td></tr>
+      <tr><td>Controller buttons do not work</td><td>Wrong <code>CONTROLLER_TYPE</code> or joystick device number</td><td>Run <code>ls /dev/input/js*</code> and test with <code>jstest /dev/input/js0</code></td></tr>
+      <tr><td>Car drifts sideways on a straight path</td><td>Steering offset incorrect or wheel sizes unequal</td><td>Adjust <code>VESC_STEERING_OFFSET</code> by ±0.02 increments; add a small <code>PID_I</code> value if drift persists</td></tr>
     </tbody>
   </table></div>
 
@@ -1241,10 +1240,10 @@ PID_I = <span class="v">0.0</span>    <span class="c"># Leave at 0 unless experi
   <div class="tw"><table>
     <thead><tr><th>Error</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td><code>ModuleNotFoundError: No module named 'fusion_engine_client'</code></td><td>py37 env not activated. Run <code>conda activate py37</code> and <code>source ~/env/bin/activate</code></td></tr>
-      <tr><td><code>mamba: command not found</code> after reboot</td><td>Conda init not added to .bashrc. Run <code>conda init bash &amp;&amp; source ~/.bashrc</code></td></tr>
-      <tr><td><code>config_tool.py</code> says device busy</td><td>Another process holds the serial port open</td><td>Close all other terminals that may be using the GPS port; reboot if needed</td></tr>
-      <tr><td>Miniforge installer fails with wrong architecture</td><td>32-bit Pi OS vs 64-bit installer URL</td><td>Check <code>uname -m</code>; download matching installer from Miniforge releases page</td></tr>
+      <tr><td><code>ModuleNotFoundError: No module named 'fusion_engine_client'</code></td><td>The correct environment is not active. For Terminal 1 (runner): run <code>conda activate py37</code>. For Terminal 2 (DonkeyCar): run <code>source ~/env/bin/activate</code>.</td></tr>
+      <tr><td><code>mamba: command not found</code> after reboot</td><td>Conda init was not added to .bashrc. Run <code>conda init bash &amp;&amp; source ~/.bashrc</code></td></tr>
+      <tr><td><code>config_tool.py</code> reports "device busy"</td><td>Another process is holding the serial port open</td><td>Close all other terminals that may be using the GPS port; reboot if needed</td></tr>
+      <tr><td>Miniforge installer fails with wrong architecture</td><td>32-bit Pi OS paired with 64-bit installer URL</td><td>Run <code>uname -m</code> to confirm the architecture; download the matching installer from the Miniforge releases page</td></tr>
     </tbody>
   </table></div>
 
@@ -1252,9 +1251,9 @@ PID_I = <span class="v">0.0</span>    <span class="c"># Leave at 0 unless experi
   <div class="tw"><table>
     <thead><tr><th>Symptom</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td>GPS accuracy degrades from cm to meters mid-run</td><td>WiFi extender lost connection to campus network — reposition antenna to face EBU2, check ALLWEI battery charge</td></tr>
-      <tr><td>RTK connection drops repeatedly</td><td>Campus firewall blocking Polaris port — try connecting from a mobile hotspot to isolate the issue</td></tr>
-      <tr><td>GPS jumps several meters suddenly</td><td>Multipath reflection from nearby building — move the car away from walls and run in the open Warren Mall area</td></tr>
+      <tr><td>GPS accuracy degrades from centimeters to meters mid-run</td><td>WiFi extender lost its connection to the campus network — reposition the antenna to face EBU2 and check the ALLWEI battery charge level</td></tr>
+      <tr><td>RTK correction stream drops repeatedly</td><td>Campus firewall may be blocking the Polaris port — try connecting via a mobile hotspot to isolate whether it is a network issue</td></tr>
+      <tr><td>GPS position jumps several meters suddenly</td><td>Multipath signal reflection from a nearby building — move the car away from walls and operate in the open Warren Mall area</td></tr>
     </tbody>
   </table></div>
 
