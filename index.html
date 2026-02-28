@@ -199,7 +199,6 @@ body::before {
 .content { padding: 0 80px 80px; }
 
 .section { padding-top: 64px; }
-/* FIX: section anchors need correct offset for fixed topbar */
 .section-anchor {
   display: block;
   visibility: hidden;
@@ -298,7 +297,6 @@ figure { margin: 20px 0; border-radius: var(--r); overflow: hidden; border: 1px 
 .fig-wrap img { max-width: 100%; height: auto; display: block; border-radius: 4px; }
 figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); border-top: 1px solid var(--border); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .fig-label { color: var(--ucsd-gold); font-weight: 600; }
-.fig-key { margin-left: auto; background: var(--surface2); border: 1px solid var(--border); padding: 2px 8px; border-radius: 3px; font-size: 10px; color: var(--text-dim); white-space: nowrap; }
 
 .team-widget { background: linear-gradient(135deg, rgba(0,46,109,0.5), rgba(13,26,45,0.8)); border: 1px solid rgba(198,146,20,0.3); border-radius: var(--r); padding: 24px; margin: 20px 0; }
 .team-widget-title { font-size: 13px; font-weight: 700; color: var(--ucsd-gold); display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
@@ -314,7 +312,6 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
 #btt.show { opacity: 1; pointer-events: auto; }
 #btt:hover { background: var(--ucsd-gold); color: var(--bg); border-color: var(--ucsd-gold); transform: translateY(-2px); }
 
-/* FIX: progress bar left offset matches sidebar */
 #read-progress { position: fixed; top: 0; left: var(--sidebar-w); right: 0; height: 2px; z-index: 300; background: transparent; }
 #read-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--ucsd-navy), var(--ucsd-gold)); transition: width 0.1s linear; }
 
@@ -418,7 +415,7 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
 <div class="hero" id="hero">
   <div class="hero-eyebrow"><div class="hero-eyebrow-dot"></div>UCSD Jacobs School of Engineering</div>
   <h1>Robocar Framework<br><span>Setup & Calibration</span></h1>
-  <p class="hero-desc">Complete reference for ECE/MAE 148 — covering Docker environment setup, X11 display forwarding, OAK-D camera calibration, VESC motor tuning, PID controller configuration, and custom node development.</p>
+  <p class="hero-desc">Complete reference for ECE/MAE 148 — covering Docker environment setup, X11 display forwarding, OAK-D camera calibration, VESC motor tuning, PID controller configuration, and custom ROS2 node development.</p>
   <div class="hero-chips">
     <div class="hero-chip"><span class="hero-chip-icon">🍓</span>Raspberry Pi 5</div>
     <div class="hero-chip"><span class="hero-chip-icon">🐳</span>Docker</div>
@@ -428,63 +425,57 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
 
 <div class="content">
 
-<!-- ══════════════════════════════════
+<!-- ══════════════════════════════════════════════════
      §1 — Docker Setup
-     FIX: Step 1 had unclosed step-body; step 2 was nested inside step 1
-          Both steps now have correct open/close structure
-══════════════════════════════════ -->
+══════════════════════════════════════════════════ -->
 <div class="section-anchor" id="s1"></div>
 <section class="section">
   <div class="sec-header">
     <span class="sec-num">01</span>
     <div class="sec-title-block">
-      <h2>Initial Setup & Docker Installation</h2>
+      <h2>Initial Setup &amp; Docker Installation</h2>
       <div class="sec-subtitle">Prepare the Raspberry Pi with a clean, reproducible Docker environment</div>
     </div>
   </div>
 
-  <p>Docker allows the entire Robocar software stack — ROS2, camera drivers, motor controllers, and all Python dependencies — to run in a self-contained container. This means the host Raspberry Pi OS stays clean, every student robot runs identical software, and you can always restore a broken environment by simply restarting the container.</p>
+  <p>Docker allows the entire Robocar software stack — ROS2, camera drivers, motor controllers, and all Python dependencies — to run inside a self-contained container. This means the host Raspberry Pi operating system stays clean, every student robot runs identical software, and a broken environment can always be restored by re-pulling the Docker image rather than reinstalling the entire OS.</p>
 
   <div class="steps">
 
-    <!-- Step 1 -->
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-body">
         <div class="step-title">SSH into Your Pi</div>
-        <div class="step-desc">Replace the hostname with your robot's assigned name. The <code>.local</code> suffix uses mDNS (Bonjour/Avahi) to find the Pi on the local network without needing an IP address.</div>
-        <div class="cb"><div class="cb-header"><span class="cb-label">Terminal — your laptop</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">ssh</span> pi@ucsdrobocar-148-XX.local</pre></div>
+        <div class="step-desc">Replace <code>XX</code> with your robot's assigned number. The <code>.local</code> suffix uses mDNS (Bonjour/Avahi) to locate the Pi on your local network without needing to know its IP address.</div>
+        <div class="cb"><div class="cb-header"><span class="cb-label">Terminal — your laptop</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">ssh</span> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="04746d4471677760766b666b6765762935303c295c5c2a686b676568">[email&#160;protected]</a></pre></div>
       </div>
     </div>
 
-    <!-- Step 2 -->
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-body">
         <div class="step-title">Remove Old Docker Versions</div>
-        <div class="step-desc">Removes conflicting legacy packages that could cause dependency conflicts. "Package not found" errors are completely normal — it just means they were never installed.</div>
+        <div class="step-desc">Removes any conflicting legacy packages that could cause dependency conflicts during the official Docker installation. "Package not found" messages are completely normal — they simply mean these packages were never installed.</div>
         <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo apt remove</span> docker docker-engine docker.io containerd runc</pre></div>
       </div>
     </div>
 
-    <!-- Step 3 -->
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-body">
         <div class="step-title">Install Prerequisites</div>
-        <div class="step-desc"><strong>ca-certificates</strong> trusts HTTPS connections. <strong>curl</strong> downloads files from the web. <strong>gnupg</strong> verifies Docker's GPG signature to confirm the package is authentic. The keyrings directory stores the trusted signing key.</div>
+        <div class="step-desc"><strong>ca-certificates</strong> enables verification of HTTPS connections. <strong>curl</strong> downloads files from the web. <strong>gnupg</strong> verifies Docker's cryptographic signature to confirm that the packages you install are authentic and unmodified. The keyrings directory stores that trusted signing key.</div>
         <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo apt update</span>
 <span class="k">sudo apt install</span> ca-certificates curl gnupg <span class="f">-y</span>
 <span class="k">sudo install</span> <span class="f">-m 0755 -d</span> /etc/apt/keyrings</pre></div>
       </div>
     </div>
 
-    <!-- Step 4 -->
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-body">
         <div class="step-title">Add Docker's Official Repository</div>
-        <div class="step-desc">Downloads Docker's GPG key, converts it to the binary format apt expects, then registers Docker's official package repository. This ensures you get official, up-to-date Docker packages rather than potentially outdated versions from Debian's default repos.</div>
+        <div class="step-desc">Downloads Docker's GPG signing key, converts it to the binary format that <code>apt</code> expects, then registers Docker's official package repository. This ensures you receive official, up-to-date Docker packages rather than the potentially outdated versions from Debian's default repositories.</div>
         <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">curl</span> <span class="f">-fsSL</span> https://download.docker.com/linux/debian/gpg | \
   <span class="k">sudo gpg</span> <span class="f">--dearmor -o</span> /etc/apt/keyrings/docker.gpg
 <span class="k">sudo chmod</span> a+r /etc/apt/keyrings/docker.gpg
@@ -495,46 +486,45 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
       </div>
     </div>
 
-    <!-- Step 5 -->
     <div class="step">
       <div class="step-num">5</div>
       <div class="step-body">
         <div class="step-title">Install Docker Engine</div>
-        <div class="step-desc"><strong>docker-ce</strong> is the core container engine. <strong>docker-ce-cli</strong> provides the <code>docker</code> command. <strong>containerd.io</strong> manages container lifecycle. <strong>docker-buildx-plugin</strong> enables multi-platform builds. <strong>docker-compose-plugin</strong> enables multi-container orchestration.</div>
+        <div class="step-desc"><strong>docker-ce</strong> is the core container engine. <strong>docker-ce-cli</strong> provides the <code>docker</code> command you type in the terminal. <strong>containerd.io</strong> manages the low-level container lifecycle. <strong>docker-buildx-plugin</strong> enables multi-platform image builds. <strong>docker-compose-plugin</strong> enables multi-container orchestration with a single command.</div>
         <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo apt update</span>
 <span class="k">sudo apt install</span> docker-ce docker-ce-cli containerd.io \
   docker-buildx-plugin docker-compose-plugin <span class="f">-y</span></pre></div>
       </div>
     </div>
 
-    <!-- Step 6 -->
     <div class="step">
       <div class="step-num">6</div>
       <div class="step-body">
-        <div class="step-title">Grant Permissions & Reboot</div>
-        <div class="step-desc">By default, only <code>root</code> can run Docker commands. Adding your user to the <code>docker</code> group lets you run <code>docker</code> without typing <code>sudo</code> every time. The reboot is mandatory — the group change only takes effect after a full session restart.</div>
+        <div class="step-title">Grant Permissions &amp; Reboot</div>
+        <div class="step-desc">By default, only <code>root</code> can run Docker commands. Adding your user to the <code>docker</code> group lets you run <code>docker</code> without typing <code>sudo</code> every time. A full reboot is required — the group membership change only takes effect after starting a new login session.</div>
         <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo usermod</span> <span class="f">-aG</span> docker $USER
 <span class="k">sudo reboot</span></pre></div>
       </div>
     </div>
 
-    <!-- Step 7 -->
     <div class="step">
       <div class="step-num">7</div>
       <div class="step-body">
         <div class="step-title">Verify Installation</div>
         <div class="step-desc">SSH back in after the reboot and confirm Docker is working correctly.</div>
-        <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal (after reboot)</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">docker --version</span>          <span class="c"># Should print version number</span>
+        <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal (after reboot)</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">docker --version</span>          <span class="c"># Should print a version number</span>
 <span class="k">docker run</span> hello-world     <span class="c"># Should print "Hello from Docker!"</span>
-<span class="k">groups</span> $USER | grep docker <span class="c"># Should show docker in the list</span></pre></div>
-        <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">Success</div><div class="callout-text">You should see "Hello from Docker!" If you see <em>permission denied</em>, fully log out of your SSH session and back in — the group change requires a fresh login, not just a new terminal tab.</div></div></div>
+<span class="k">groups</span> $USER | grep docker <span class="c"># Should show "docker" in the list</span></pre></div>
+        <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">Success</div><div class="callout-text">You should see "Hello from Docker!" in the output. If you see <em>permission denied</em>, fully log out of your SSH session and reconnect — the group change requires a fresh login, not just opening a new terminal tab.</div></div></div>
       </div>
     </div>
 
-  </div><!-- /steps -->
+  </div>
 </section>
 
-<!-- §2 — Pull Image -->
+<!-- ══════════════════════════════════════════════════
+     §2 — Pull Image
+══════════════════════════════════════════════════ -->
 <div class="section-anchor" id="s2"></div>
 <section class="section">
   <div class="sec-header">
@@ -545,13 +535,13 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
     </div>
   </div>
 
-  <p>The Robocar Docker image contains a fully configured environment including ROS2, OAK-D depth camera drivers (DepthAI), VESC motor controller drivers, all lane detection packages, and every Python dependency. You pull it once and it persists on the Pi's storage.</p>
+  <p>The Robocar Docker image contains a fully configured environment including ROS2, OAK-D depth camera drivers (DepthAI), VESC motor controller drivers, all lane detection packages, and every required Python dependency. You pull it once and it persists on the Pi's storage.</p>
 
-  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Network Warning — Use Home WiFi</div><div class="callout-text">This image is approximately 14.7 GB. The campus WiFi network often drops mid-download, corrupting the image and forcing a full re-pull. Use a home network or a wired Ethernet connection. If the download is interrupted, simply re-run the pull command — Docker resumes from the last successfully downloaded layer.</div></div></div>
+  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Network Warning — Use Home Wi-Fi or Wired Ethernet</div><div class="callout-text">This image is approximately 14.7 GB. The campus Wi-Fi network frequently drops connections mid-download, corrupting the image and forcing a full re-pull. Use a home network or a wired Ethernet connection instead. If the download is interrupted, simply re-run the pull command — Docker automatically resumes from the last successfully downloaded layer.</div></div></div>
 
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — expect 20–40 minutes</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">docker pull</span> djnighti/ucsd_robocar:devel</pre></div>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — expect 20–40 minutes on a fast connection</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">docker pull</span> djnighti/ucsd_robocar:devel</pre></div>
 
-  <h3>Verify Download Succeeded</h3>
+  <h3>Verify the Download Succeeded</h3>
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">docker images</span> | grep ucsd_robocar
 <span class="c"># Expected output:</span>
 <span class="ok"># djnighti/ucsd_robocar   devel   &lt;id&gt;   &lt;date&gt;   14.7GB</span></pre></div>
@@ -560,15 +550,17 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
   <div class="tw"><table>
     <thead><tr><th>Problem</th><th>Solution</th></tr></thead>
     <tbody>
-      <tr><td>Download hangs or freezes</td><td>Re-run <code>docker pull</code> — it resumes automatically from the last layer</td></tr>
-      <tr><td>"No space left on device"</td><td>Run <code>docker system prune -f</code> to clear old images and containers</td></tr>
-      <tr><td>Image shows SIZE of 0B</td><td>The pull failed silently. Delete it with <code>docker rmi djnighti/ucsd_robocar:devel</code> and re-pull</td></tr>
-      <tr><td>Authentication error</td><td>The image is public. Verify internet connectivity: <code>ping 8.8.8.8</code></td></tr>
+      <tr><td>Download hangs or freezes</td><td>Re-run <code>docker pull</code> — it resumes automatically from the last completed layer</td></tr>
+      <tr><td>"No space left on device"</td><td>Run <code>docker system prune -f</code> to remove old images and stopped containers</td></tr>
+      <tr><td>Image shows a size of 0B</td><td>The pull failed silently. Delete it with <code>docker rmi djnighti/ucsd_robocar:devel</code> and re-pull</td></tr>
+      <tr><td>Authentication error</td><td>The image is public. Verify your internet connection: <code>ping 8.8.8.8</code></td></tr>
     </tbody>
   </table></div>
 </section>
 
-<!-- §3 — X11 Forwarding -->
+<!-- ══════════════════════════════════════════════════
+     §3 — X11 Forwarding
+══════════════════════════════════════════════════ -->
 <div class="section-anchor" id="s3"></div>
 <section class="section">
   <div class="sec-header">
@@ -580,80 +572,84 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
     <div class="sec-badges"><span class="badge badge-fix">Enhanced</span></div>
   </div>
 
-  <p>X11 forwarding lets the Pi render GUI applications (calibration sliders, camera feeds, plots) and stream those windows over SSH to your laptop's screen. Without this, you cannot use any of the visual calibration tools — they will open on the Pi with no display to show on.</p>
+  <p>X11 forwarding lets programs running on the Pi render graphical windows (calibration sliders, live camera feeds, debug overlays) and stream those windows over your SSH connection to your laptop's screen. Without X11 forwarding, none of the visual calibration tools will work — the programs will attempt to open a window but have nowhere to display it and will crash immediately.</p>
+
+  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">Complete This Section Before Creating the Docker Container</div><div class="callout-text">Set up X11 forwarding on both your laptop (Steps 2–3) and the Pi host (Steps 1 and 4) now. You will verify that it works <em>inside the Docker container</em> in Section 4, after the container is created. Steps 1–4 here only require the Pi host — no container needed yet.</div></div></div>
 
   <h3>Step 1 — Install X11 Apps on the Pi</h3>
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo apt update</span>
 <span class="k">sudo apt install</span> <span class="f">-y</span> x11-apps</pre></div>
 
   <h3>Step 2 — Install an X Server on Your Laptop</h3>
+  <p>Your laptop needs an X server running so it can <em>receive</em> and display the windows that the Pi sends over SSH.</p>
   <div class="tw"><table>
     <thead><tr><th>Your OS</th><th>Software to Install</th><th>Required Extra Step</th></tr></thead>
     <tbody>
-      <tr><td><strong>macOS</strong></td><td>XQuartz — download from xquartz.org</td><td>After install: open XQuartz → Preferences → Security tab → check <strong>"Allow connections from network clients"</strong>. Then fully restart your Mac (not just XQuartz).</td></tr>
-      <tr><td><strong>Windows</strong></td><td>MobaXterm — handles X11 automatically in its built-in terminal</td><td>No extra steps needed. Use MobaXterm's SSH to connect.</td></tr>
-      <tr><td><strong>Linux</strong></td><td>X11 is built in to all major distributions</td><td>No extra steps needed.</td></tr>
+      <tr><td><strong>macOS</strong></td><td>XQuartz — download from xquartz.org</td><td>After installing, open XQuartz → Preferences → Security tab → check <strong>"Allow connections from network clients"</strong>. Then fully restart your Mac (not just XQuartz).</td></tr>
+      <tr><td><strong>Windows</strong></td><td>MobaXterm — download from mobaxterm.mobatek.net</td><td>No extra steps needed. MobaXterm includes a built-in X server and handles X11 forwarding automatically when you use its SSH terminal.</td></tr>
+      <tr><td><strong>Linux</strong></td><td>X11 is built into all major distributions</td><td>No extra steps needed.</td></tr>
     </tbody>
   </table></div>
 
   <h3>Step 3 — Connect via SSH with Forwarding Enabled</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Your laptop terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Trusted forwarding — RECOMMENDED (use this if -X causes issues)</span>
-<span class="k">ssh</span> <span class="f">-Y</span> pi@ucsdrobocar-148-XX.local
+  <p>The <code>-Y</code> flag enables "trusted" X11 forwarding, which is required when the Docker container runs as <code>root</code> (a different user than the Pi's <code>pi</code> user). The stricter <code>-X</code> flag blocks cross-user connections and will prevent calibration windows from opening inside Docker.</p>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Your laptop terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Use -Y (trusted forwarding) — required for the Docker container</span>
+<span class="k">ssh</span> <span class="f">-Y</span> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4d3d240d382e3e293f222f222e2c3f607c79756015156321222e2c21">[email&#160;protected]</a>
 
-<span class="c"># Untrusted forwarding — stricter security</span>
-<span class="k">ssh</span> <span class="f">-X</span> pi@ucsdrobocar-148-XX.local</pre></div>
-  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">Why -Y instead of -X?</div><div class="callout-text">The Docker container runs as <code>root</code>, which is a different user than the <code>pi</code> user on the host. The <code>-X</code> flag (untrusted) blocks connections from different users for security reasons. The <code>-Y</code> flag (trusted) allows it. If calibration windows won't open inside Docker but xeyes works on the Pi host, switch to <code>-Y</code>.</div></div></div>
+<span class="c"># Alternatively, -X (untrusted forwarding) — use only if -Y is unavailable</span>
+<span class="k">ssh</span> <span class="f">-X</span> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="deaeb79eabbdadbaacb1bcb1bdbfacf3efeae6f38686f0b2b1bdbfb2">[email&#160;protected]</a></pre></div>
 
-  <h3>Step 4 — Test X11 Before Entering Docker</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal (NOT inside Docker)</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">xeyes</span>
+  <h3>Step 4 — Test X11 on the Pi Host (Before Docker)</h3>
+  <p>Run this test <strong>on the Pi host only</strong> — not inside a Docker container. This confirms X11 forwarding is working correctly over your SSH connection before you add Docker to the mix.</p>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — NOT inside Docker</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">xeyes</span>
 <span class="c"># A pair of animated eyes should appear on YOUR LAPTOP SCREEN</span>
-<span class="c"># The eyes follow your mouse cursor</span></pre></div>
+<span class="c"># The eyes follow your mouse cursor. Press Ctrl+C to close.</span></pre></div>
 
   <figure>
-    <div class="fig-wrap"><img src="images/fig_xeyes.png" alt="xeyes GUI window forwarded via X11 SSH to laptop screen" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 3.1</span> Successful X11 test — xeyes renders on your laptop screen, forwarded from the Pi over SSH <span class="fig-key">images/fig_xeyes.png</span></figcaption>
+    <div class="fig-wrap"><img src="images/fig_xeyes.png" alt="xeyes GUI window forwarded via X11 to laptop screen" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 3.1</span> Successful X11 host test — the xeyes window appears on your laptop, forwarded from the Pi over SSH.</figcaption>
   </figure>
 
-  <h3>Step 5 — Why These Docker Flags Are Required for X11</h3>
-  <p>The <code>robocar_docker</code> function in Section 4 handles all of this automatically. Here's why each X11-related flag exists:</p>
+  <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">xeyes Opens? You're Ready for Section 4</div><div class="callout-text">If xeyes appeared on your laptop screen, X11 forwarding is working correctly on the Pi host. Proceed to Section 4 to create your Docker container. You will re-run xeyes <em>inside</em> the container at the end of Section 4 to confirm it works there as well.</div></div></div>
+
+  <h3>How the Docker Flags Enable X11 (Reference)</h3>
+  <p>The <code>robocar_docker</code> function in Section 4 handles all of this automatically. Here is why each X11-related flag is required:</p>
   <div class="tw"><table>
     <thead><tr><th>Docker Flag</th><th>What It Does</th><th>Without It</th></tr></thead>
     <tbody>
-      <tr><td><code>-e DISPLAY=$DISPLAY</code></td><td>Passes the Pi's X11 display socket address (e.g., <code>:10</code>) into the container so GUI apps know where to connect.</td><td>GUI apps start but have no display to connect to — they crash immediately.</td></tr>
-      <tr><td><code>--volume="$HOME/.Xauthority:/root/.Xauthority:rw"</code></td><td>Mounts the Xauthority cookie file that proves the container is allowed to use the X server.</td><td>"Authorization required, rejecting connection" — all GUI calls fail.</td></tr>
-      <tr><td><code>--net=host</code></td><td>Container shares the Pi's full network stack, including the <code>/tmp/.X11-unix/</code> socket used for X11 IPC.</td><td>The X11 socket is not reachable from inside the container.</td></tr>
+      <tr><td><code>-e DISPLAY=$DISPLAY</code></td><td>Passes the Pi's X11 display socket address (e.g., <code>:10</code>) into the container so GUI applications know where to connect.</td><td>GUI applications start but have no display to connect to — they crash immediately with "cannot open display".</td></tr>
+      <tr><td><code>--volume="$HOME/.Xauthority:/root/.Xauthority:rw"</code></td><td>Mounts the Xauthority cookie file that proves the container is permitted to use the X server.</td><td>"Authorization required, rejecting connection" — all GUI calls fail.</td></tr>
+      <tr><td><code>--net=host</code></td><td>The container shares the Pi's full network stack, including the <code>/tmp/.X11-unix/</code> socket used for X11 inter-process communication.</td><td>The X11 socket is unreachable from inside the container.</td></tr>
     </tbody>
   </table></div>
 
-  <h3>Step 6 — Verify X11 Inside the Docker Container</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker container</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">echo</span> $DISPLAY    <span class="c"># Must NOT be empty — should show :10 or :11</span>
-<span class="k">xeyes</span>           <span class="c"># Eyes must appear on your laptop screen</span></pre></div>
-
-  <h3>Common X11 Errors & Fixes</h3>
+  <h3>Common X11 Errors &amp; Fixes</h3>
   <div class="tw"><table>
     <thead><tr><th>Error Message</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td>"cannot open display"</td><td>SSH was not started with <code>-Y</code> flag. Exit and reconnect: <code>ssh -Y pi@hostname.local</code></td></tr>
+      <tr><td>"cannot open display"</td><td>SSH was not started with the <code>-Y</code> flag. Exit and reconnect: <code>ssh -Y <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="deaeb79eb6b1adaab0bfb3bbf0b2b1bdbfb2">[email&#160;protected]</a></code></td></tr>
       <tr><td>"No protocol specified"</td><td>Run on the Pi host: <code>xhost +local:</code> then retry inside Docker</td></tr>
-      <tr><td>"Authorization required"</td><td>The <code>.Xauthority</code> file is not mounted in Docker. Check your <code>--volume</code> flag in the docker run command.</td></tr>
+      <tr><td>"Authorization required"</td><td>The <code>.Xauthority</code> file is not mounted. Check the <code>--volume</code> flag in your docker run command.</td></tr>
       <tr><td>xeyes opens on Pi host but not inside Docker</td><td>Switch from <code>ssh -X</code> to <code>ssh -Y</code> and restart the container.</td></tr>
-      <tr><td>macOS: nothing appears at all</td><td>Enable "Allow connections from network clients" in XQuartz Preferences → Security. Restart your Mac after.</td></tr>
-      <tr><td>Works then breaks after Pi reboot</td><td>Run the xauth reset script below.</td></tr>
+      <tr><td>macOS: nothing appears at all</td><td>Enable "Allow connections from network clients" in XQuartz Preferences → Security. Restart your Mac after changing this setting.</td></tr>
+      <tr><td>Works, then breaks after a Pi reboot</td><td>Run the Xauth reset script below.</td></tr>
     </tbody>
   </table></div>
 
-  <h3>Xauth Reset Script (After Reboot Breaks X11)</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi host terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Regenerate Xauthority credentials for your current display</span>
+  <h3>Xauth Reset Script (If X11 Breaks After a Reboot)</h3>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi host terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Regenerate Xauthority credentials for your current display session</span>
 <span class="k">xauth generate</span> $DISPLAY . trusted
-<span class="k">xauth list</span>      <span class="c"># Confirm credentials were written</span>
+<span class="k">xauth list</span>      <span class="c"># Confirm credentials were written (you should see an entry)</span>
 
-<span class="c"># Exit and re-SSH with trusted forwarding</span>
+<span class="c"># Exit and reconnect with trusted forwarding</span>
 <span class="k">exit</span>
-<span class="k">ssh</span> <span class="f">-Y</span> pi@ucsdrobocar-148-XX.local</pre></div>
-  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Xauthority Lock Error</div><div class="callout-text">If you see "timeout in locking authority file", the file is corrupt. Delete it and start fresh:<br><code>rm ~/.Xauthority &amp;&amp; ssh -Y pi@ucsdrobocar-148-XX.local</code></div></div></div>
+<span class="k">ssh</span> <span class="f">-Y</span> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b9c9d0f9ccdacaddcbd6dbd6dad8cb94888d8194e1e197d5d6dad8d5">[email&#160;protected]</a></pre></div>
+  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Xauthority Lock Error</div><div class="callout-text">If you see "timeout in locking authority file", the <code>.Xauthority</code> file is corrupt. Delete it and start fresh:<br><code>rm ~/.Xauthority &amp;&amp; ssh -Y <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cebea78ebbadbdaabca1aca1adafbce3fffaf6e39696e0a2a1adafa2">[email&#160;protected]</a></code></div></div></div>
 </section>
 
-<!-- §4 — Run Container -->
+<!-- ══════════════════════════════════════════════════
+     §4 — Run Container
+══════════════════════════════════════════════════ -->
 <div class="section-anchor" id="s4"></div>
 <section class="section">
   <div class="sec-header">
@@ -664,62 +660,85 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
     </div>
   </div>
 
-  <p>The full <code>docker run</code> command is long and easy to mistype. We store it as a shell function in <code>~/.bashrc</code> so it becomes a simple one-word command. This function maps all hardware devices, sets up X11 forwarding, and configures your team's ROS2 domain in one step.</p>
+  <p>The full <code>docker run</code> command is long and prone to typos. We store it as a shell function in <code>~/.bashrc</code> on the Pi so it becomes a simple one-word command. This function maps all required hardware devices, sets up X11 forwarding, and configures your team's ROS2 isolation domain in a single step.</p>
 
-  <h3>Step 1 — Add the Shell Function to Pi's .bashrc</h3>
+  <h3>Step 1 — Add the Shell Function to the Pi's .bashrc</h3>
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">nano</span> ~/.bashrc  <span class="c"># Scroll to the bottom and paste the function below</span></pre></div>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Paste into Pi ~/.bashrc — replace MY_CONTAINER_NAME and YOUR_TEAM_ID</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre>robocar_docker() {
-  <span class="k">docker run</span> \
-    <span class="f">--name</span> MY_CONTAINER_NAME \
-    <span class="f">-it</span> \
-    <span class="f">--privileged</span> \          <span class="c"># Full hardware access (cameras, serial, USB)</span>
-    <span class="f">--net=host</span> \            <span class="c"># Share Pi's network stack (required for X11 + ROS2)</span>
-    <span class="f">-e</span> DISPLAY=$DISPLAY \   <span class="c"># Forward X11 display address</span>
-    <span class="f">-e</span> ROS_DOMAIN_ID=<span class="v">YOUR_TEAM_ID</span> \   <span class="c"># ← CRITICAL: See Section 9</span>
-    <span class="f">--volume</span> /dev/bus/usb:/dev/bus/usb \
-    <span class="f">--device-cgroup-rule=</span><span class="s">'c 189:* rmw'</span> \
-    <span class="f">--device</span> /dev/video0 \
-    <span class="f">--volume=</span><span class="s">"$HOME/.Xauthority:/root/.Xauthority:rw"</span> \
-    <span class="f">--volume</span> /etc/passwd:/etc/passwd:ro \
-    <span class="f">--volume</span> /etc/group:/etc/group:ro \
-    djnighti/ucsd_robocar:${2:-devel}
-}</pre></div>
 
-  <h3>Step 2 — Reload and Launch</h3>
+  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Replace the Placeholder Values Before Saving</div><div class="callout-text">Replace <code>MY_CONTAINER_NAME</code> with a name of your choosing (e.g., <code>robocar_team4</code>). Replace <code>YOUR_TEAM_ID</code> with your team number (e.g., <code>4</code>). These values must be consistent everywhere you use them.</div></div></div>
+
+  <div class="cb"><div class="cb-header"><span class="cb-label">Paste into Pi ~/.bashrc — edit MY_CONTAINER_NAME and YOUR_TEAM_ID</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre>robocar_docker() {
+  docker run \
+    --name MY_CONTAINER_NAME \
+    -it \
+    --privileged \
+    --net=host \
+    -e DISPLAY=$DISPLAY \
+    -e ROS_DOMAIN_ID=YOUR_TEAM_ID \
+    --volume /dev/bus/usb:/dev/bus/usb \
+    --device-cgroup-rule='c 189:* rmw' \
+    --device /dev/video0 \
+    --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \
+    --volume /etc/passwd:/etc/passwd:ro \
+    --volume /etc/group:/etc/group:ro \
+    djnighti/ucsd_robocar:${2:-devel}
+}
+
+<span class="c"># Flag explanations:</span>
+<span class="c">#   --privileged          gives the container full access to all hardware (cameras, serial, USB)</span>
+<span class="c">#   --net=host            shares the Pi's network stack (required for X11 and ROS2 discovery)</span>
+<span class="c">#   -e DISPLAY            forwards the X11 display address so GUI windows work</span>
+<span class="c">#   -e ROS_DOMAIN_ID      isolates your ROS2 topics from other teams (see Section 9)</span>
+<span class="c">#   --volume .Xauthority  mounts the X11 auth cookie so the container can open GUI windows</span></pre></div>
+
+  <h3>Step 2 — Reload and Launch the Container</h3>
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">source</span> ~/.bashrc
 <span class="k">robocar_docker</span> MY_CONTAINER_NAME</pre></div>
-  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">First Run vs. Subsequent Runs</div><div class="callout-text">The <code>docker run</code> command only works the first time — it creates a new container. Once you exit, the container still exists but is stopped. For all future sessions, use <code>docker start</code> + <code>docker exec</code> (see below). Do NOT run <code>robocar_docker</code> again or you will get a "name already in use" error.</div></div></div>
 
-  <h3>Step 3 — Manage the Container After First Launch</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — all future sessions</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Start the container (after it was stopped/Pi rebooted)</span>
+  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">First Run vs. All Future Sessions</div><div class="callout-text">The <code>docker run</code> command (via <code>robocar_docker</code>) only works the <strong>first time</strong> — it creates a brand-new container. Once you exit, the container still exists on disk but is in a stopped state. For every future session, use <code>docker start</code> + <code>docker exec</code> as shown in Step 3. Running <code>robocar_docker</code> again after the container exists will produce a "name already in use" error.</div></div></div>
+
+  <h3>Step 3 — Manage the Container in All Future Sessions</h3>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — all future sessions after the first</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Start the stopped container (run this after a reboot or after exiting)</span>
 <span class="k">docker start</span> MY_CONTAINER_NAME
 
-<span class="c"># Open a terminal inside the running container</span>
+<span class="c"># Open an interactive terminal inside the running container</span>
 <span class="k">docker exec -it</span> MY_CONTAINER_NAME bash
 
-<span class="c"># Open ADDITIONAL terminals into the SAME running container</span>
-<span class="c"># (run this in new SSH sessions or terminal tabs)</span>
+<span class="c"># Open ADDITIONAL terminal tabs into the SAME running container</span>
+<span class="c"># Run this in each new SSH window you open — they all share one container</span>
 <span class="k">docker exec -it</span> MY_CONTAINER_NAME bash</pre></div>
-  <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">Multi-Terminal Workflow</div><div class="callout-text">You will regularly need 3–4 concurrent terminals: one for <code>ros2 launch</code> (blocks), one for editing YAML config, one for <code>ros2 topic echo</code> monitoring, and one for debugging. All can be opened with <code>docker exec -it NAME bash</code> in separate SSH windows.</div></div></div>
+
+  <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">Multi-Terminal Workflow</div><div class="callout-text">You will regularly need 3–4 concurrent terminals: one for <code>ros2 launch</code> (which blocks while running), one for editing YAML config files, one for <code>ros2 topic echo</code> to monitor live data, and one for debugging. Open each by running <code>docker exec -it MY_CONTAINER_NAME bash</code> in separate SSH windows.</div></div></div>
+
+  <h3>Step 4 — Verify X11 Works Inside the Container</h3>
+  <p>Now that the container is running, confirm that X11 forwarding works from inside it. This is the final X11 verification step referenced in Section 3.</p>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker container</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># DISPLAY must not be empty — it should show a value like :10 or :11</span>
+<span class="k">echo</span> $DISPLAY
+
+<span class="c"># xeyes must appear on YOUR LAPTOP SCREEN (not just on the Pi)</span>
+<span class="k">xeyes</span></pre></div>
+  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">If xeyes Fails Inside Docker</div><div class="callout-text">If <code>echo $DISPLAY</code> is empty, the <code>-e DISPLAY=$DISPLAY</code> flag was missing or the variable was empty when you created the container. Recreate the container after reconnecting with <code>ssh -Y</code>. If <code>$DISPLAY</code> is set but xeyes still fails, check that your SSH session used the <code>-Y</code> flag (trusted forwarding).</div></div></div>
 </section>
 
-<!-- §5 — Python Fix -->
+<!-- ══════════════════════════════════════════════════
+     §5 — Python Error Fix
+══════════════════════════════════════════════════ -->
 <div class="section-anchor" id="s5"></div>
 <section class="section">
   <div class="sec-header">
     <span class="sec-num">05</span>
     <div class="sec-title-block">
       <h2>Fixing Python Errors (If Needed)</h2>
-      <div class="sec-subtitle">Resolve the apport_python_hook AttributeError in the container</div>
+      <div class="sec-subtitle">Resolve the apport_python_hook AttributeError inside the container</div>
     </div>
   </div>
 
-  <p>On some Pi setups the Docker container throws the following error when running ROS2 commands:</p>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Error to watch for</span></div><pre><span class="er">AttributeError: module 'apport_python_hook' has no attribute 'install'</span></pre></div>
-  <p>This happens because Ubuntu's crash reporter module (<code>apport</code>) is partially installed but incompatible with the container environment. The fix creates a safe <code>sitecustomize.py</code> file that catches and swallows the error before it can interrupt Python startup.</p>
+  <p>On some Pi setups, the Docker container throws the following error when running ROS2 commands:</p>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Error message to watch for</span></div><pre><span class="er">AttributeError: module 'apport_python_hook' has no attribute 'install'</span></pre></div>
+  <p>This occurs because Ubuntu's crash reporter module (<code>apport</code>) is partially installed but incompatible with the container environment. The fix creates a safe <code>sitecustomize.py</code> file that catches and ignores the error before it can interrupt Python startup.</p>
   <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker container</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">cat</span> &gt; /usr/lib/python3.8/sitecustomize.py &lt;&lt;<span class="s">'EOF'</span>
 <span class="c"># Safe sitecustomize for containers</span>
-<span class="c"># Only install apport hook if available and compatible</span>
+<span class="c"># Only installs the apport hook if it is available and compatible</span>
 try:
     import apport_python_hook
     if hasattr(apport_python_hook, <span class="s">'install'</span>):
@@ -731,27 +750,31 @@ except Exception:
 <span class="c"># Remove compiled bytecode so the fix takes effect immediately</span>
 <span class="k">rm -f</span> /usr/lib/python3.8/__pycache__/sitecustomize.cpython-38.pyc 2&gt;/dev/null || true
 
-<span class="c"># Verify — both commands should work without errors</span>
+<span class="c"># Verify — both commands should complete without errors</span>
 <span class="k">python3</span> -c <span class="s">"print('Python OK')"</span>
 <span class="k">ros2 --help</span> | head -3</pre></div>
-  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Wrong Python Version?</div><div class="callout-text">The path <code>/usr/lib/python3.8/</code> must match your container's Python version. Check with <code>python3 --version</code>. If it shows Python 3.10, use <code>/usr/lib/python3.10/sitecustomize.py</code> instead.</div></div></div>
+  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Check Your Python Version First</div><div class="callout-text">The path <code>/usr/lib/python3.8/</code> must match the Python version inside your container. Check it with <code>python3 --version</code> before running the command above. If it shows Python 3.10, use <code>/usr/lib/python3.10/sitecustomize.py</code> instead.</div></div></div>
 </section>
 
-<!-- §6 — Build Workspace -->
+<!-- ══════════════════════════════════════════════════
+     §6 — Build Workspace
+══════════════════════════════════════════════════ -->
 <div class="section-anchor" id="s6"></div>
 <section class="section">
   <div class="sec-header">
     <span class="sec-num">06</span>
     <div class="sec-title-block">
-      <h2>Package Installation & Build</h2>
+      <h2>Package Installation &amp; Build</h2>
       <div class="sec-subtitle">Configure setup.py and compile the ROS2 workspace with colcon</div>
     </div>
   </div>
 
-  <p>ROS2 uses <code>colcon</code> as its build system. Before building, we update <code>setup.py</code> to ensure all launch files, YAML configs, and RVIZ files are correctly installed. The default <code>setup.py</code> often misses subdirectories, causing "launch file not found" errors.</p>
+  <p>ROS2 uses <code>colcon</code> as its build system. Before building, we update <code>setup.py</code> to ensure all launch files, YAML configs, and RVIZ files are correctly installed. The default <code>setup.py</code> in this package often misses subdirectories, causing "launch file not found" errors at runtime.</p>
 
-  <h3>Step 1 — Update setup.py</h3>
+  <h3>Step 1 — Navigate to the Package Directory</h3>
   <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">cd</span> /home/projects/ros2_ws/src/ucsd_robocar_hub2/ucsd_robocar_nav2_pkg</pre></div>
+
+  <h3>Step 2 — Write the Improved setup.py</h3>
   <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker — write improved setup.py</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">cat</span> &gt; setup.py &lt;&lt;<span class="s">'EOF'</span>
 from setuptools import setup
 import os
@@ -759,7 +782,8 @@ import os
 package_name = <span class="s">'ucsd_robocar_nav2_pkg'</span>
 
 def package_files(directory):
-    <span class="c"># Recursively finds ALL files in the directory — fixes missing launch files</span>
+    <span class="c"># Recursively finds ALL files in the given directory</span>
+    <span class="c"># This fixes missing launch files that the default setup.py ignores</span>
     paths = []
     for (path, _, filenames) in os.walk(directory):
         for f in filenames:
@@ -779,206 +803,292 @@ setup(
     name=package_name, version=<span class="s">'0.0.0'</span>,
     packages=[package_name], data_files=data_files,
     install_requires=[<span class="s">'setuptools'</span>], zip_safe=True,
-    maintainer=<span class="s">'root'</span>, maintainer_email=<span class="s">'root@todo.todo'</span>,
+    maintainer=<span class="s">'root'</span>, maintainer_email=<span class="s">'<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="22504d4d5662564d464d0c564d464d">[email&#160;protected]</a>'</span>,
     description=<span class="s">'Nav2 launch/config package for UCSD RoboCar'</span>,
     license=<span class="s">'TODO'</span>, tests_require=[<span class="s">'pytest'</span>],
     entry_points={<span class="s">'console_scripts'</span>: []},
 )
 <span class="s">EOF</span></pre></div>
 
-  <h3>Step 2 — Build the Workspace</h3>
+  <h3>Step 3 — Build the Workspace</h3>
   <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">cd</span> /home/projects/ros2_ws
-<span class="k">rm -rf</span> build install log            <span class="c"># Clean slate — avoids stale artifact issues</span>
+<span class="k">rm -rf</span> build install log            <span class="c"># Clean slate — prevents stale build artifact issues</span>
 <span class="k">colcon build</span> <span class="f">--symlink-install</span>      <span class="c"># Compile all packages</span>
-<span class="k">source</span> install/setup.bash          <span class="c"># Register built packages with ROS2</span>
-<span class="k">ros2 pkg list</span> | grep ucsd_robocar  <span class="c"># Verify packages are found</span></pre></div>
-  <p><strong>--symlink-install</strong>: Instead of copying Python files, colcon creates symbolic links back to your source files. This means you can edit a <code>.py</code> script and re-run without rebuilding. However, YAML config files and launch files still require a rebuild when changed.</p>
-  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Always Source After Build</div><div class="callout-text">Running <code>colcon build</code> compiles the code but does NOT make it available to ROS2 automatically. You must run <code>source install/setup.bash</code> afterward. If you skip this, <code>ros2</code> commands will report "package not found" even though the build succeeded. Section 7 creates aliases that handle this automatically.</div></div></div>
+<span class="k">source</span> install/setup.bash          <span class="c"># Register the built packages with ROS2</span>
+<span class="k">ros2 pkg list</span> | grep ucsd_robocar  <span class="c"># Verify the packages are found</span></pre></div>
+
+  <p><strong>About --symlink-install:</strong> Instead of copying Python files into the install directory, colcon creates symbolic links back to your source files. This means you can edit a <code>.py</code> script and re-run it without rebuilding. However, YAML config files and launch files still require a full rebuild when changed — those are copied, not linked.</p>
+
+  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Always Source After Every Build</div><div class="callout-text">Running <code>colcon build</code> compiles the code but does <strong>not</strong> make it available to ROS2 automatically. You must run <code>source install/setup.bash</code> every time after building. If you skip this step, <code>ros2</code> commands will report "package not found" even though the build succeeded. Section 7 creates aliases that handle this automatically.</div></div></div>
 </section>
 
-<!-- §7 — Aliases -->
+<!-- ══════════════════════════════════════════════════
+     §7 — Shell Aliases
+══════════════════════════════════════════════════ -->
 <div class="section-anchor" id="s7"></div>
 <section class="section">
   <div class="sec-header">
     <span class="sec-num">07</span>
     <div class="sec-title-block">
-      <h2>Shell Aliases: source_ros2 & build_ros2</h2>
+      <h2>Shell Aliases: source_ros2 &amp; build_ros2</h2>
       <div class="sec-subtitle">One-command shortcuts for every build and source operation</div>
     </div>
   </div>
 
-  <p>These two aliases eliminate the most common source of student errors: forgetting to rebuild or source after a file change. Once set up, every step in this guide becomes a single short command.</p>
-  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">Inside the Container</div><div class="callout-text">These aliases go in <code>/root/.bashrc</code> INSIDE Docker, not the Pi host's <code>~/.bashrc</code>. You need to re-add them if you create a fresh container.</div></div></div>
+  <p>These two aliases eliminate the most common source of student mistakes: forgetting to rebuild or re-source after changing a file. Once set up, nearly every workflow step in this guide becomes a single short command.</p>
 
-  <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker — open .bashrc</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">nano</span> ~/.bashrc  <span class="c"># Scroll to bottom and paste below</span></pre></div>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Paste into container ~/.bashrc</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># ── Source workspace only (fast — no recompile) ──</span>
+  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">These Aliases Go Inside the Container</div><div class="callout-text">Add these to <code>/root/.bashrc</code> <strong>inside Docker</strong>, not the Pi host's <code>~/.bashrc</code>. If you ever create a brand-new container, you will need to re-add them. Note: if your ROS2 installation uses a distribution other than Foxy, update the last line accordingly (e.g., replace <code>foxy</code> with <code>humble</code>).</div></div></div>
+
+  <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker — open .bashrc</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">nano</span> ~/.bashrc  <span class="c"># Scroll to the bottom and paste the aliases below</span></pre></div>
+
+  <div class="cb"><div class="cb-header"><span class="cb-label">Paste into container ~/.bashrc</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># ── Source workspace only (fast — no recompilation) ──────────────────────</span>
 alias source_ros2=<span class="s">'source /home/projects/ros2_ws/install/setup.bash &amp;&amp; echo "[ROS2] Workspace sourced ✓"'</span>
 
-<span class="c"># ── Build then source (use after ANY file change) ──</span>
+<span class="c"># ── Full build then source (use after ANY file change) ───────────────────</span>
 alias build_ros2=<span class="s">'cd /home/projects/ros2_ws &amp;&amp; colcon build --symlink-install &amp;&amp; source install/setup.bash &amp;&amp; echo "[ROS2] Build complete ✓"'</span>
 
-<span class="c"># ── Source global ROS2 base install ──</span>
+<span class="c"># ── Source the global ROS2 base installation (update "foxy" if needed) ───</span>
 source /opt/ros/foxy/setup.bash 2&gt;/dev/null</pre></div>
+
   <div class="cb"><div class="cb-header"><span class="cb-label">Activate and test</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">source</span> ~/.bashrc
 <span class="k">source_ros2</span>    <span class="c"># Should print: [ROS2] Workspace sourced ✓</span>
 <span class="k">build_ros2</span>     <span class="c"># Should print: [ROS2] Build complete ✓</span></pre></div>
 
   <div class="tw"><table>
-    <thead><tr><th>Alias</th><th>When to Use</th><th>Speed</th></tr></thead>
+    <thead><tr><th>Alias</th><th>When to Use</th><th>Approximate Speed</th></tr></thead>
     <tbody>
-      <tr><td><code>source_ros2</code></td><td>Opening a new terminal tab into an existing container. Does NOT recompile anything.</td><td>~1 second</td></tr>
-      <tr><td><code>build_ros2</code></td><td>After ANY change to Python code, YAML config, launch files, or setup.py. Always use this after edits.</td><td>30–120 seconds</td></tr>
+      <tr><td><code>source_ros2</code></td><td>When opening a new terminal into an already-built container. Does not recompile anything — only registers packages with ROS2.</td><td>~1 second</td></tr>
+      <tr><td><code>build_ros2</code></td><td>After <strong>any</strong> change to Python code, YAML config files, launch files, or setup.py. Always use this after making edits.</td><td>30–120 seconds</td></tr>
     </tbody>
   </table></div>
 </section>
 
-<!-- §8 — Camera Power -->
+<!-- ══════════════════════════════════════════════════
+     §8 — Camera Power Fix
+══════════════════════════════════════════════════ -->
 <div class="section-anchor" id="s8"></div>
 <section class="section">
   <div class="sec-header">
     <span class="sec-num">08</span>
     <div class="sec-title-block">
-      <h2>Camera Power Fix — USB Current & Powered Hub</h2>
+      <h2>Camera Power Fix — USB Current &amp; Powered Hub</h2>
       <div class="sec-subtitle">Fix random camera disconnects caused by insufficient USB power</div>
     </div>
   </div>
 
-  <div class="callout error"><div class="callout-icon">✗</div><div class="callout-body"><div class="callout-title">Very Common Lab Issue</div><div class="callout-text">The OAK-D camera draws up to 900 mA at peak. The Raspberry Pi's USB ports are limited to ~600 mA total by firmware default. This causes the camera to disconnect randomly, produce an all-black feed, or fail to appear as a USB device at all. If your camera is misbehaving, power is almost certainly why.</div></div></div>
+  <div class="callout error"><div class="callout-icon">✗</div><div class="callout-body"><div class="callout-title">Very Common Lab Issue</div><div class="callout-text">The OAK-D camera draws up to 900 mA at peak. The Raspberry Pi's USB ports are limited to approximately 600 mA total by firmware default. This causes the camera to disconnect randomly, produce an all-black feed, or fail to appear as a USB device entirely. If your camera is misbehaving, insufficient power is almost always the cause.</div></div></div>
 
   <h3>Diagnose the Problem First</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi host terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Look for "over-current" or "device not accepting address" messages</span>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi host terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Look for "over-current" or "device not accepting address" error messages</span>
 <span class="k">dmesg</span> | grep -i <span class="s">'usb\|over-current\|power'</span> | tail -20
 
-<span class="c"># Camera should appear as Luxonis / Intel Movidius</span>
+<span class="c"># The OAK-D camera should appear as Luxonis or Intel Movidius</span>
 <span class="k">lsusb</span> | grep -i <span class="s">'movidius\|luxonis\|intel'</span></pre></div>
 
   <h3>Solution 1 — Software Fix via config.txt</h3>
-  <p>This instructs the Pi firmware to draw more current through USB, raising the limit to approximately 1.2A total.</p>
+  <p>This instructs the Pi firmware to supply more current through USB, raising the limit to approximately 1.2A total. This is the quickest fix but requires a quality power supply.</p>
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi host terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo nano</span> /boot/config.txt
-<span class="c"># Add this exact line at the END of the file:</span>
+<span class="c"># Add this exact line at the END of the file, then save and exit:</span>
+<span class="c"># Ctrl+O to save, Enter to confirm, Ctrl+X to exit nano</span>
 <span class="v">max_usb_current=1</span>
-<span class="c"># Save: Ctrl+O → Enter → Ctrl+X, then reboot:</span>
+<span class="c"># After saving, reboot:</span>
 <span class="k">sudo reboot</span></pre></div>
-  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Requires a Quality 5V/3A+ Power Supply</div><div class="callout-text">This fix only works if the Pi itself is powered by a genuine 5V/3A USB-C supply. A cheap or underpowered supply will trigger undervoltage throttling even with this setting. Verify with: <code>dmesg | grep -i voltage</code> after reboot — you should see no warnings.</div></div></div>
+  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Requires a Quality 5V/3A+ Power Supply</div><div class="callout-text">This fix only works if the Pi is powered by a genuine 5V/3A USB-C power supply. A cheap or underpowered supply will trigger undervoltage throttling even with this setting enabled. Verify after rebooting: <code>dmesg | grep -i voltage</code> — you should see no undervoltage warnings.</div></div></div>
 
   <h3>Solution 2 — Powered USB Hub (Most Reliable)</h3>
-  <p>A powered USB hub provides the camera with a completely separate 5V power source, bypassing the Pi's USB regulator entirely. This is the recommended solution for lab and track use.</p>
+  <p>A powered USB hub provides the camera with a completely separate 5V power source, bypassing the Pi's USB voltage regulator entirely. This is the recommended solution for sustained lab and track use.</p>
   <div class="tw"><table>
     <thead><tr><th>Component</th><th>Requirement</th></tr></thead>
     <tbody>
-      <tr><td>USB Hub</td><td>USB 3.0 hub with external power adapter — must NOT be bus-powered</td></tr>
-      <tr><td>Hub Power Adapter</td><td>5V / 2A minimum dedicated supply (not shared with the Pi)</td></tr>
+      <tr><td>USB Hub</td><td>USB 3.0 hub with an external power adapter — must <strong>not</strong> be bus-powered</td></tr>
+      <tr><td>Hub Power Adapter</td><td>5V / 2A minimum, dedicated supply (not shared with the Pi)</td></tr>
       <tr><td>Connection</td><td>Pi USB-A port → Powered Hub → OAK-D + VESC + other USB devices</td></tr>
     </tbody>
   </table></div>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Verify camera after connecting hub</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">lsusb</span> | grep -i luxonis    <span class="c"># Camera must appear here</span>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Verify camera after connecting powered hub</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">lsusb</span> | grep -i luxonis    <span class="c"># Camera must appear here</span>
 <span class="k">ls</span> /dev/video*             <span class="c"># /dev/video0 must exist</span>
 <span class="k">dmesg</span> | grep -i 'usb' | tail -5  <span class="c"># Should show clean enumeration, no errors</span></pre></div>
 </section>
 
-<!-- §9 — Camera Isolation -->
+<!-- ══════════════════════════════════════════════════
+     §9 — Camera Isolation
+══════════════════════════════════════════════════ -->
 <div class="section-anchor" id="s9"></div>
 <section class="section">
   <div class="sec-header">
     <span class="sec-num">09</span>
     <div class="sec-title-block">
       <h2>Camera Isolation — Prevent Cross-Team Interference</h2>
-      <div class="sec-subtitle">Fix the multi-team problem where students connect to the wrong robot's camera</div>
+      <div class="sec-subtitle">Ensure your robot only communicates with your own team's nodes</div>
     </div>
   </div>
 
-  <div class="callout error"><div class="callout-icon">✗</div><div class="callout-body"><div class="callout-title">Critical Lab Issue — Read Before Starting Any Calibration</div><div class="callout-text">All robots running ROS2 on the same WiFi network are visible to each other by default. During a lab session with 10+ teams, Team 1's calibration GUI may be controlling Team 7's camera. Your <code>/cmd_vel</code> commands could be sending steering signals to a different team's VESC. Your lane detection node might be subscribing to a neighbor's camera feed. This causes completely baffling behavior that looks like a software bug but is actually a network isolation issue.</div></div></div>
+  <div class="callout error"><div class="callout-icon">✗</div><div class="callout-body"><div class="callout-title">Critical Lab Issue — Read Before Starting Any Calibration</div><div class="callout-text">All robots running ROS2 on the same Wi-Fi network are visible to each other by default. During a lab session with 10+ teams, Team 1's calibration GUI may be receiving Team 7's camera feed. Your <code>/cmd_vel</code> commands could be sending steering signals to a different team's VESC. Your lane detection node might be subscribing to a neighbor's camera instead of your own. This causes completely baffling behavior that looks like a software bug but is actually a network isolation issue.</div></div></div>
 
   <h3>Why This Happens — ROS2 DDS Discovery</h3>
-  <p>ROS2 uses DDS (Data Distribution Service) as its communication middleware. By default, every ROS2 node on the same local network automatically joins <strong>Domain ID 0</strong> and broadcasts its existence to all other nodes in that domain. Since every team runs nodes with the same names (<code>/lane_detection_node</code>, <code>/camera_node</code>, <code>/cmd_vel</code>), ROS2 connects to whichever publisher it discovers first — which may be a completely different team's robot sitting next to you.</p>
+  <p>ROS2 uses DDS (Data Distribution Service) as its communication middleware. By default, every ROS2 node on the same local network automatically joins <strong>Domain ID 0</strong> and broadcasts its existence to all other nodes in that domain. Since every team runs nodes with the same names (<code>/lane_detection_node</code>, <code>/camera_node</code>, <code>/cmd_vel</code>), ROS2 will connect to whichever publisher it discovers first — which may be a completely different team's robot sitting next to you.</p>
 
   <h3>The Fix — Assign Each Team a Unique ROS_DOMAIN_ID</h3>
-  <p>Nodes on different Domain IDs are completely invisible to each other at the DDS network layer — they cannot publish to, subscribe to, or discover each other's topics at all. Setting a unique Domain ID requires zero code changes; it's purely an environment variable set before launching any ROS2 nodes.</p>
+  <p>Nodes on different Domain IDs are completely invisible to each other at the DDS network layer. They cannot publish to, subscribe to, or even discover each other's topics. Setting a unique Domain ID requires zero code changes — it is purely an environment variable that must be set before launching any ROS2 nodes. Domain ID 0 is the system default and is therefore <strong>not safe to use</strong> in a multi-team environment.</p>
 
   <div class="team-widget">
     <div class="team-widget-title">🏷 Team Domain ID Assignments</div>
-    <div class="team-widget-sub">Your team number = your Domain ID. Valid range: 0–232.</div>
+    <div class="team-widget-sub">Your team number = your Domain ID. Valid range: 1–232 (avoid 0 — it is the shared default).</div>
     <div class="team-grid" id="team-grid"></div>
   </div>
 
   <h3>Step 1 — Set ROS_DOMAIN_ID in the Docker Run Command</h3>
-  <p>In your <code>robocar_docker</code> function on the Pi's <code>~/.bashrc</code>, change <code>YOUR_TEAM_ID</code> to your actual team number. For example, Team 4:</p>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi ~/.bashrc — inside robocar_docker function</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Replace 4 with YOUR team number</span>
+  <p>In your <code>robocar_docker</code> function on the Pi's <code>~/.bashrc</code>, replace <code>YOUR_TEAM_ID</code> with your actual team number. To edit the file:</p>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">nano</span> ~/.bashrc
+<span class="c"># Find the line that reads: -e ROS_DOMAIN_ID=YOUR_TEAM_ID</span>
+<span class="c"># Change it to your team number, for example Team 4:</span>
 <span class="f">-e</span> ROS_DOMAIN_ID=<span class="v">4</span> \</pre></div>
 
-  <h3>Step 2 — Set ROS_DOMAIN_ID Inside the Container</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker — add to ~/.bashrc</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Add to container ~/.bashrc — replace 4 with YOUR team number</span>
+  <h3>Step 2 — Set ROS_DOMAIN_ID Persistently Inside the Container</h3>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker — add to ~/.bashrc</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">nano</span> ~/.bashrc
+<span class="c"># Add this line, replacing 4 with your actual team number:</span>
 <span class="k">export</span> ROS_DOMAIN_ID=<span class="v">4</span>
 
-<span class="c"># Reload</span>
+<span class="c"># Save and reload:</span>
 <span class="k">source</span> ~/.bashrc</pre></div>
 
-  <h3>Step 3 — Verify Isolation is Active</h3>
+  <h3>Step 3 — Verify Isolation Is Active</h3>
   <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Must print your team number — if empty, isolation is NOT active</span>
 <span class="k">echo</span> $ROS_DOMAIN_ID
 
-<span class="c"># Launch your nodes, then verify you only see YOUR topics</span>
+<span class="c"># After launching your nodes, verify you only see your own topics</span>
 <span class="k">ros2 topic list</span>
 
-<span class="c"># Count the nodes — should only show your own</span>
+<span class="c"># Verify you only see your own nodes</span>
 <span class="k">ros2 node list</span></pre></div>
 
   <h3>Step 4 — Optional: Topic Namespacing for Extra Safety</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker ~/.bashrc (optional)</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Replace team04 with your team identifier</span>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker ~/.bashrc (optional)</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">nano</span> ~/.bashrc
+<span class="c"># Add this line, replacing team04 with your team identifier:</span>
 <span class="k">export</span> ROS_NAMESPACE=<span class="v">team04</span>
 
-<span class="c"># Effect: /camera/color/image_raw → /team04/camera/color/image_raw</span>
-<span class="c"># Effect: /cmd_vel → /team04/cmd_vel</span></pre></div>
-  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Namespacing Changes All Topic Paths</div><div class="callout-text">If you enable <code>ROS_NAMESPACE</code>, every topic in your system gets the prefix. Any custom nodes you write that subscribe to <code>/error</code> must be updated to subscribe to <code>/team04/error</code> instead. The built-in Robocar packages handle namespacing automatically.</div></div></div>
+<span class="c"># Effect: /camera/color/image_raw  →  /team04/camera/color/image_raw</span>
+<span class="c"># Effect: /cmd_vel                 →  /team04/cmd_vel</span></pre></div>
+  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Namespacing Changes All Topic Paths</div><div class="callout-text">If you enable <code>ROS_NAMESPACE</code>, every topic in your system receives the prefix. Any custom nodes you write that subscribe to <code>/error</code> must be updated to subscribe to <code>/team04/error</code> instead. The built-in Robocar packages handle namespacing automatically.</div></div></div>
 
-  <h3>Multi-Team Checklist</h3>
+  <h3>Multi-Team Isolation Checklist</h3>
   <div class="tw"><table>
     <thead><tr><th>Where</th><th>What to Set</th><th>Value</th></tr></thead>
     <tbody>
-      <tr><td>Pi <code>~/.bashrc</code> (in robocar_docker)</td><td><code>-e ROS_DOMAIN_ID=N</code></td><td>Your team number</td></tr>
-      <tr><td>Container <code>~/.bashrc</code></td><td><code>export ROS_DOMAIN_ID=N</code></td><td>Your team number</td></tr>
+      <tr><td>Pi <code>~/.bashrc</code> (inside robocar_docker function)</td><td><code>-e ROS_DOMAIN_ID=N</code></td><td>Your team number (not 0)</td></tr>
+      <tr><td>Container <code>~/.bashrc</code></td><td><code>export ROS_DOMAIN_ID=N</code></td><td>Your team number (not 0)</td></tr>
       <tr><td>Container <code>~/.bashrc</code> (optional)</td><td><code>export ROS_NAMESPACE=teamNN</code></td><td>Your team identifier string</td></tr>
-      <tr><td>Verify (every lab session)</td><td><code>echo $ROS_DOMAIN_ID</code></td><td>Must match your team number, not empty or 0</td></tr>
+      <tr><td>Verify at the start of every lab session</td><td><code>echo $ROS_DOMAIN_ID</code></td><td>Must match your team number — not empty and not 0</td></tr>
     </tbody>
   </table></div>
-  <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">Quick Lab Sanity Check</div><div class="callout-text">Before every calibration session, open a terminal and run <code>echo $ROS_DOMAIN_ID</code>. If it shows empty or <code>0</code>, your isolation is not active. Any calibration you perform could be affecting a different team's robot.</div></div></div>
+  <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">Quick Lab Sanity Check</div><div class="callout-text">Before every calibration session, open a terminal inside Docker and run <code>echo $ROS_DOMAIN_ID</code>. If it prints empty or <code>0</code>, isolation is not active and any calibration changes you make could be affecting a different team's robot.</div></div></div>
 </section>
 
-<!-- §10 — Config Overview -->
+<!-- ══════════════════════════════════════════════════
+     §10 — Config Overview
+══════════════════════════════════════════════════ -->
 <div class="section-anchor" id="s10"></div>
 <section class="section">
   <div class="sec-header">
     <span class="sec-num">10</span>
     <div class="sec-title-block">
-      <h2>Calibration Overview & Config Files</h2>
+      <h2>Calibration Overview &amp; Config Files</h2>
       <div class="sec-subtitle">Understand the YAML configuration system before starting calibration</div>
     </div>
   </div>
-  <p>All calibration parameters, hardware selections, and node activation flags live in YAML files that ROS2 reads at launch time. Understanding which file controls what prevents the most common calibration mistakes.</p>
+
+  <p>All calibration parameters, hardware selections, and node activation flags live in YAML files that ROS2 reads at launch time. Understanding which file controls what prevents the most common calibration mistakes. All config files are located inside the Docker container.</p>
+
   <div class="tw"><table>
-    <thead><tr><th>File</th><th>Controls</th><th>Path</th></tr></thead>
+    <thead><tr><th>File</th><th>Controls</th><th>Full Path Inside Docker</th></tr></thead>
     <tbody>
-      <tr><td><code>node_config.yaml</code></td><td>Which ROS2 nodes are launched (calibration GUI on/off, autonomous nav on/off)</td><td><code>ucsd_robocar_nav2_pkg/config/</code></td></tr>
-      <tr><td><code>car_config.yaml</code></td><td>Which hardware is active (camera model, motor controller type)</td><td><code>ucsd_robocar_nav2_pkg/config/</code></td></tr>
-      <tr><td><code>ros_racer_calibration.yaml</code></td><td>PID gains, throttle limits, steering limits, error threshold</td><td><code>ucsd_robocar_lane_detection2_pkg/config/</code></td></tr>
+      <tr><td><code>node_config.yaml</code></td><td>Which ROS2 nodes are launched — calibration GUI on/off, autonomous navigation on/off</td><td><code>/home/projects/ros2_ws/src/ucsd_robocar_hub2/ucsd_robocar_nav2_pkg/config/node_config.yaml</code></td></tr>
+      <tr><td><code>car_config.yaml</code></td><td>Which hardware is active — camera model, motor controller type</td><td><code>/home/projects/ros2_ws/src/ucsd_robocar_hub2/ucsd_robocar_nav2_pkg/config/car_config.yaml</code></td></tr>
+      <tr><td><code>ros_racer_calibration.yaml</code></td><td>PID gains, throttle limits, steering limits, error threshold</td><td><code>/home/projects/ros2_ws/src/ucsd_robocar_hub2/ucsd_robocar_lane_detection2_pkg/config/ros_racer_calibration.yaml</code></td></tr>
     </tbody>
   </table></div>
-  <h3>Calibration Mode — Enable GUI</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">node_config.yaml</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="v">all_components</span>:          1
-<span class="v">camera_nav_calibration</span>:  1   <span class="c"># ENABLE calibration GUI sliders</span>
-<span class="v">sensor_visualization</span>:    1   <span class="c"># Enable for LiDAR visualization</span>
-<span class="v">camera_nav</span>:              0   <span class="c"># DISABLE autonomous nav during calibration</span></pre></div>
-  <div class="cb"><div class="cb-header"><span class="cb-label">car_config.yaml — same for both modes</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="v">oakd</span>:              1   <span class="c"># Enable OAK-D camera</span>
-<span class="v">vesc_without_odom</span>: 1   <span class="c"># Enable VESC (no odometry feedback needed)</span></pre></div>
-  <h3>Navigation Mode — After All Calibrations Complete</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">node_config.yaml</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="v">all_components</span>:          1
-<span class="v">camera_nav_calibration</span>:  0   <span class="c"># DISABLE calibration GUI</span>
-<span class="v">sensor_visualization</span>:    0   <span class="c"># Disable (saves CPU)</span>
-<span class="v">camera_nav</span>:              1   <span class="c"># ENABLE autonomous driving</span></pre></div>
-  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">YAML Changes Require build_ros2</div><div class="callout-text">Running <code>source_ros2</code> alone does NOT apply YAML changes. You must run <code>build_ros2</code> after every YAML edit. This is the single most common mistake students make — they edit the config but wonder why nothing changed.</div></div></div>
+
+  <h3>Calibration Mode — Enable the GUI</h3>
+  <p>Use this configuration when performing any of the calibrations in Sections 11–13. Open the file with the command below and set the values shown.</p>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker — open node_config.yaml</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">nano</span> /home/projects/ros2_ws/src/ucsd_robocar_hub2/ucsd_robocar_nav2_pkg/config/node_config.yaml</pre></div>
+  <div class="cb"><div class="cb-header"><span class="cb-label">node_config.yaml — calibration mode values</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="v">all_components</span>:          1
+<span class="v">camera_nav_calibration</span>:  1   <span class="c"># ENABLE — opens the calibration slider GUI</span>
+<span class="v">sensor_visualization</span>:    1   <span class="c"># Enable for LiDAR visualization (set to 0 if not using LiDAR)</span>
+<span class="v">camera_nav</span>:              0   <span class="c"># DISABLE — autonomous driving must be off during calibration</span></pre></div>
+
+  <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker — open car_config.yaml</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">nano</span> /home/projects/ros2_ws/src/ucsd_robocar_hub2/ucsd_robocar_nav2_pkg/config/car_config.yaml</pre></div>
+  <div class="cb"><div class="cb-header"><span class="cb-label">car_config.yaml — hardware settings (same for both calibration and navigation)</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="v">oakd</span>:              1   <span class="c"># Enable the OAK-D camera</span>
+<span class="v">vesc_without_odom</span>: 1   <span class="c"># Enable VESC motor controller (no odometry feedback needed)</span></pre></div>
+
+  <h3>Navigation Mode — After All Calibrations Are Complete</h3>
+  <p>Switch to this configuration when you are ready to run the car autonomously on the track.</p>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker — open node_config.yaml</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">nano</span> /home/projects/ros2_ws/src/ucsd_robocar_hub2/ucsd_robocar_nav2_pkg/config/node_config.yaml</pre></div>
+  <div class="cb"><div class="cb-header"><span class="cb-label">node_config.yaml — navigation mode values</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="v">all_components</span>:          1
+<span class="v">camera_nav_calibration</span>:  0   <span class="c"># DISABLE — calibration GUI is not needed during racing</span>
+<span class="v">sensor_visualization</span>:    0   <span class="c"># DISABLE — saves CPU cycles for the control loop</span>
+<span class="v">camera_nav</span>:              1   <span class="c"># ENABLE — activates autonomous lane following</span></pre></div>
+
+  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">YAML Changes Always Require build_ros2</div><div class="callout-text">Running <code>source_ros2</code> alone does <strong>not</strong> apply YAML changes. You must run <code>build_ros2</code> after every YAML edit for changes to take effect. This is the single most common mistake — editing the config but seeing no change because the workspace was not rebuilt.</div></div></div>
+
+  <h3>Calibration Workflow — Start to Finish</h3>
+  <p>Follow this sequence every time you calibrate. The launch command opens all GUI windows at once (HSV sliders, line detection view, actuator controls). Make your adjustments, then stop the launch, switch to navigation mode, and tune PID on the track.</p>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Set Calibration Mode &amp; Build</div>
+        <div class="step-desc">Ensure <code>camera_nav_calibration: 1</code> and <code>camera_nav: 0</code> are set in <code>node_config.yaml</code> (see above), then rebuild so the changes take effect.</div>
+        <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">build_ros2</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Launch All Calibration GUIs</div>
+        <div class="step-desc">This single command starts every node and opens all calibration windows on your laptop via X11 — the HSV color mask, line detection view, error threshold bars, and actuator sliders all appear at once.</div>
+        <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">ros2 launch</span> ucsd_robocar_nav2_pkg all_nodes.launch.py</pre></div>
+        <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">This Command Blocks</div><div class="callout-text">The terminal will be occupied while the launch is running. Open a second terminal with <code>docker exec -it MY_CONTAINER_NAME bash</code> if you need to run other commands at the same time.</div></div></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Adjust All GUI Sliders</div>
+        <div class="step-desc">Work through Sections 11, 12, and 13 in order: first tune HSV color detection, then line/lane parameters, then steering and throttle limits. Changes made in the GUI are written back to the YAML files automatically when you adjust a slider.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">Stop the Launch &amp; Switch to Navigation Mode</div>
+        <div class="step-desc">When calibration is complete, press <strong>Ctrl+C</strong> in the launch terminal to stop all nodes. Then open <code>node_config.yaml</code>, set <code>camera_nav_calibration: 0</code> and <code>camera_nav: 1</code>, and rebuild.</div>
+        <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Stop the calibration launch with Ctrl+C, then:</span>
+<span class="k">nano</span> /home/projects/ros2_ws/src/ucsd_robocar_hub2/ucsd_robocar_nav2_pkg/config/node_config.yaml
+<span class="c"># Set: camera_nav_calibration: 0  and  camera_nav: 1</span>
+<span class="k">build_ros2</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title">Place Car on Track &amp; Tune PID</div>
+        <div class="step-desc">Launch in navigation mode, observe how the car behaves, then adjust PID gains in <code>ros_racer_calibration.yaml</code> (Section 13) as needed. Rebuild after each change. Repeat until the car follows the lane smoothly.</div>
+        <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">ros2 launch</span> ucsd_robocar_nav2_pkg all_nodes.launch.py</pre></div>
+      </div>
+    </div>
+
+  </div>
 </section>
 
-<!-- §11 — Color Calibration -->
+<!-- ══════════════════════════════════════════════════
+     §11 — Color / HSV Calibration
+══════════════════════════════════════════════════ -->
 <div class="section-anchor" id="s11"></div>
 <section class="section">
   <div class="sec-header">
@@ -988,59 +1098,62 @@ source /opt/ros/foxy/setup.bash 2&gt;/dev/null</pre></div>
       <div class="sec-subtitle">Isolate road markers from the camera feed using HSV color filtering</div>
     </div>
   </div>
-  <p>The lane detection pipeline converts each camera frame to HSV (Hue, Saturation, Value) color space and applies a threshold. Pixels whose HSV values fall within your specified range become white (detected road markers); everything else becomes black (background). Tuning these ranges correctly for your specific track lighting is essential for reliable lane following.</p>
+
+  <p>The lane detection pipeline converts each camera frame to HSV (Hue, Saturation, Value) color space and applies a threshold. Pixels whose HSV values fall within your specified range appear white (detected road markers); everything else appears black (background). Tuning these ranges correctly for your track's specific lighting conditions is essential for reliable lane following. Lighting conditions can change throughout the day, so re-tuning before a run is common.</p>
 
   <figure>
     <div class="fig-wrap"><img src="images/fig_hsv_chart.png" alt="HSV color spectrum showing Hue 0-180 in OpenCV" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 11.1</span> HSV Hue spectrum (0–180 in OpenCV). Red=0, Yellow≈30, Green≈60, Blue≈120. Divide standard 360° hue values by 2 for OpenCV. <span class="fig-key">images/fig_hsv_chart.png</span></figcaption>
+    <figcaption><span class="fig-label">Fig 11.1</span> HSV Hue spectrum (0–180 in OpenCV). Red=0, Yellow≈30, Green≈60, Blue≈120. Note: OpenCV uses a 0–180 range for Hue instead of the standard 0–360 — divide any standard hue value by 2 when entering it here.</figcaption>
   </figure>
 
   <div class="tw"><table>
-    <thead><tr><th>Channel</th><th>Range</th><th>Low Extreme</th><th>High Extreme</th></tr></thead>
+    <thead><tr><th>Channel</th><th>Range</th><th>Low Extreme Means</th><th>High Extreme Means</th></tr></thead>
     <tbody>
       <tr><td><strong>Hue (H)</strong></td><td>0–180 (OpenCV)</td><td>Red tones (0)</td><td>Cycles back through violet to red (180)</td></tr>
-      <tr><td><strong>Saturation (S)</strong></td><td>0–255</td><td>White / desaturated gray (0)</td><td>Pure, vivid, saturated color (255)</td></tr>
+      <tr><td><strong>Saturation (S)</strong></td><td>0–255</td><td>White / desaturated gray (0 = no color)</td><td>Pure, vivid, fully saturated color (255)</td></tr>
       <tr><td><strong>Value (V)</strong></td><td>0–255</td><td>Black / very dark (0)</td><td>Bright, fully lit color (255)</td></tr>
     </tbody>
   </table></div>
 
   <figure>
-    <div class="fig-wrap"><img src="images/fig_mask_default.png" alt="Default HSV mask sliders" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 11.2</span> Default slider values (lowH=0, highH=179, all S and V at extremes) — the entire image passes through as white. <span class="fig-key">images/fig_mask_default.png</span></figcaption>
+    <div class="fig-wrap"><img src="images/fig_mask_default.png" alt="Default HSV mask — full white image" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 11.2</span> Default slider values (lowH=0, highH=179, all S and V at extremes) — the entire image passes through the filter and appears white. No useful detection is possible from this starting point.</figcaption>
   </figure>
 
   <figure>
-    <div class="fig-wrap"><img src="images/fig_mask_yellow.png" alt="HSV mask tuned for yellow road dots" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 11.3</span> Tuned for yellow road dots: lowH=25, highH=35, lowS≈56, lowV≈112. Only the yellow dashes appear white. <span class="fig-key">images/fig_mask_yellow.png</span></figcaption>
+    <div class="fig-wrap"><img src="images/fig_mask_yellow.png" alt="HSV mask tuned to isolate yellow road dots" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 11.3</span> Tuned for yellow road dots: lowH=25, highH=35, lowS≈56, lowV≈112. Only the yellow lane markers appear white; the rest of the image is black.</figcaption>
   </figure>
 
   <h3>Step-by-Step Tuning Procedure</h3>
   <div class="steps">
-    <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Launch calibration GUI</div><div class="step-desc">Run <code>build_ros2</code> then <code>ros2 launch ucsd_robocar_nav2_pkg all_nodes.launch.py</code>. The mask window will open on your laptop via X11.</div></div></div>
-    <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Set the Hue Range</div><div class="step-desc">For yellow road dots, set <code>lowH=25</code> and <code>highH=35</code>. For white lanes with inverted filter, keep wide Hue range and enable <code>inverted_filter=1</code>.</div></div></div>
-    <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Tune Saturation (lowS)</div><div class="step-desc">Raise <code>lowS</code> to ~50–80 to filter out desaturated grays and whites in the background. If the yellow road dots start disappearing, lower it until they reappear.</div></div></div>
-    <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Tune Value (lowV)</div><div class="step-desc">Raise <code>lowV</code> to ~80–120 to eliminate dark shadow noise. If shadowed portions of yellow markers disappear, lower it to include darker shades.</div></div></div>
-    <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Remove Remaining Speckle Noise</div><div class="step-desc">Use <strong>gray_thresh</strong> (eliminates near-gray pixels), <strong>erosion_iterations</strong> (shrinks pixel blobs — removes small noise), and <strong>dilation_iterations</strong> (expands blobs back — restores valid markers after erosion).</div></div></div>
+    <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Launch the Calibration GUI</div><div class="step-desc">Ensure <code>camera_nav_calibration: 1</code> is set in <code>node_config.yaml</code> (Section 10), then run <code>build_ros2</code> followed by <code>ros2 launch ucsd_robocar_nav2_pkg all_nodes.launch.py</code>. The color mask window will open on your laptop via X11.</div></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Set the Hue Range</div><div class="step-desc">For yellow road dots, set <code>lowH=25</code> and <code>highH=35</code>. For white lane lines, keep a wide Hue range (0–180) and enable <code>inverted_filter=1</code> to detect the absence of color rather than a specific hue.</div></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Tune Saturation (lowS)</div><div class="step-desc">Raise <code>lowS</code> to approximately 50–80 to filter out desaturated grays and near-white patches in the road surface. If the yellow road markers start disappearing, lower the value until they reappear.</div></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Tune Value (lowV)</div><div class="step-desc">Raise <code>lowV</code> to approximately 80–120 to eliminate dark shadow noise on the track. If shadowed portions of the yellow markers disappear, lower the value slightly until they are included again.</div></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Remove Remaining Speckle Noise</div><div class="step-desc">Use <strong>gray_thresh</strong> to eliminate near-gray pixels. Use <strong>erosion_iterations</strong> to shrink pixel blobs (removes small noise dots). Use <strong>dilation_iterations</strong> to expand the remaining blobs back to their original size after erosion (restores valid markers that erosion may have partially removed).</div></div></div>
   </div>
 
   <figure>
     <div class="fig-wrap"><img src="images/fig_bw_calibration.png" alt="Noise reduction calibration sliders" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 11.4</span> Noise reduction sliders. The preview shows a single clean white rectangle (road marker) against a black background after proper tuning. <span class="fig-key">images/fig_bw_calibration.png</span></figcaption>
+    <figcaption><span class="fig-label">Fig 11.4</span> Noise reduction sliders. The preview should show clean white rectangles (road markers) against a solid black background after proper tuning.</figcaption>
   </figure>
 
   <h3>Color Quick Reference</h3>
   <div class="tw"><table>
     <thead><tr><th>Target Color</th><th>lowH</th><th>highH</th><th>Strategy</th></tr></thead>
     <tbody>
-      <tr><td>Yellow center dots</td><td>25</td><td>35</td><td>Primary target. Direct filtering.</td></tr>
-      <tr><td>White lane lines</td><td>0</td><td>180</td><td>Set <code>inverted_filter=1</code>, tune S and V to exclude road gray.</td></tr>
-      <tr><td>Orange cones</td><td>10</td><td>20</td><td>May vary — adjust for your specific cone color under lab lighting.</td></tr>
-      <tr><td>Red stop line</td><td>0–10 or 165–179</td><td>Wrap-around</td><td>Red wraps around H=0/180. May need two separate filter passes.</td></tr>
+      <tr><td>Yellow center dots</td><td>25</td><td>35</td><td>Primary target for most tracks. Direct Hue filtering.</td></tr>
+      <tr><td>White lane lines</td><td>0</td><td>180</td><td>Set <code>inverted_filter=1</code>, then tune S and V to exclude the gray road surface.</td></tr>
+      <tr><td>Orange cones</td><td>10</td><td>20</td><td>May vary with your specific cones and lighting — adjust accordingly.</td></tr>
+      <tr><td>Red stop line</td><td>0–10 or 165–179</td><td>Wrap-around</td><td>Red wraps around H=0/180 in OpenCV. You may need two separate filter passes.</td></tr>
     </tbody>
   </table></div>
 </section>
 
-<!-- §12 — Line / Lane -->
+<!-- ══════════════════════════════════════════════════
+     §12 — Line / Lane Calibration
+══════════════════════════════════════════════════ -->
 <div class="section-anchor" id="s12"></div>
 <section class="section">
   <div class="sec-header">
@@ -1050,122 +1163,130 @@ source /opt/ros/foxy/setup.bash 2&gt;/dev/null</pre></div>
       <div class="sec-subtitle">Configure contour filtering, error threshold, and camera alignment</div>
     </div>
   </div>
-  <p>After the HSV filter produces a binary black-and-white image, the lane detection algorithm finds contours (groups of connected white pixels), measures their widths, and computes a centroid position. This section configures how those contours are selected and how the centroid translates into a steering error signal.</p>
+
+  <p>After the HSV filter produces a binary black-and-white image, the lane detection algorithm finds contours (groups of connected white pixels), measures their widths, and computes a centroid position. This centroid represents where the robot thinks the lane center is. This section configures how those contours are selected and how the centroid position is translated into a steering error signal for the PID controller.</p>
 
   <figure>
-    <div class="fig-wrap"><img src="images/fig_line_calibration.png" alt="Line calibration view" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 12.1</span> Line calibration view: green segments = valid detected lines, blue dot = computed centroid, green vertical bar = camera centerline reference. <span class="fig-key">images/fig_line_calibration.png</span></figcaption>
+    <div class="fig-wrap"><img src="images/fig_line_calibration.png" alt="Line calibration view with detected markers" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 12.1</span> Line calibration view: green segments are valid detected lane markers, the blue dot is the computed centroid, and the green vertical bar is the camera centerline reference.</figcaption>
   </figure>
 
   <div class="tw"><table>
     <thead><tr><th>Parameter</th><th>Effect</th><th>Starting Value</th></tr></thead>
     <tbody>
-      <tr><td><code>min_width</code></td><td>Minimum pixel width for a contour to be accepted as a valid road marker. Eliminates thin, distant lines.</td><td>15</td></tr>
-      <tr><td><code>max_width</code></td><td>Maximum pixel width. Filters out very wide blobs (road surface, shadows, other large objects).</td><td>200</td></tr>
-      <tr><td><code>number_of_lines</code></td><td>How many valid line segments to include in the centroid calculation. More lines = more stable on straights, harder to tune on curves.</td><td>3–4</td></tr>
+      <tr><td><code>min_width</code></td><td>Minimum pixel width for a contour to be accepted as a valid road marker. Eliminates thin, distant, or noisy lines.</td><td>15</td></tr>
+      <tr><td><code>max_width</code></td><td>Maximum pixel width. Filters out very wide blobs such as road surface color, shadows, or large off-track objects.</td><td>200</td></tr>
+      <tr><td><code>number_of_lines</code></td><td>How many valid line segments to include in the centroid calculation. More lines produce a more stable reading on straight sections but can be harder to tune on tight curves.</td><td>3–4</td></tr>
     </tbody>
   </table></div>
 
   <h3>Error Threshold — The Dead Band</h3>
   <figure>
-    <div class="fig-wrap"><img src="images/fig_error_threshold.png" alt="Error threshold red vertical bars" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 12.2</span> The two red vertical bars define the error threshold dead band. Lines within this zone produce zero steering correction. Lines outside it trigger PID response. <span class="fig-key">images/fig_error_threshold.png</span></figcaption>
+    <div class="fig-wrap"><img src="images/fig_error_threshold.png" alt="Error threshold dead band shown as red vertical bars" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 12.2</span> The two red vertical bars define the error threshold dead band. When the lane centroid falls between these bars, the error is treated as zero and no steering correction is applied.</figcaption>
   </figure>
-  <p>The error threshold defines a "dead band" around the camera centerline. If the computed lane centroid falls within this zone, the robot considers the error as zero and makes no steering correction. This prevents constant micro-corrections on straight roads.</p>
+
+  <p>The error threshold defines a "dead band" around the camera centerline. If the computed lane centroid falls within this zone, the robot treats the error as zero and makes no steering correction. This prevents constant micro-corrections on straight sections of the track.</p>
+
   <div class="tw"><table>
-    <thead><tr><th>Scenario</th><th>Too Wide Threshold</th><th>Too Narrow Threshold</th></tr></thead>
+    <thead><tr><th>Scenario</th><th>Threshold Too Wide</th><th>Threshold Too Narrow</th></tr></thead>
     <tbody>
-      <tr><td><strong>Straight Road</strong></td><td>Robot doesn't correct small drifts → gradually wanders off-center</td><td>Constant micro-corrections → jittery, oscillating steering</td></tr>
-      <tr><td><strong>Curved Road</strong></td><td>Robot reacts to distant markers → smoother, more predictive cornering</td><td>Robot reacts to nearby markers → tighter, more aggressive turns</td></tr>
+      <tr><td><strong>Straight Road</strong></td><td>Small drifts go uncorrected → the car gradually wanders off center</td><td>Constant micro-corrections → jittery, oscillating steering</td></tr>
+      <tr><td><strong>Curved Road</strong></td><td>Reacts to markers further ahead → smoother, more anticipatory cornering</td><td>Reacts to the nearest markers → tighter, more aggressive turn response</td></tr>
     </tbody>
   </table></div>
 
-  <h3>Camera Alignment & Cropping</h3>
+  <h3>Camera Alignment &amp; Cropping</h3>
   <figure>
-    <div class="fig-wrap"><img src="images/fig_camera_align.png" alt="Camera centerline alignment" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 12.3</span> Camera alignment view: green bar = zero-error centerline reference (align to car physical center), red bars = error threshold bounds. <span class="fig-key">images/fig_camera_align.png</span></figcaption>
+    <div class="fig-wrap"><img src="images/fig_camera_align.png" alt="Camera centerline alignment view" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 12.3</span> Camera alignment view: the green bar marks the zero-error centerline reference (align this to the car's physical center), and the red bars show the error threshold bounds.</figcaption>
   </figure>
+
   <div class="tw"><table>
     <thead><tr><th>Parameter</th><th>Effect</th></tr></thead>
     <tbody>
-      <tr><td><code>camera_centerline</code></td><td>Sets the position of the green zero-error reference bar. Place a ruler along the car's physical centerline and move this slider until the green bar aligns with the ruler.</td></tr>
-      <tr><td><code>frame_width</code></td><td>Crops the image horizontally. Reduces the number of columns analyzed. Useful for ignoring room walls and off-track objects at the edges.</td></tr>
-      <tr><td><code>rows_to_watch</code></td><td>Crops the image vertically. Controls how many rows (from the bottom up) the algorithm searches. Smaller = only immediate road ahead. Larger = looks further forward.</td></tr>
-      <tr><td><code>rows_offset</code></td><td>Shifts the vertical crop window up or down. Higher offset = the car "looks" further ahead down the road, useful for anticipating curves earlier.</td></tr>
+      <tr><td><code>camera_centerline</code></td><td>Sets the position of the green zero-error reference bar. Place a ruler along the car's physical centerline and adjust this slider until the green bar aligns with the ruler.</td></tr>
+      <tr><td><code>frame_width</code></td><td>Crops the image horizontally, reducing the number of columns analyzed. Useful for ignoring room walls and off-track objects at the edges of the frame.</td></tr>
+      <tr><td><code>rows_to_watch</code></td><td>Crops the image vertically. Controls how many rows from the bottom of the frame the algorithm searches. A smaller value focuses only on road immediately in front of the car; a larger value looks further ahead.</td></tr>
+      <tr><td><code>rows_offset</code></td><td>Shifts the vertical crop window up or down. A higher offset makes the car "look" further down the road, which is useful for anticipating curves earlier at higher speeds.</td></tr>
     </tbody>
   </table></div>
 </section>
 
-<!-- §13 — Actuator & PID -->
+<!-- ══════════════════════════════════════════════════
+     §13 — Actuator & PID
+══════════════════════════════════════════════════ -->
 <div class="section-anchor" id="s13"></div>
 <section class="section">
   <div class="sec-header">
     <span class="sec-num">13</span>
     <div class="sec-title-block">
-      <h2>Actuator Calibration (PID & Throttle)</h2>
+      <h2>Actuator Calibration (PID &amp; Throttle)</h2>
       <div class="sec-subtitle">Set servo limits, throttle schedule, and PID controller gains</div>
     </div>
   </div>
 
   <figure>
-    <div class="fig-wrap"><img src="images/fig_throttle_steering.png" alt="Throttle and steering calibration GUI" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 13.1</span> Actuator calibration GUI. Set steering physical limits first (modes 0/1/2), then throttle limits, then fine-tune PID gains. <span class="fig-key">images/fig_throttle_steering.png</span></figcaption>
+    <div class="fig-wrap"><img src="images/fig_throttle_steering.png" alt="Throttle and steering calibration GUI sliders" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 13.1</span> Actuator calibration GUI. Set steering physical limits first (modes 0, 1, 2 in order), then throttle limits, then fine-tune PID gains.</figcaption>
   </figure>
 
-  <h3>Steering Physical Limits (Set First)</h3>
+  <h3>Steering Physical Limits (Set This First)</h3>
   <div class="tw"><table>
     <thead><tr><th>Mode</th><th>Sets</th><th>Procedure</th></tr></thead>
     <tbody>
-      <tr><td><strong>Steering_mode = 0</strong></td><td>Maximum LEFT steering limit</td><td>Adjust <code>Steering_value</code> until front wheels reach mechanical full-left stop. Switch to Mode 1 — this saves Mode 0's value.</td></tr>
-      <tr><td><strong>Steering_mode = 1</strong></td><td>STRAIGHT (zero error) steering value</td><td>Drive car on flat surface. Adjust until it tracks perfectly straight. This is the PID setpoint at zero error.</td></tr>
-      <tr><td><strong>Steering_mode = 2</strong></td><td>Maximum RIGHT steering limit</td><td>Adjust until front wheels reach mechanical full-right stop. Switch to Mode 0 to save Mode 2's value.</td></tr>
+      <tr><td><strong>Steering_mode = 0</strong></td><td>Maximum LEFT steering limit</td><td>Adjust <code>Steering_value</code> until the front wheels reach their mechanical full-left stop. Then switch to Mode 1 — the current value is saved automatically when you switch.</td></tr>
+      <tr><td><strong>Steering_mode = 1</strong></td><td>STRAIGHT (zero error) steering value</td><td>Drive the car on a flat surface. Adjust until it tracks perfectly straight with no steering input. This becomes the PID setpoint when error is zero.</td></tr>
+      <tr><td><strong>Steering_mode = 2</strong></td><td>Maximum RIGHT steering limit</td><td>Adjust until the front wheels reach their mechanical full-right stop. Then switch back to Mode 0 to save Mode 2's value.</td></tr>
     </tbody>
   </table></div>
-  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">Save-on-Switch Behavior</div><div class="callout-text">Values are saved to the YAML file at the moment you switch modes, not when you close the GUI. The value saved is whatever the slider shows when you switch. Example: set Mode_0 slider to 1250, switch to Mode_1 → 1250 is saved for Mode_0.</div></div></div>
+
+  <div class="callout info"><div class="callout-icon">ℹ</div><div class="callout-body"><div class="callout-title">Values Are Saved When You Switch Modes</div><div class="callout-text">Values are written to the YAML file at the moment you switch modes, not when you close the GUI. The value saved is whatever the slider shows at the time you switch. For example: set the Mode 0 slider to 1250, then switch to Mode 1 — 1250 is saved for Mode 0.</div></div></div>
 
   <h3>Throttle Limits</h3>
   <div class="tw"><table>
     <thead><tr><th>Mode</th><th>Sets</th><th>Procedure</th></tr></thead>
     <tbody>
-      <tr><td><strong>Throttle_mode = 0</strong></td><td>zero_throttle (neutral/stopped)</td><td>Find the value where the VESC makes no sound and the car doesn't move. This is your neutral PWM value.</td></tr>
-      <tr><td><strong>Throttle_mode = 1</strong></td><td>max_throttle (full speed)</td><td>Increase in small increments only. Use a prop stand with wheels off the ground. Typical values: 0.38–0.42.</td></tr>
-      <tr><td><strong>Throttle_mode = 2</strong></td><td>min_throttle (creep speed)</td><td>Find the minimum value that actually moves the car forward on your track surface. Just above stall.</td></tr>
+      <tr><td><strong>Throttle_mode = 0</strong></td><td>zero_throttle (neutral / stopped)</td><td>Find the value at which the VESC makes no sound and the car does not move. This is your neutral PWM value.</td></tr>
+      <tr><td><strong>Throttle_mode = 1</strong></td><td>max_throttle (full speed)</td><td>Increase in small increments only. Use a prop stand with wheels off the ground for safety. Typical values: 0.38–0.42.</td></tr>
+      <tr><td><strong>Throttle_mode = 2</strong></td><td>min_throttle (minimum moving speed)</td><td>Find the minimum value that actually moves the car forward on your track surface — just above the stall point.</td></tr>
     </tbody>
   </table></div>
 
   <figure>
-    <div class="fig-wrap"><img src="images/fig_system_response.png" alt="System response throttle scheduling plot" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 13.2</span> Throttle scheduling: car runs at max_throttle when tracking error is low (straight), and decreases linearly to min_throttle when error is high (sharp curve). <span class="fig-key">images/fig_system_response.png</span></figcaption>
+    <div class="fig-wrap"><img src="images/fig_system_response.png" alt="Throttle scheduling diagram" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 13.2</span> Throttle scheduling: the car runs at max_throttle when the lane tracking error is low (straight sections) and decreases linearly to min_throttle as error increases (sharp curves).</figcaption>
   </figure>
 
   <h3>PID Steering Gains</h3>
   <div class="tw"><table>
-    <thead><tr><th>Gain</th><th>Tuning Effect</th><th>Typical Start</th></tr></thead>
+    <thead><tr><th>Gain</th><th>Tuning Effect</th><th>Typical Starting Value</th></tr></thead>
     <tbody>
-      <tr><td><strong>Kp_steering</strong> (Proportional)</td><td>Direct response to current error magnitude. Too low = sluggish, slow to correct. Too high = oscillates left-right.</td><td>0.3 – 0.5</td></tr>
-      <tr><td><strong>Ki_steering</strong> (Integral)</td><td>Corrects accumulated steady-state error (car always drifts one direction). Too high = windup, instability.</td><td>0.0 – 0.05</td></tr>
-      <tr><td><strong>Kd_steering</strong> (Derivative)</td><td>Dampens oscillation by reacting to how fast error is changing. Too high = jerky, oversensitive steering.</td><td>0.05 – 0.2</td></tr>
+      <tr><td><strong>Kp_steering</strong> (Proportional)</td><td>Direct response to the current error magnitude. Too low = sluggish, slow to correct. Too high = oscillates left and right rapidly.</td><td>0.3 – 0.5</td></tr>
+      <tr><td><strong>Ki_steering</strong> (Integral)</td><td>Corrects accumulated steady-state error (e.g., the car consistently drifts one direction on a straight). Too high = integrator windup and instability.</td><td>0.0 – 0.05</td></tr>
+      <tr><td><strong>Kd_steering</strong> (Derivative)</td><td>Dampens oscillation by reacting to how quickly the error is changing. Too high = jerky, oversensitive steering reactions.</td><td>0.05 – 0.2</td></tr>
     </tbody>
   </table></div>
 
-  <h3>Manual YAML Edit (More Precise than GUI)</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">nano</span> /home/projects/ros2_ws/src/ucsd_robocar_hub2/ucsd_robocar_lane_detection2_pkg/config/ros_racer_calibration.yaml</pre></div>
-  <div class="cb"><div class="cb-header"><span class="cb-label">ros_racer_calibration.yaml — reference values</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre>lane_guidance_node:
+  <h3>Manual YAML Edit (More Precise than the GUI)</h3>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker — open calibration YAML</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">nano</span> /home/projects/ros2_ws/src/ucsd_robocar_hub2/ucsd_robocar_lane_detection2_pkg/config/ros_racer_calibration.yaml</pre></div>
+
+  <div class="cb"><div class="cb-header"><span class="cb-label">ros_racer_calibration.yaml — reference starting values</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre>lane_guidance_node:
   ros__parameters:
-    <span class="v">Kp_steering</span>:        <span class="v">0.4</span>    <span class="c"># Start here — tune up if sluggish, down if oscillating</span>
-    <span class="v">Ki_steering</span>:        <span class="v">0.01</span>   <span class="c"># Keep near zero unless persistent drift occurs</span>
+    <span class="v">Kp_steering</span>:        <span class="v">0.4</span>    <span class="c"># Start here — increase if sluggish, decrease if oscillating</span>
+    <span class="v">Ki_steering</span>:        <span class="v">0.01</span>   <span class="c"># Keep near zero unless the car has a persistent one-sided drift</span>
     <span class="v">Kd_steering</span>:        <span class="v">0.1</span>    <span class="c"># Increase to dampen oscillation</span>
     <span class="v">zero_throttle</span>:      <span class="v">0</span>
-    <span class="v">max_throttle</span>:       <span class="v">0.382</span>  <span class="c"># Moderate speed — increase carefully</span>
-    <span class="v">min_throttle</span>:       <span class="v">0.363</span>  <span class="c"># Minimum to overcome static friction on track</span>
+    <span class="v">max_throttle</span>:       <span class="v">0.382</span>  <span class="c"># Moderate speed — increase carefully after verifying straight tracking</span>
+    <span class="v">min_throttle</span>:       <span class="v">0.363</span>  <span class="c"># Minimum to overcome static friction on your track surface</span>
     <span class="v">error_threshold</span>:    <span class="v">0.15</span>   <span class="c"># Dead band (0–1 normalized error scale)</span>
     <span class="v">max_right_steering</span>: <span class="v">1</span>
     <span class="v">max_left_steering</span>:  <span class="v">-1</span>
 
 vesc_twist_node:
   ros__parameters:
-    <span class="v">steering_polarity</span>:  <span class="v">1</span>       <span class="c"># Flip to -1 if steering direction is reversed</span>
-    <span class="v">throttle_polarity</span>:  <span class="v">1</span>       <span class="c"># Flip to -1 if car drives backward</span>
+    <span class="v">steering_polarity</span>:  <span class="v">1</span>       <span class="c"># Change to -1 if steering direction is reversed</span>
+    <span class="v">throttle_polarity</span>:  <span class="v">1</span>       <span class="c"># Change to -1 if the car drives backward instead of forward</span>
     <span class="v">max_potential_rpm</span>:  <span class="v">20000</span>
     <span class="v">zero_throttle</span>:      <span class="v">0</span>
     <span class="v">max_throttle</span>:       <span class="v">0.382</span>
@@ -1173,60 +1294,69 @@ vesc_twist_node:
     <span class="v">straight_steering</span>:  <span class="v">0</span>
     <span class="v">max_right_steering</span>: <span class="v">1</span>
     <span class="v">max_left_steering</span>:  <span class="v">-1</span></pre></div>
+
+  <div class="callout warn"><div class="callout-icon">⚠</div><div class="callout-body"><div class="callout-title">Run build_ros2 After Editing the YAML</div><div class="callout-text">After saving changes to <code>ros_racer_calibration.yaml</code>, you must run <code>build_ros2</code> inside the Docker container for the changes to take effect. Simply saving the file is not enough.</div></div></div>
 </section>
 
-<!-- §14 — Camera Navigation -->
+<!-- ══════════════════════════════════════════════════
+     §14 — Camera Navigation
+══════════════════════════════════════════════════ -->
 <div class="section-anchor" id="s14"></div>
 <section class="section">
   <div class="sec-header">
     <span class="sec-num">14</span>
     <div class="sec-title-block">
-      <h2>Camera Navigation & Final Launch</h2>
+      <h2>Camera Navigation &amp; Final Launch</h2>
       <div class="sec-subtitle">Deploy the robot on the track for autonomous lane following</div>
     </div>
   </div>
-  <div class="callout error"><div class="callout-icon">✗</div><div class="callout-body"><div class="callout-title">Safety — Read Before Placing Robot on Track</div><div class="callout-text">Never launch the autonomous navigation stack on the track without at least one person positioned to physically stop the car if it veers off course. Always have Ctrl+C ready in the launch terminal. Start at minimum throttle and verify behavior before increasing speed.</div></div></div>
+
+  <div class="callout error"><div class="callout-icon">✗</div><div class="callout-body"><div class="callout-title">Safety — Read Before Placing the Robot on the Track</div><div class="callout-text">Never launch the autonomous navigation stack with the robot on the track without at least one person positioned to physically stop it if it veers off course. Always have Ctrl+C ready in the launch terminal. Start at minimum throttle and verify behavior before increasing speed.</div></div></div>
 
   <div class="cb"><div class="cb-header"><span class="cb-label">Inside Docker — launch autonomous lane following</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">source_ros2</span>
 <span class="k">build_ros2</span>
 <span class="k">ros2 launch</span> ucsd_robocar_nav2_pkg all_nodes.launch.py</pre></div>
 
   <h3>Live Debug Overlay</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Second terminal (while car is running)</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">ros2 param set</span> /lane_detection_node debug_cv <span class="v">1</span>   <span class="c"># Turn ON visual overlay</span>
-<span class="k">ros2 param set</span> /lane_detection_node debug_cv <span class="v">0</span>   <span class="c"># Turn OFF (less CPU during racing)</span></pre></div>
+  <p>You can toggle the visual debug overlay while the car is running without restarting anything:</p>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Second terminal (while car is running)</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">ros2 param set</span> /lane_detection_node debug_cv <span class="v">1</span>   <span class="c"># Turn ON visual overlay window</span>
+<span class="k">ros2 param set</span> /lane_detection_node debug_cv <span class="v">0</span>   <span class="c"># Turn OFF (reduces CPU load during racing)</span></pre></div>
 
-  <h3>Debugging Lane Following on Track</h3>
+  <h3>Debugging Lane Following on the Track</h3>
   <div class="tw"><table>
     <thead><tr><th>Symptom</th><th>Most Likely Cause</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td>Immediately steers hard to one side</td><td>camera_centerline wrong or steering_polarity flipped</td><td>Recalibrate centerline with ruler. If direction is inverted, set <code>steering_polarity: -1</code>.</td></tr>
-      <tr><td>Gradually drifts off-center</td><td>error_threshold too wide or Ki too low</td><td>Narrow the error_threshold. Add a small Ki_steering value.</td></tr>
-      <tr><td>Rapid left-right oscillation</td><td>Kp too high or Kd too low</td><td>Reduce Kp_steering. Increase Kd_steering to dampen.</td></tr>
-      <tr><td>Car doesn't move at all</td><td>zero_throttle miscalibrated or VESC not connected</td><td>Echo <code>/cmd_vel</code> to confirm commands are publishing. Check USB with <code>dmesg | grep usb</code>.</td></tr>
-      <tr><td>All-black camera feed</td><td>Insufficient USB power to OAK-D</td><td>Use powered USB hub — see Section 8.</td></tr>
-      <tr><td>Seeing another team's robot data</td><td>ROS_DOMAIN_ID not set</td><td>See Section 9 — verify <code>echo $ROS_DOMAIN_ID</code>.</td></tr>
+      <tr><td>Immediately steers hard to one side</td><td><code>camera_centerline</code> is miscalibrated or <code>steering_polarity</code> is wrong</td><td>Recalibrate centerline with a ruler. If the direction is inverted, set <code>steering_polarity: -1</code> in the YAML, then run <code>build_ros2</code>.</td></tr>
+      <tr><td>Gradually drifts off center</td><td><code>error_threshold</code> too wide or <code>Ki_steering</code> too low</td><td>Narrow the error threshold. Add a small <code>Ki_steering</code> value (e.g., 0.01).</td></tr>
+      <tr><td>Rapid left-right oscillation</td><td><code>Kp_steering</code> too high or <code>Kd_steering</code> too low</td><td>Reduce <code>Kp_steering</code>. Increase <code>Kd_steering</code> to add damping.</td></tr>
+      <tr><td>Car does not move at all</td><td><code>zero_throttle</code> is miscalibrated or VESC is not connected</td><td>Echo <code>/cmd_vel</code> to confirm commands are being published. Check USB with <code>dmesg | grep usb</code>.</td></tr>
+      <tr><td>All-black camera feed</td><td>Insufficient USB power to the OAK-D</td><td>Use a powered USB hub — see Section 8.</td></tr>
+      <tr><td>Seeing another team's robot data</td><td><code>ROS_DOMAIN_ID</code> is not set correctly</td><td>See Section 9. Verify with <code>echo $ROS_DOMAIN_ID</code> inside Docker.</td></tr>
     </tbody>
   </table></div>
 </section>
 
-<!-- §15 — ROS2 Dev -->
+<!-- ══════════════════════════════════════════════════
+     §15 — ROS2 Node Development
+══════════════════════════════════════════════════ -->
 <div class="section-anchor" id="s15"></div>
 <section class="section">
   <div class="sec-header">
     <span class="sec-num">15</span>
     <div class="sec-title-block">
-      <h2>ROS2 Nodes, Topics & Subscribers — Dev Guide</h2>
+      <h2>ROS2 Nodes, Topics &amp; Subscribers — Dev Guide</h2>
       <div class="sec-subtitle">Write custom nodes, integrate sensors, and reuse existing packages</div>
     </div>
   </div>
-  <p>This section gives you the foundation to extend the Robocar framework for your team's custom project. Understanding the existing node graph lets you intercept data, add new behaviors, and reuse pre-built functionality without reinventing the wheel.</p>
+
+  <p>This section gives you the foundation to extend the Robocar framework for your team's custom project. Understanding the existing node graph lets you intercept live data, add new behaviors, and reuse pre-built functionality without rewriting code that already exists.</p>
 
   <h3>Node Architecture — Data Flow</h3>
   <div class="tw"><table>
     <thead><tr><th>Node</th><th>Publishes</th><th>Subscribes To</th><th>Hardware</th></tr></thead>
     <tbody>
       <tr><td><code>/camera_node</code></td><td><code>/camera/color/image_raw</code></td><td>—</td><td>OAK-D Camera</td></tr>
-      <tr><td><code>/lane_detection_node</code></td><td><code>/error</code> (Float32, -1 to 1)</td><td><code>/camera/color/image_raw</code></td><td>—</td></tr>
+      <tr><td><code>/lane_detection_node</code></td><td><code>/error</code> (Float32, –1 to 1)</td><td><code>/camera/color/image_raw</code></td><td>—</td></tr>
       <tr><td><code>/lane_guidance_node</code></td><td><code>/cmd_vel</code> (Twist)</td><td><code>/error</code></td><td>—</td></tr>
       <tr><td><code>/vesc_twist_node</code></td><td>Hardware PWM signals</td><td><code>/cmd_vel</code></td><td>VESC ESC → Motor + Servo</td></tr>
       <tr><td><code>/lidar_node</code></td><td><code>/scan</code> (LaserScan)</td><td>—</td><td>RPLiDAR (if installed)</td></tr>
@@ -1250,8 +1380,8 @@ class LaneErrorMonitor(Node):
     def error_callback(self, msg: Float32):
         self.get_logger().info(f<span class="s">'Error: {msg.data:.4f}'</span>)
         if abs(msg.data) &gt; 0.8:
-            self.get_logger().warn(<span class="s">'CRITICAL ERROR — sending stop!'</span>)
-            self.pub.publish(Twist())
+            self.get_logger().warn(<span class="s">'CRITICAL ERROR — sending stop command!'</span>)
+            self.pub.publish(Twist())  <span class="c"># Publishes zero velocity to stop the car</span>
 
 def main(args=None):
     rclpy.init(args=args)
@@ -1268,99 +1398,104 @@ if __name__ == <span class="s">'__main__'</span>:
     main()</pre></div>
 
   <h3>Register Your Node in setup.py</h3>
+  <p>After creating your Python file, register it as an executable command in <code>setup.py</code> so ROS2 can find and run it:</p>
   <div class="cb"><div class="cb-header"><span class="cb-label">setup.py — entry_points section</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre>entry_points={
     <span class="s">'console_scripts'</span>: [
         <span class="s">'lane_monitor = ucsd_robocar_nav2_pkg.my_custom_node:main'</span>,
         <span class="s">'test_drive   = ucsd_robocar_nav2_pkg.test_drive_node:main'</span>,
     ],
 },</pre></div>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Build and run</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">build_ros2</span>
+
+  <div class="cb"><div class="cb-header"><span class="cb-label">Build and run your node</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">build_ros2</span>
 <span class="k">ros2 run</span> ucsd_robocar_nav2_pkg lane_monitor</pre></div>
 
-  <h3>Reuse Existing Packages — Don't Reinvent</h3>
-  <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">Efficiency Rule</div><div class="callout-text">Before writing any new code, run <code>ros2 topic list</code> and <code>ros2 node list</code>. The sensor data you need is almost certainly already being published as a topic. Subscribing to an existing topic takes 10 lines of code. Writing a new driver takes hundreds.</div></div></div>
+  <h3>Reuse Existing Packages — Don't Reinvent the Wheel</h3>
+  <div class="callout tip"><div class="callout-icon">✓</div><div class="callout-body"><div class="callout-title">Check What Already Exists First</div><div class="callout-text">Before writing any new code, run <code>ros2 topic list</code> and <code>ros2 node list</code>. The sensor data you need is almost certainly already being published as a ROS2 topic. Subscribing to an existing topic takes about 10 lines of code. Writing a new hardware driver from scratch takes hundreds.</div></div></div>
+
   <div class="tw"><table>
-    <thead><tr><th>Package</th><th>What It Provides</th><th>How to Use</th></tr></thead>
+    <thead><tr><th>Package</th><th>What It Provides</th><th>How to Use It</th></tr></thead>
     <tbody>
-      <tr><td><code>ucsd_robocar_sensor2_pkg</code></td><td>Camera publisher, LiDAR publisher, IMU</td><td>Enable in <code>car_config.yaml</code>. Subscribe to their topics.</td></tr>
-      <tr><td><code>ucsd_robocar_lane_detection2_pkg</code></td><td>Full HSV pipeline → <code>/error</code> topic</td><td>Subscribe to <code>/error</code> for your own PID or ML controller.</td></tr>
-      <tr><td><code>ucsd_robocar_actuator2_pkg</code></td><td>VESC driver — accepts <code>/cmd_vel</code></td><td>Publish Twist messages to <code>/cmd_vel</code>. That's all.</td></tr>
-      <tr><td><code>ucsd_robocar_nav2_pkg</code></td><td>Launch files, config system</td><td>Copy launch files as templates for custom node graphs.</td></tr>
+      <tr><td><code>ucsd_robocar_sensor2_pkg</code></td><td>Camera publisher, LiDAR publisher, IMU data</td><td>Enable in <code>car_config.yaml</code>. Subscribe to the published topics.</td></tr>
+      <tr><td><code>ucsd_robocar_lane_detection2_pkg</code></td><td>Full HSV pipeline → publishes to <code>/error</code></td><td>Subscribe to <code>/error</code> (Float32, –1 to 1) to build your own controller.</td></tr>
+      <tr><td><code>ucsd_robocar_actuator2_pkg</code></td><td>VESC hardware driver — accepts <code>/cmd_vel</code></td><td>Publish Twist messages to <code>/cmd_vel</code>. That is all that is required.</td></tr>
+      <tr><td><code>ucsd_robocar_nav2_pkg</code></td><td>Launch files and the YAML config system</td><td>Copy existing launch files as starting templates for custom node graphs.</td></tr>
     </tbody>
   </table></div>
 </section>
 
-<!-- §16 — Troubleshooting -->
+<!-- ══════════════════════════════════════════════════
+     §16 — Troubleshooting
+══════════════════════════════════════════════════ -->
 <div class="section-anchor" id="s16"></div>
 <section class="section">
   <div class="sec-header">
     <span class="sec-num">16</span>
     <div class="sec-title-block">
-      <h2>Troubleshooting & Known Bugs</h2>
+      <h2>Troubleshooting &amp; Known Issues</h2>
       <div class="sec-subtitle">Quick reference for the most common failure modes</div>
     </div>
   </div>
 
-  <h3>Docker & System</h3>
+  <h3>Docker &amp; System</h3>
   <div class="tw"><table>
     <thead><tr><th>Problem</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td><code>docker: permission denied</code></td><td><code>sudo usermod -aG docker $USER</code> then fully log out and back in</td></tr>
-      <tr><td>Container name already in use</td><td>Container exists from a previous run. Use <code>docker start NAME</code> + <code>docker exec -it NAME bash</code></td></tr>
-      <tr><td>Container not found after reboot</td><td><code>docker start MY_CONTAINER_NAME</code> — the container still exists, it's just stopped</td></tr>
-      <tr><td>No space left on device</td><td><code>docker system prune -f</code> removes dangling images and stopped containers</td></tr>
+      <tr><td><code>docker: permission denied</code></td><td>Run <code>sudo usermod -aG docker $USER</code> then fully log out and back in (a new terminal tab is not enough)</td></tr>
+      <tr><td>"Container name already in use"</td><td>The container already exists from a previous session. Use <code>docker start MY_CONTAINER_NAME</code> then <code>docker exec -it MY_CONTAINER_NAME bash</code></td></tr>
+      <tr><td>Container not found after Pi reboot</td><td>Run <code>docker start MY_CONTAINER_NAME</code> — the container still exists on disk, it is just in a stopped state</td></tr>
+      <tr><td>"No space left on device"</td><td>Run <code>docker system prune -f</code> to remove dangling images and all stopped containers</td></tr>
     </tbody>
   </table></div>
 
-  <h3>X11 & Display</h3>
+  <h3>X11 &amp; Display</h3>
   <div class="tw"><table>
     <thead><tr><th>Error</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td>"cannot open display"</td><td>SSH with <code>-Y</code> flag: <code>ssh -Y pi@hostname.local</code></td></tr>
-      <tr><td>"No protocol specified"</td><td>Run on Pi host: <code>xhost +local:</code></td></tr>
-      <tr><td>"Authorization required" inside Docker</td><td>Ensure <code>--volume $HOME/.Xauthority:/root/.Xauthority:rw</code> is in docker run</td></tr>
-      <tr><td>GUI works on host but not inside container</td><td>Switch from <code>ssh -X</code> to <code>ssh -Y</code> and restart the container</td></tr>
+      <tr><td>"cannot open display"</td><td>Reconnect with the <code>-Y</code> flag: <code>ssh -Y <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ed9d84ad85829e99838c8088c381828e8c81">[email&#160;protected]</a></code></td></tr>
+      <tr><td>"No protocol specified"</td><td>Run on the Pi host (not inside Docker): <code>xhost +local:</code></td></tr>
+      <tr><td>"Authorization required" inside Docker</td><td>Ensure <code>--volume $HOME/.Xauthority:/root/.Xauthority:rw</code> is present in your docker run command</td></tr>
+      <tr><td>GUI works on Pi host but not inside container</td><td>Switch from <code>ssh -X</code> to <code>ssh -Y</code> and recreate or restart the container</td></tr>
     </tbody>
   </table></div>
 
-  <h3>Camera & Hardware</h3>
+  <h3>Camera &amp; Hardware</h3>
   <div class="tw"><table>
     <thead><tr><th>Problem</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td>OAK-D disconnects randomly</td><td>Use a powered USB hub (Section 8)</td></tr>
-      <tr><td>All-black camera feed</td><td>USB power insufficient — powered hub required</td></tr>
-      <tr><td>VESC not responding</td><td>Check USB cable; run <code>dmesg | grep usb</code> for enumeration errors</td></tr>
-      <tr><td>Wheels spin backwards</td><td>Set <code>throttle_polarity: -1</code> in YAML, then <code>build_ros2</code></td></tr>
-      <tr><td>Steering direction inverted</td><td>Set <code>steering_polarity: -1</code> in YAML, then <code>build_ros2</code></td></tr>
-      <tr><td>Connecting to another team's camera</td><td><strong>Set ROS_DOMAIN_ID — see Section 9. This is always the cause.</strong></td></tr>
+      <tr><td>OAK-D disconnects randomly</td><td>Use a powered USB hub — see Section 8</td></tr>
+      <tr><td>All-black camera feed</td><td>Insufficient USB power — a powered USB hub is required</td></tr>
+      <tr><td>VESC not responding</td><td>Check the USB cable. Run <code>dmesg | grep usb</code> and look for enumeration errors</td></tr>
+      <tr><td>Wheels spin backward</td><td>Set <code>throttle_polarity: -1</code> in <code>ros_racer_calibration.yaml</code>, then run <code>build_ros2</code></td></tr>
+      <tr><td>Steering direction is inverted</td><td>Set <code>steering_polarity: -1</code> in <code>ros_racer_calibration.yaml</code>, then run <code>build_ros2</code></td></tr>
+      <tr><td>Receiving another team's robot data</td><td><strong>Set ROS_DOMAIN_ID — see Section 9. This is always the cause of this problem.</strong></td></tr>
     </tbody>
   </table></div>
 
-  <h3>Build & ROS2</h3>
+  <h3>Build &amp; ROS2</h3>
   <div class="tw"><table>
     <thead><tr><th>Problem</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td>"Package not found" after build</td><td>Run <code>source_ros2</code> (or <code>source install/setup.bash</code>). The build succeeded but ROS2 doesn't know about it yet.</td></tr>
-      <tr><td>YAML changes have no effect</td><td>Must run <code>build_ros2</code> — not just <code>source_ros2</code>. This is the #1 student mistake.</td></tr>
-      <tr><td>Launch file not found</td><td>The launch file wasn't installed. Check <code>setup.py</code> includes <code>launch/</code> directory; re-run <code>build_ros2</code>.</td></tr>
-      <tr><td>Calibration GUI closes immediately</td><td>X11 not working inside Docker. Verify <code>echo $DISPLAY</code> inside container — must not be empty.</td></tr>
+      <tr><td>"Package not found" after a successful build</td><td>Run <code>source_ros2</code> (or manually run <code>source install/setup.bash</code>). The build succeeded, but ROS2 has not been told about the new packages yet.</td></tr>
+      <tr><td>YAML changes have no effect</td><td>You must run <code>build_ros2</code> — running <code>source_ros2</code> alone is not enough. This is the most common student mistake.</td></tr>
+      <tr><td>"Launch file not found"</td><td>The launch file was not installed. Verify that <code>setup.py</code> includes the <code>launch/</code> directory, then re-run <code>build_ros2</code>.</td></tr>
+      <tr><td>Calibration GUI closes immediately</td><td>X11 is not working inside Docker. Verify by running <code>echo $DISPLAY</code> inside the container — it must not be empty.</td></tr>
     </tbody>
   </table></div>
 
-  <h3>PID & Lane Following</h3>
+  <h3>PID &amp; Lane Following</h3>
   <div class="tw"><table>
     <thead><tr><th>Symptom</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td>Rapid left-right oscillation</td><td>Reduce Kp_steering. Increase Kd_steering to add damping.</td></tr>
-      <tr><td>Consistent drift in one direction</td><td>Recalibrate camera_centerline. Add a small Ki_steering value.</td></tr>
-      <tr><td>Too fast on curves, flies off track</td><td>Reduce max_throttle. Increase error_threshold so throttle scheduling kicks in earlier.</td></tr>
-      <tr><td>No response to curves, goes straight</td><td>Narrow error_threshold. Increase Kp_steering.</td></tr>
-      <tr><td>No lines detected in debug view</td><td>Recalibrate HSV color filter for current lab lighting. Track can appear different hour to hour.</td></tr>
+      <tr><td>Rapid left-right oscillation</td><td>Reduce <code>Kp_steering</code>. Increase <code>Kd_steering</code> to add damping.</td></tr>
+      <tr><td>Consistent drift in one direction</td><td>Recalibrate <code>camera_centerline</code>. Add a small <code>Ki_steering</code> value (e.g., 0.01).</td></tr>
+      <tr><td>Too fast on curves, car flies off the track</td><td>Reduce <code>max_throttle</code>. Widen <code>error_threshold</code> so throttle scheduling slows the car earlier in a turn.</td></tr>
+      <tr><td>No response to curves, car goes straight</td><td>Narrow <code>error_threshold</code>. Increase <code>Kp_steering</code>.</td></tr>
+      <tr><td>No lines detected in the debug view</td><td>Recalibrate the HSV color filter for the current lighting conditions. Track lighting can change significantly throughout the day.</td></tr>
     </tbody>
   </table></div>
 
   <div class="divider"></div>
-  <p style="text-align:center; font-size:13px;">UCSD Jacobs School of Engineering — ECE/MAE 148 Intro to Autonomous Vehicles</p>
+  <p style="text-align:center; font-size:13px; color: var(--text-dim);">UCSD Jacobs School of Engineering — ECE/MAE 148 Intro to Autonomous Vehicles</p>
 </section>
 
 </div><!-- /content -->
@@ -1369,7 +1504,7 @@ if __name__ == <span class="s">'__main__'</span>:
 
 <button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── COPY BUTTON ──────────────────────────────────────────────────
 function doCopy(btn) {
   const pre = btn.closest('.cb').querySelector('pre');
@@ -1395,8 +1530,6 @@ window.addEventListener('scroll', () => {
 });
 
 // ── READ PROGRESS ────────────────────────────────────────────────
-// FIX: was broken because IntersectionObserver JS syntax error crashed
-//      all scripts before this code could run
 const progressFill = document.getElementById('read-progress-fill');
 const npFill = document.getElementById('np-fill');
 const npPct = document.getElementById('np-pct');
@@ -1408,9 +1541,7 @@ window.addEventListener('scroll', () => {
   npPct.textContent = pct + '%';
 });
 
-// ── ACTIVE NAV ───────────────────────────────────────────────────
-// FIX: was missing closing brace for if(e.isIntersecting){} block,
-//      causing a JS syntax error that broke ALL scripts on the page
+// ── ACTIVE NAV HIGHLIGHTING ──────────────────────────────────────
 const anchors = document.querySelectorAll('.section-anchor[id]');
 const navLinks = document.querySelectorAll('.nav-link');
 const io = new IntersectionObserver(entries => {
@@ -1421,7 +1552,7 @@ const io = new IntersectionObserver(entries => {
       if (a) {
         a.classList.add('active');
       }
-    }  // <-- this closing brace was missing in the original
+    }
   });
 }, { rootMargin: '-60px 0px -80% 0px' });
 anchors.forEach(a => io.observe(a));
