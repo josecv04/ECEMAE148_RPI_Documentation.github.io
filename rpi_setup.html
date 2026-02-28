@@ -297,7 +297,6 @@ figure { margin: 20px 0; border-radius: var(--r); overflow: hidden; border: 1px 
 .fig-wrap img { max-width: 100%; height: auto; display: block; border-radius: 4px; }
 figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); border-top: 1px solid var(--border); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .fig-label { color: var(--ucsd-gold); font-weight: 600; }
-.fig-key { margin-left: auto; background: var(--surface2); border: 1px solid var(--border); padding: 2px 8px; border-radius: 3px; font-size: 10px; color: var(--text-dim); white-space: nowrap; }
 
 .divider { height: 1px; background: var(--border); margin: 48px 0; }
 
@@ -429,6 +428,8 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
 
   <p>Raspberry Pi Imager is the official tool for writing OS images to a microSD card. It handles downloading the OS, verifying the image, writing it to your card, and applying customizations like hostname, WiFi, and SSH — all in one place. Always use the most current version.</p>
 
+  <p><strong>New to this?</strong> Think of the microSD card as the Pi's hard drive. Flashing the OS means copying the operating system onto that card so the Pi has something to boot from. Imager automates the entire process.</p>
+
   <div class="callout error">
     <div class="callout-icon">🚨</div>
     <div class="callout-body">
@@ -445,7 +446,7 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
       <div class="step-num">1</div>
       <div class="step-body">
         <div class="step-title">Download Raspberry Pi Imager</div>
-        <div class="step-desc">Navigate to the official Raspberry Pi software page and download the latest Imager for your operating system (Windows, macOS, or Linux). Install it normally.</div>
+        <div class="step-desc">Navigate to the official Raspberry Pi software page and download the latest Imager for your operating system (Windows, macOS, or Linux). Install it normally like any other application.</div>
         <div class="cb"><div class="cb-header"><span class="cb-label">Official download URL</span></div><pre><span class="s">https://www.raspberrypi.com/software/</span></pre></div>
       </div>
     </div>
@@ -454,7 +455,7 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
       <div class="step-num">2</div>
       <div class="step-body">
         <div class="step-title">Insert Your microSD Card</div>
-        <div class="step-desc">Insert your <strong>128 GB microSD card</strong> into your computer using a USB hub, card adapter, or built-in slot — whichever works best for your machine. The card must be detected before launching the Imager.</div>
+        <div class="step-desc">Insert your <strong>128 GB microSD card</strong> into your computer using a USB hub, card adapter, or built-in slot — whichever is available on your machine. The card must be detected by your computer before launching the Imager.</div>
       </div>
     </div>
 
@@ -462,7 +463,7 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
       <div class="step-num">3</div>
       <div class="step-body">
         <div class="step-title">Select Device</div>
-        <div class="step-desc">Open Raspberry Pi Imager. Under <strong>Device</strong>, choose <strong>Raspberry Pi 5</strong> (or whichever model you have). This ensures the correct kernel and firmware are used.</div>
+        <div class="step-desc">Open Raspberry Pi Imager. Under <strong>Device</strong>, choose <strong>Raspberry Pi 5</strong>. This tells the Imager which hardware you are targeting so it can select the correct kernel, firmware, and drivers for the OS image.</div>
       </div>
     </div>
   </div>
@@ -489,11 +490,11 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
     <div class="sec-badges"><span class="badge badge-critical">Critical</span></div>
   </div>
 
-  <p>After selecting your device, click <strong>OS</strong> to choose the operating system. You must scroll down to find the <strong>Legacy</strong> version. The default recommended image at the top is Trixie (Python 3.13) and will break DonkeyCar.</p>
+  <p>After selecting your device, click <strong>OS</strong> to choose the operating system. You must scroll down to find the <strong>Legacy</strong> version. The default recommended image shown at the top of the list is Trixie (Python 3.13), which will break DonkeyCar — do not select it.</p>
 
   <figure>
     <div class="fig-wrap"><img src="images/fig_rpi_imager_os.png" alt="Raspberry Pi Imager OS selection showing Legacy 64-bit highlighted" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 2.1</span> Select "Raspberry Pi OS (Legacy, 64-bit)" — the Bookworm port with Python 3.11. Do NOT select the default Trixie image at the top. <span class="fig-key">images/fig_rpi_imager_os.png</span></figcaption>
+    <figcaption><span class="fig-label">Fig 2.1</span> Select "Raspberry Pi OS (Legacy, 64-bit)" — the Bookworm port with Python 3.11. Do NOT select the default Trixie image shown at the top of the list.</figcaption>
   </figure>
 
   <div class="callout warn">
@@ -508,7 +509,7 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
   </div>
 
   <h3>Why the Legacy Image?</h3>
-  <p>DonkeyCar 5.2.x depends on several Python packages whose C extensions are only compiled against Python 3.11. Attempting to install them on Python 3.13 will either fail entirely or produce silent runtime errors that manifest as camera failures — the most common issue reported in this class.</p>
+  <p>DonkeyCar 5.2.x depends on several Python packages whose C extensions are only compiled for Python 3.11. Attempting to install them on Python 3.13 will either fail entirely or produce silent runtime errors that show up as camera failures — the most common issue reported in this class. There is no workaround; you must use the Legacy image.</p>
 </section>
 
 <!-- §3 — Configure Hostname -->
@@ -522,7 +523,7 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
     </div>
   </div>
 
-  <p>Before writing the image, click <strong>NEXT → Edit Settings</strong> (or the gear icon in older versions) to open the customisation wizard. The first thing to set is your hostname. This name is how you identify your Pi on the local network and how you SSH into it using <code>.local</code> mDNS resolution.</p>
+  <p>Before writing the image, click <strong>NEXT → Edit Settings</strong> (or the gear icon in older versions) to open the customization wizard. The first thing to set is your hostname. This is the human-readable name your Pi broadcasts on the local network — it is how you SSH into it using <code>.local</code> address resolution instead of having to look up an IP address.</p>
 
   <h3>Hostname Naming Convention</h3>
   <div class="callout info">
@@ -538,12 +539,12 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
   </div>
 
   <figure>
-    <div class="fig-wrap"><img src="images/fig_hostname.png" alt="Raspberry Pi Imager hostname customisation screen showing ucsdrobocar-148-06" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 3.1</span> Set your hostname to <code>ucsdrobocar-148-XX</code> where XX is your team number. <span class="fig-key">images/fig_hostname.png</span></figcaption>
+    <div class="fig-wrap"><img src="images/fig_hostname.png" alt="Raspberry Pi Imager hostname customization screen showing ucsdrobocar-148-06" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 3.1</span> Set your hostname to <code>ucsdrobocar-148-XX</code> — replace XX with your two-digit team number (e.g., 07 for Team 7).</figcaption>
   </figure>
 
-  <h3>Localisation Settings</h3>
-  <p>On the <strong>Localisation</strong> tab, set the following. While these settings are less critical, matching them to your environment prevents timezone-related software issues.</p>
+  <h3>Localization Settings</h3>
+  <p>On the <strong>Localization</strong> tab, set the fields below. These ensure the Pi uses the correct timezone and keyboard layout, which prevents subtle issues with scheduled tasks and terminal input.</p>
 
   <div class="tw"><table>
     <thead><tr><th>Field</th><th>Value</th></tr></thead>
@@ -555,8 +556,8 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
   </table></div>
 
   <figure>
-    <div class="fig-wrap"><img src="images/fig_localisation.png" alt="Raspberry Pi Imager localisation screen showing US timezone and keyboard" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 3.2</span> Localisation settings — timezone America/Los_Angeles, keyboard layout US. <span class="fig-key">images/fig_localisation.png</span></figcaption>
+    <div class="fig-wrap"><img src="images/fig_localisation.png" alt="Raspberry Pi Imager localization screen showing US timezone and keyboard" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 3.2</span> Localization settings — set the timezone to America/Los_Angeles and the keyboard layout to US.</figcaption>
   </figure>
 </section>
 
@@ -572,11 +573,11 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
   </div>
 
   <h3>Username & Password</h3>
-  <p>On the <strong>User</strong> tab, set the username to <code>pi</code>. Choose a password you will remember and share only with your team. The TA reference password is shown below.</p>
+  <p>On the <strong>User</strong> tab, set the username to <code>pi</code>. This is the account you will use every time you SSH into the Pi. Choose a password you will remember and share only with your team.</p>
 
   <figure>
     <div class="fig-wrap"><img src="images/fig_username.png" alt="Raspberry Pi Imager username screen showing pi and password fields" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 4.1</span> Set username to <code>pi</code>. The TA uses <code>ucsd148TA</code> — students should choose their own secure password. <span class="fig-key">images/fig_username.png</span></figcaption>
+    <figcaption><span class="fig-label">Fig 4.1</span> Set the username to <code>pi</code> and choose a secure password. The TA reference password shown here (<code>ucsd148TA</code>) is for documentation purposes only — do not use it on your own car.</figcaption>
   </figure>
 
   <div class="callout warn">
@@ -588,11 +589,11 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
   </div>
 
   <h3>WiFi Configuration</h3>
-  <p>On the <strong>Wi-Fi</strong> tab, enter the network credentials. Make sure your laptop is already connected to this network before starting the entire setup process — this ensures you can SSH in immediately after first boot.</p>
+  <p>On the <strong>Wi-Fi</strong> tab, enter the class network credentials. Pre-loading WiFi here means the Pi will automatically connect to the network on its very first boot, so you can SSH in right away without needing a monitor or keyboard attached.</p>
 
   <figure>
     <div class="fig-wrap"><img src="images/fig_wifi.png" alt="Raspberry Pi Imager WiFi screen showing UCSDRoboCar SSID" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 4.2</span> Pre-configure the class WiFi network so the Pi connects automatically on first boot. <span class="fig-key">images/fig_wifi.png</span></figcaption>
+    <figcaption><span class="fig-label">Fig 4.2</span> Enter the class WiFi credentials so the Pi connects automatically on first boot. Use the credentials from the table below.</figcaption>
   </figure>
 
   <div class="tw"><table>
@@ -606,8 +607,8 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
   <div class="callout tip">
     <div class="callout-icon">✓</div>
     <div class="callout-body">
-      <div class="callout-title">Pro Tip — Add Your Phone as Hotspot</div>
-      <div class="callout-text">You can configure a second WiFi network (your phone hotspot) at any time after first boot via SSH. This gives you a backup connection when the class WiFi is unavailable or congested. See Section 8 for details.</div>
+      <div class="callout-title">Pro Tip — Add Your Phone Hotspot Later</div>
+      <div class="callout-text">You can add a second WiFi network (such as your phone's hotspot) at any time after first boot via SSH. This gives you a backup connection when the class WiFi is unavailable or congested. See Section 8 for details.</div>
     </div>
   </div>
 </section>
@@ -624,59 +625,59 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
   </div>
 
   <h3>Enable SSH</h3>
-  <p>On the <strong>Remote Access</strong> tab, toggle <strong>Enable SSH</strong> on and select <strong>Use password authentication</strong>. Without this, you cannot connect to your Pi over the network without a keyboard and monitor.</p>
+  <p>SSH (Secure Shell) is the protocol that lets you control the Pi remotely from your laptop over the network — no monitor or keyboard required. On the <strong>Remote Access</strong> tab, toggle <strong>Enable SSH</strong> on and select <strong>Use password authentication</strong>. Without this step, the Pi will boot but you will have no way to connect to it.</p>
 
   <figure>
     <div class="fig-wrap"><img src="images/fig_ssh.png" alt="Raspberry Pi Imager SSH authentication screen with Enable SSH toggled on" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 5.1</span> Enable SSH and select password authentication. This allows remote terminal access over WiFi. <span class="fig-key">images/fig_ssh.png</span></figcaption>
+    <figcaption><span class="fig-label">Fig 5.1</span> Enable SSH and select "Use password authentication." This is required for all remote terminal access over WiFi.</figcaption>
   </figure>
 
   <h3>Raspberry Pi Connect (Optional)</h3>
-  <p>The <strong>Raspberry Pi Connect</strong> tab offers a cloud-based remote access service. This is optional for this class — skip it unless you specifically need remote desktop access outside the local network.</p>
+  <p>The <strong>Raspberry Pi Connect</strong> tab offers a cloud-based remote desktop service from Raspberry Pi. This is not needed for this class — leave it disabled.</p>
 
   <figure>
     <div class="fig-wrap"><img src="images/fig_rpi_connect.png" alt="Raspberry Pi Imager connect screen with Enable toggle off" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 5.2</span> Raspberry Pi Connect is optional — leave it disabled unless needed. <span class="fig-key">images/fig_rpi_connect.png</span></figcaption>
+    <figcaption><span class="fig-label">Fig 5.2</span> Leave Raspberry Pi Connect disabled — it is not used in this course.</figcaption>
   </figure>
 
   <h3>Review and Write</h3>
-  <p>After completing all customisation tabs, you will see a summary screen showing all your choices. Verify everything looks correct, then click <strong>WRITE</strong>.</p>
+  <p>After completing all the customization tabs, the Imager will show a summary of everything you configured. Review it carefully, then click <strong>WRITE</strong>. The Imager will download the OS image (if not already cached) and flash it to your card — this typically takes 5–15 minutes.</p>
 
   <figure>
-    <div class="fig-wrap"><img src="images/fig_write_summary.png" alt="Raspberry Pi Imager write image summary screen showing all customisations" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 5.3</span> The summary before writing. Verify all customisations are listed before clicking WRITE. <span class="fig-key">images/fig_write_summary.png</span></figcaption>
+    <div class="fig-wrap"><img src="images/fig_write_summary.png" alt="Raspberry Pi Imager write image summary screen showing all customizations" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 5.3</span> Review the summary to confirm your hostname, username, WiFi, and SSH settings are all correct before clicking WRITE.</figcaption>
   </figure>
 
   <h3>Write Complete — Eject Safely</h3>
-  <p>When writing finishes, the Imager will show a success screen. Click <strong>Finish</strong>, then follow this exact ejection order to avoid corrupting the card:</p>
+  <p>When writing finishes, the Imager will show a success screen. Click <strong>Finish</strong>, then follow this exact ejection sequence to avoid corrupting the card:</p>
 
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-body">
-        <div class="step-title">Eject via OS First</div>
-        <div class="step-desc">Use your operating system's eject function (right-click → Eject on macOS/Windows, or <code>umount</code> on Linux) to safely flush all pending writes. Do <strong>not</strong> physically remove the card yet.</div>
+        <div class="step-title">Eject via Your OS First</div>
+        <div class="step-desc">Use your operating system's eject function (right-click the card → Eject on macOS/Windows, or <code>umount /dev/sdX</code> on Linux) to safely flush all pending writes to the card. Do <strong>not</strong> physically remove the card yet.</div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-body">
         <div class="step-title">Physically Remove the Card</div>
-        <div class="step-desc">Only after the OS confirms it is safe, carefully remove the microSD from the adapter, hub, or computer slot. Skipping the software eject risks corrupting the OS files you just flashed.</div>
+        <div class="step-desc">Only after your OS confirms it is safe to remove, carefully pull out the microSD card from the adapter or slot. Skipping the software eject step can corrupt the OS files you just flashed, requiring a full re-flash.</div>
       </div>
     </div>
   </div>
 
   <figure>
-    <div class="fig-wrap"><img src="images/fig_write_complete.png" alt="Raspberry Pi Imager write complete screen showing all customisations applied" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 5.4</span> Write complete. The card is automatically ejected — click Finish and physically remove the card. <span class="fig-key">images/fig_write_complete.png</span></figcaption>
+    <div class="fig-wrap"><img src="images/fig_write_complete.png" alt="Raspberry Pi Imager write complete screen" loading="lazy"></div>
+    <figcaption><span class="fig-label">Fig 5.4</span> Write complete. Click Finish, eject the card through your OS, then physically remove it.</figcaption>
   </figure>
 
   <div class="callout error">
     <div class="callout-icon">🚨</div>
     <div class="callout-body">
       <div class="callout-title">Do Not Skip the Software Eject</div>
-      <div class="callout-text">Pulling the card without a software eject is the most common cause of corrupted OS installations. If the card is corrupt you will need to re-flash from scratch. Always eject through your OS first.</div>
+      <div class="callout-text">Pulling the card out without a software eject is the most common cause of corrupted OS installations. If the card is corrupted, you will need to re-flash from scratch. Always eject through your OS first.</div>
     </div>
   </div>
 </section>
@@ -692,7 +693,7 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
     </div>
   </div>
 
-  <p>The Raspberry Pi 5 runs hotter than previous models under sustained workloads. The active cooler (fan + heatsink) is <strong>required</strong>, not optional. Install it before powering on for the first time.</p>
+  <p>The Raspberry Pi 5 runs significantly hotter than previous models under sustained workloads like neural network inference. The active cooler (heatsink + fan) that comes with your kit is <strong>required</strong> — not optional. Assemble everything before powering on for the first time.</p>
 
   <h3>Step-by-Step Assembly</h3>
   <div class="steps">
@@ -700,15 +701,15 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
       <div class="step-num">1</div>
       <div class="step-body">
         <div class="step-title">Clean the Board Surface</div>
-        <div class="step-desc">If previous teams have handled the board, clean the chip surfaces with isopropyl alcohol wipes before applying new thermal pads. Residue from previous thermal compound will reduce thermal conductivity.</div>
+        <div class="step-desc">If the board was previously used by another team, clean the top of the processor and other chips with isopropyl alcohol wipes before applying new thermal pads. Old residue reduces thermal conductivity and can cause overheating.</div>
       </div>
     </div>
 
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-body">
-        <div class="step-title">Remove Thermal Pad Plastic Film</div>
-        <div class="step-desc">Each thermal pad ships with a thin plastic protective film on both sides. <strong>Remove both films</strong> before mounting the cooler. Leaving the plastic on is a common mistake — the pad will not conduct heat through the plastic.</div>
+        <div class="step-title">Remove the Thermal Pad Plastic Film</div>
+        <div class="step-desc">Each thermal pad ships with a thin plastic protective film on <strong>both sides</strong>. Peel off both films before mounting the cooler. This is one of the most common assembly mistakes — if the plastic is left on, no heat will transfer and the Pi will overheat immediately under load.</div>
       </div>
     </div>
 
@@ -716,7 +717,7 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
       <div class="step-num">3</div>
       <div class="step-body">
         <div class="step-title">Connect the Fan Cable</div>
-        <div class="step-desc">Remove the fan connector cover on the Pi board. Connect the fan cable — there is only one correct orientation, do not force it. The connector is keyed so it only inserts one way.</div>
+        <div class="step-desc">Locate the small fan connector port on the Raspberry Pi 5 board (it has a cover that snaps off). Connect the fan cable — the connector is keyed so it can only be inserted one way. Do not force it.</div>
       </div>
     </div>
 
@@ -724,7 +725,7 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
       <div class="step-num">4</div>
       <div class="step-body">
         <div class="step-title">Install into Case</div>
-        <div class="step-desc">Place the Pi into the case, aligning all port cutouts. Apply the rubber feet. Secure with the provided hardware. Install the cover. Verify all connectors (USB, HDMI, Ethernet, power) are accessible through the case openings.</div>
+        <div class="step-desc">Place the Pi into the case, aligning all port cutouts (USB, HDMI, Ethernet, USB-C power). Attach the rubber feet to the bottom. Secure the board with the provided screws and snap on the cover. Verify all ports remain accessible through the case openings.</div>
       </div>
     </div>
 
@@ -732,7 +733,7 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
       <div class="step-num">5</div>
       <div class="step-body">
         <div class="step-title">Insert the microSD Card</div>
-        <div class="step-desc">With the Pi in its case, insert the freshly flashed microSD card into the SD card slot. Ensure it clicks firmly into place.</div>
+        <div class="step-desc">With the Pi seated in its case, insert the freshly flashed microSD card into the SD card slot on the underside of the board. Press it in until you feel it click firmly into place.</div>
       </div>
     </div>
   </div>
@@ -742,7 +743,7 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
     <div class="callout-body">
       <div class="callout-title">Power Supply Requirements</div>
       <div class="callout-text">
-        For initial configuration, use the provided USB-C 5A power supply. Any 40W+ USB-C PD supply will work. The Pi may show a GUI warning about power not being 5V 5A — this is expected and harmless. The Pi is looking for a PD signal not all supplies provide. This setting can be adjusted later in the Pi configuration.
+        For initial setup, use the provided USB-C 5V/5A power supply. The Pi may show a desktop warning about power delivery — this is harmless and expected. The Pi is looking for a USB-C PD (Power Delivery) handshake that not all power supplies support. The warning does not affect functionality and can be suppressed later in <code>raspi-config</code>.
       </div>
     </div>
   </div>
@@ -759,10 +760,10 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
     </div>
   </div>
 
-  <p>On first boot, the Pi performs initial OS configuration — expanding the filesystem, setting up user accounts, and applying all the customisations you set in the Imager. This can take <strong>several minutes</strong>. The green LED will flash as it accesses the SD card, and the Pi may reboot once during this process. Be patient.</p>
+  <p>Plug in the USB-C power supply to boot the Pi. On first boot, the Pi automatically performs initial setup tasks — expanding the filesystem, creating your user account, and applying all the customizations you configured in the Imager. <strong>This process can take 2–5 minutes</strong> and the Pi may reboot once on its own during this time. The green activity LED on the board will flash rapidly while it works. Do not unplug it.</p>
 
   <h3>Connect via SSH</h3>
-  <p>Once the Pi has finished its initial boot and connected to your WiFi network, you can SSH in from any device on the same network. Replace <code>XX</code> with your team number.</p>
+  <p>Once the Pi has finished its initial boot sequence and connected to your WiFi network, you can SSH into it from any device on the same network. Open a terminal on your laptop and run the command below, replacing <code>XX</code> with your two-digit team number.</p>
 
   <div class="cb"><div class="cb-header"><span class="cb-label">Your laptop terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">ssh</span> pi@ucsdrobocar-148-XX.local
 
@@ -774,13 +775,13 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
     <div class="callout-body">
       <div class="callout-title">How .local Hostnames Work</div>
       <div class="callout-text">
-        The <code>.local</code> suffix uses mDNS (Bonjour/Avahi) to resolve the hostname to an IP address automatically. This works as long as both your laptop and the Pi are on the same WiFi network. You do not need to know the Pi's IP address — just its hostname.
+        The <code>.local</code> suffix uses a protocol called mDNS (multicast DNS) to automatically resolve your Pi's hostname to its IP address on the local network. This means you never need to look up or remember the Pi's IP address — as long as your laptop and the Pi are on the same WiFi network, the hostname will resolve automatically. On Windows, mDNS requires Bonjour (see troubleshooting table below if it does not work).
       </div>
     </div>
   </div>
 
   <h3>First Connection Security Prompt</h3>
-  <p>The first time you SSH to a new Pi, your terminal will ask you to verify the host fingerprint. Type <code>yes</code> to accept and add it to your known hosts file. This is normal and expected — it won't ask again for this Pi.</p>
+  <p>The first time you SSH to a new Pi, your terminal will display a message asking you to verify the host's identity. This is a standard SSH security check. Type <code>yes</code> to accept and save the Pi's fingerprint — your computer will not ask again for this host.</p>
 
   <div class="cb"><div class="cb-header"><span class="cb-label">Expected first-connection prompt</span></div><pre><span class="c"># The authenticity of host 'ucsdrobocar-148-05.local' can't be established.</span>
 <span class="c"># ECDSA key fingerprint is SHA256:xxxxxxxxxxxxxxxxxxxx.</span>
@@ -790,10 +791,10 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
   <div class="tw"><table>
     <thead><tr><th>Problem</th><th>Cause</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td><code>ssh: Could not resolve hostname</code></td><td>Pi hasn't finished booting or mDNS not working</td><td>Wait 2–3 more minutes. Ensure both devices are on the same WiFi. On Windows, install Bonjour Print Services.</td></tr>
-      <tr><td><code>Connection refused</code></td><td>SSH daemon not started yet</td><td>Pi is still booting. Wait and retry. The LED should stop fast-flashing before SSH is available.</td></tr>
-      <tr><td><code>Permission denied</code></td><td>Wrong password</td><td>Re-check the password you set in the Imager customisation step.</td></tr>
-      <tr><td>Cannot find Pi at all</td><td>WiFi credentials incorrect</td><td>You may need to re-flash with corrected WiFi credentials, or connect via Ethernet for initial setup.</td></tr>
+      <tr><td><code>ssh: Could not resolve hostname</code></td><td>Pi has not finished booting, or mDNS is not working on your laptop</td><td>Wait 2–3 more minutes. Ensure both devices are on the same WiFi network. On Windows, install Bonjour Print Services to enable mDNS.</td></tr>
+      <tr><td><code>Connection refused</code></td><td>SSH daemon has not started yet — Pi is still booting</td><td>Wait and retry. The green activity LED should slow down or stop fast-flashing before SSH becomes available.</td></tr>
+      <tr><td><code>Permission denied</code></td><td>Incorrect password</td><td>Re-check the password you set in the Imager customization step.</td></tr>
+      <tr><td>Cannot find Pi at all after several minutes</td><td>WiFi credentials were entered incorrectly during flashing</td><td>Re-flash the card with the correct WiFi credentials, or temporarily connect the Pi to your router via Ethernet cable for initial setup.</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -805,42 +806,40 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
     <span class="sec-num">08</span>
     <div class="sec-title-block">
       <h2>WiFi Configuration</h2>
-      <div class="sec-subtitle">List available networks, add additional access points, and find your IP</div>
+      <div class="sec-subtitle">List available networks, add additional access points, and find your IP address</div>
     </div>
   </div>
 
-  <p>Once connected via SSH, you can manage WiFi networks from the command line. The Pi uses NetworkManager, so you can use either the text UI (<code>nmtui</code>) or the command-line tool (<code>nmcli</code>).</p>
+  <p>Once connected via SSH, you can manage WiFi networks directly from the command line. The Pi uses NetworkManager to handle wireless connections. You can use either <code>nmtui</code> (a simple text-based menu UI) or <code>nmcli</code> (a direct command-line tool).</p>
 
   <h3>List Available WiFi Networks</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo nmcli device wifi list</span>   <span class="c"># List all visible networks</span></pre></div>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo nmcli device wifi list</span>   <span class="c"># List all visible WiFi networks</span></pre></div>
 
   <h3>Add a New WiFi Network via nmtui (Recommended)</h3>
-  <p>The <code>nmtui</code> text UI is the easiest way to add new networks. Launch it and choose <strong>Activate a connection</strong> to connect to a visible network, or <strong>Edit a connection</strong> to add one manually (e.g., a hidden SSID).</p>
+  <p><code>nmtui</code> is the easiest way to add new networks because it provides an interactive menu you can navigate with arrow keys. Launch it and choose <strong>Activate a connection</strong> to connect to a visible network, or <strong>Edit a connection</strong> to add one manually (for example, a hidden SSID like your phone hotspot).</p>
 
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo nmtui</span></pre></div>
 
   <figure>
     <div class="fig-wrap"><img src="images/fig_nmtui_activate.png" alt="nmtui text interface showing Activate a connection highlighted" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 8.1</span> nmtui — select "Activate a connection" to connect to a visible network, or "Edit a connection" to add one manually. <span class="fig-key">images/fig_nmtui_activate.png</span></figcaption>
+    <figcaption><span class="fig-label">Fig 8.1</span> In the nmtui menu, use "Activate a connection" to join a visible network, or "Edit a connection" to add a network manually by SSID and password.</figcaption>
   </figure>
 
   <h3>Add a Network via Command Line (Alternative)</h3>
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Connect to a WiFi network by SSID and password</span>
 <span class="k">sudo nmcli device wifi connect</span> <span class="v">"NETWORK_NAME"</span> <span class="f">password</span> <span class="v">"NETWORK_PASSWORD"</span>
 
-<span class="c"># Class network reference:</span>
-<span class="c"># SSID: UCSDRoboCar</span>
-<span class="c"># Password: UCSDrobocars2018</span>
+<span class="c"># Class network example:</span>
 <span class="k">sudo nmcli device wifi connect</span> <span class="v">"UCSDRoboCar"</span> <span class="f">password</span> <span class="v">"UCSDrobocars2018"</span></pre></div>
 
   <h3>Get the Pi's IP Address</h3>
-  <p>After connecting, you can find the Pi's assigned IP address. Use <code>ifconfig</code> and look at the <code>wlan0</code> interface — the <code>inet</code> field shows the IPv4 address.</p>
+  <p>If you ever need the Pi's numeric IP address (for example, to use an SSH client that does not support <code>.local</code> hostnames), run <code>ifconfig</code> and look at the <code>wlan0</code> interface. The <code>inet</code> field shows the current IPv4 address.</p>
 
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">ifconfig</span>
 <span class="c"># Look for wlan0 → inet field (e.g., 192.168.x.x)</span></pre></div>
 
   <h3>Install nano Text Editor</h3>
-  <p>While not strictly required, <code>nano</code> is a simple terminal text editor useful for editing config files. Install it now as it will be needed in later steps.</p>
+  <p><code>nano</code> is a simple command-line text editor that makes editing configuration files much easier than the default <code>vi</code>. Install it now — it will be needed in later steps.</p>
 
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo apt-get update</span>
 <span class="k">sudo apt-get install</span> nano</pre></div>
@@ -857,10 +856,10 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
     </div>
   </div>
 
-  <p>If you need to change the hostname or password after flashing — or if you inherited a Pi from a previous team — use <code>raspi-config</code> or the commands below. Always follow the class hostname standard.</p>
+  <p>If you need to change the hostname or password after flashing — for example, if you inherited a Pi from a previous team — use <code>raspi-config</code> or the commands below. Always follow the class hostname standard so your car is identifiable on the network.</p>
 
   <h3>Change Hostname with raspi-config</h3>
-  <p>Launch the Raspberry Pi Software Configuration Tool. Navigate to <strong>S4 Hostname</strong> (under System Options) and set your hostname to the class standard.</p>
+  <p><code>raspi-config</code> is the Raspberry Pi's built-in configuration tool. It provides a simple menu for changing common system settings. Launch it from the terminal and navigate to <strong>System Options → S4 Hostname</strong> to update your hostname.</p>
 
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo raspi-config</span>
 <span class="c"># Navigate: System Options → S4 Hostname</span>
@@ -868,26 +867,26 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
 
   <figure>
     <div class="fig-wrap"><img src="images/fig_raspi_config.png" alt="raspi-config menu showing S4 Hostname highlighted" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 9.1</span> raspi-config System Options — use S4 Hostname to set the class-standard hostname. <span class="fig-key">images/fig_raspi_config.png</span></figcaption>
+    <figcaption><span class="fig-label">Fig 9.1</span> In raspi-config, navigate to System Options → S4 Hostname to set the class-standard hostname.</figcaption>
   </figure>
 
   <h3>Change Hostname via Command Line</h3>
-  <p>Alternatively, you can set the hostname directly from the terminal. You must update it in <strong>two places</strong> — <code>hostnamectl</code> and <code>/etc/hosts</code> — otherwise the Pi will show "unable to resolve host" errors on every sudo command.</p>
+  <p>Alternatively, you can update the hostname directly from the terminal. You <strong>must</strong> update it in two places — the active hostname via <code>hostnamectl</code>, and the local hosts file at <code>/etc/hosts</code>. Skipping either step will cause errors.</p>
 
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — replace xxx-yy with your class and team number</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Step 1: Set the active hostname</span>
 <span class="k">sudo hostnamectl set-hostname</span> ucsdrobocar-xxx-yy
 
-<span class="c"># Step 2: Update the hosts file (change the 127.0.1.1 line)</span>
+<span class="c"># Step 2: Update the hosts file to match</span>
 <span class="k">sudo nano</span> /etc/hosts
-<span class="c"># Change the line that reads: 127.0.1.1  old-hostname</span>
-<span class="c"># To:                          127.0.1.1  ucsdrobocar-xxx-yy</span>
+<span class="c"># Find the line that reads: 127.0.1.1  old-hostname</span>
+<span class="c"># Change it to:              127.0.1.1  ucsdrobocar-xxx-yy</span>
 <span class="c"># Save with Ctrl-X → Y → Enter</span></pre></div>
 
   <div class="callout warn">
     <div class="callout-icon">⚠</div>
     <div class="callout-body">
       <div class="callout-title">Update Both Files</div>
-      <div class="callout-text">If you only run <code>hostnamectl set-hostname</code> without updating <code>/etc/hosts</code>, every <code>sudo</code> command will print a warning: <em>"unable to resolve host ucsdrobocar-xxx-yy"</em>. This does not break anything, but it is distracting and slows down terminal output.</div>
+      <div class="callout-text">If you only run <code>hostnamectl set-hostname</code> without updating <code>/etc/hosts</code>, every <code>sudo</code> command will print the warning: <em>"sudo: unable to resolve host ucsdrobocar-xxx-yy"</em>. This does not break anything, but it clutters your terminal output. Update both files to avoid it.</div>
     </div>
   </div>
 
@@ -895,7 +894,7 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">passwd</span>   <span class="c"># Changes the password for the current user (pi)</span></pre></div>
 
   <h3>View Current System Information</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">hostnamectl</span>   <span class="c"># Shows hostname, OS, kernel, architecture</span></pre></div>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">hostnamectl</span>   <span class="c"># Shows hostname, OS version, kernel, and architecture</span></pre></div>
 
   <h3>Reboot to Apply All Changes</h3>
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo reboot now</span></pre></div>
@@ -908,25 +907,25 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
     <span class="sec-num">10</span>
     <div class="sec-title-block">
       <h2>Date & Time Configuration</h2>
-      <div class="sec-subtitle">Ensure the clock is correct or software installs will fail</div>
+      <div class="sec-subtitle">Ensure the system clock is correct, or software installs will fail</div>
     </div>
   </div>
 
-  <p>If the Pi's clock is wrong — which happens when it has been offline or when the battery-backed RTC is not present — <code>apt</code> will reject package installations because SSL certificates will appear expired. Always check the date before debugging any <code>apt</code> errors.</p>
+  <p>The Raspberry Pi 5 does not have a battery-backed real-time clock (RTC), meaning it loses track of the current time whenever it is powered off and disconnected from the internet. If the Pi's clock is wrong, <code>apt</code> will refuse to install packages because SSL/TLS certificates will appear to be expired or not yet valid. Always check the date before debugging installation failures.</p>
 
   <div class="callout warn">
     <div class="callout-icon">⚠</div>
     <div class="callout-body">
-      <div class="callout-title">Check Date First When Updates Fail</div>
-      <div class="callout-text">If <code>apt update</code> or <code>pip install</code> fails with SSL or certificate errors, the clock is almost certainly wrong. Check and correct the date before asking for help or debugging further.</div>
+      <div class="callout-title">Check the Date First When Updates Fail</div>
+      <div class="callout-text">If <code>apt update</code> or <code>pip install</code> fails with SSL or certificate errors, the system clock is almost certainly wrong. Run <code>date</code> to check it before asking for help or debugging further.</div>
     </div>
   </div>
 
   <h3>Check the Current Date</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">date</span>   <span class="c"># Prints current system date and time</span></pre></div>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">date</span>   <span class="c"># Prints the current system date and time</span></pre></div>
 
   <h3>Manually Set Date and Time</h3>
-  <p>If the Pi is not connected to the internet or NTP is not running, set the time manually using the format below. Replace the timestamp with the current date and time.</p>
+  <p>If the Pi is not yet connected to the internet or NTP has not synced, set the time manually using the command below. Replace the timestamp with the current date and time.</p>
 
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo date -s</span> <span class="s">'2025-09-15 10:30:00'</span>   <span class="c"># Replace with current date/time</span></pre></div>
 
@@ -934,8 +933,8 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo dpkg-reconfigure tzdata</span>
 <span class="c"># Navigate: America → Los_Angeles</span></pre></div>
 
-  <h3>Install and Force NTP Time Sync</h3>
-  <p>NTP (Network Time Protocol) automatically synchronises the clock from internet time servers. Install it once and it will keep the clock correct whenever the Pi has internet access.</p>
+  <h3>Install NTP for Automatic Time Sync</h3>
+  <p>NTP (Network Time Protocol) automatically synchronizes the system clock with internet time servers whenever the Pi has a network connection. Install it once and it will keep the clock correct on every subsequent boot.</p>
 
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo apt-get update</span>
 <span class="k">sudo apt-get install</span> ntp
@@ -945,14 +944,14 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
 <span class="k">sudo ntpd -q -g</span>
 <span class="k">sudo /etc/init.d/ntp start</span>
 
-<span class="c"># Reboot to confirm time persists correctly:</span>
+<span class="c"># Reboot to confirm the time persists correctly:</span>
 <span class="k">sudo reboot now</span></pre></div>
 
   <div class="callout tip">
     <div class="callout-icon">✓</div>
     <div class="callout-body">
-      <div class="callout-title">Force Sync Anytime</div>
-      <div class="callout-text">If the time drifts later (e.g., after the Pi was offline for a long time), you can force a re-sync without reinstalling: <code>sudo ntpd -q -g</code></div>
+      <div class="callout-title">Force a Re-Sync Anytime</div>
+      <div class="callout-text">If the time drifts later (for example, after the Pi was offline for an extended period), you can force a manual re-sync at any time without reinstalling NTP: <code>sudo ntpd -q -g</code></div>
     </div>
   </div>
 </section>
@@ -964,53 +963,54 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
     <span class="sec-num">11</span>
     <div class="sec-title-block">
       <h2>GUI Settings & Filesystem Expansion</h2>
-      <div class="sec-subtitle">Disable the desktop GUI to save RAM, and expand the filesystem to use the full SD card</div>
+      <div class="sec-subtitle">Disable the desktop GUI to free RAM, and expand the filesystem to use the full SD card</div>
     </div>
   </div>
 
   <h3>Disable the GUI on Boot (Optional but Recommended)</h3>
-  <p>Since you interact with the Pi exclusively over SSH, the desktop GUI wastes CPU cycles and RAM. Disabling it frees up significant resources for DonkeyCar's neural network inference. You can always re-enable it if you need graphical debugging (e.g., for RealSense cameras or LiDAR).</p>
+  <p>Since you interact with the Pi exclusively over SSH, the desktop graphical environment (GUI) runs in the background doing nothing useful — consuming RAM and CPU that DonkeyCar's neural network inference could use instead. Disabling it is safe for headless operation and frees a noticeable amount of memory.</p>
 
   <div class="callout info">
     <div class="callout-icon">ℹ</div>
     <div class="callout-body">
-      <div class="callout-title">Note on GUI for Sensor Debugging</div>
-      <div class="callout-text">When using Intel RealSense cameras, LiDAR, or other sensors that require ROS visualisation tools (e.g., RViz), you may need to keep the GUI (X Server) running. For headless DonkeyCar operation, disabling it is safe.</div>
+      <div class="callout-title">When You May Want to Keep the GUI</div>
+      <div class="callout-text">If you are using sensors that require ROS visualization tools like RViz (for example, Intel RealSense cameras or LiDAR), keep the GUI enabled — those tools need the X display server to render graphics. For basic DonkeyCar driving, disabling the GUI is fine.</div>
     </div>
   </div>
 
   <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo raspi-config</span>
-<span class="c"># Navigate: System Options → S5 Boot → B1 Console Text console</span>
-<span class="c"># This sets the Pi to boot to a text console instead of the desktop</span></pre></div>
+<span class="c"># Navigate: System Options → S5 Boot → B1 Console (Text console)</span>
+<span class="c"># This sets the Pi to boot to a text terminal instead of the desktop</span></pre></div>
 
   <figure>
     <div class="fig-wrap"><img src="images/fig_raspi_boot.png" alt="raspi-config boot options showing B1 Console Text console highlighted" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 11.1</span> Set boot to B1 Console to disable the GUI on startup, freeing RAM for inference workloads. <span class="fig-key">images/fig_raspi_boot.png</span></figcaption>
+    <figcaption><span class="fig-label">Fig 11.1</span> Select "B1 Console" under boot options to disable the desktop GUI on startup and free RAM for inference.</figcaption>
   </figure>
 
   <h3>Expand the Filesystem</h3>
-  <p>The OS image is smaller than your 128 GB card. By default, the Pi only uses the space the image occupied (~2–4 GB). You must expand the filesystem to use all available storage. Without this, you will run out of space when installing DonkeyCar and its models.</p>
+  <p>When the Imager writes the OS to your 128 GB card, it only creates a partition large enough to hold the OS image itself (~2–4 GB). The rest of the card is unused unallocated space. You must expand the filesystem to claim all remaining space — otherwise you will run out of disk space during DonkeyCar installation.</p>
 
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — option 1: raspi-config</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo raspi-config</span>
-<span class="c"># Navigate: Advanced Options → A1 Expand Filesystem</span></pre></div>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo raspi-config</span>
+<span class="c"># Navigate: Advanced Options → A1 Expand Filesystem</span>
+<span class="c"># Select OK and reboot when prompted</span></pre></div>
 
   <figure>
     <div class="fig-wrap"><img src="images/fig_expand_fs.png" alt="raspi-config Advanced Options menu with A1 Expand Filesystem highlighted" loading="lazy"></div>
-    <figcaption><span class="fig-label">Fig 11.2</span> Advanced Options → A1 Expand Filesystem ensures the entire 128 GB SD card is available. <span class="fig-key">images/fig_expand_fs.png</span></figcaption>
+    <figcaption><span class="fig-label">Fig 11.2</span> Advanced Options → A1 Expand Filesystem makes the entire 128 GB of your SD card available for use.</figcaption>
   </figure>
 
   <h3>Update and Upgrade the System</h3>
-  <p>After expanding the filesystem and configuring the Pi, run a full system update. This installs the latest security patches and ensures all package lists are current before you install DonkeyCar.</p>
+  <p>After expanding the filesystem, run a full system update to install the latest security patches and ensure all package lists are current. Do this before installing DonkeyCar.</p>
 
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo apt update</span>      <span class="c"># Refresh package lists</span>
-<span class="k">sudo apt upgrade</span>     <span class="c"># Install available updates (say Y when prompted)</span>
-<span class="k">sudo reboot now</span>      <span class="c"># Reboot to apply kernel updates if any</span></pre></div>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">sudo apt update</span>      <span class="c"># Refresh package lists from the internet</span>
+<span class="k">sudo apt upgrade</span>     <span class="c"># Install available package updates (press Y when prompted)</span>
+<span class="k">sudo reboot now</span>      <span class="c"># Reboot to apply any kernel updates</span></pre></div>
 
   <div class="callout warn">
     <div class="callout-icon">⚠</div>
     <div class="callout-body">
       <div class="callout-title">Do NOT Run apt full-upgrade</div>
-      <div class="callout-text"><code>sudo apt full-upgrade</code> can upgrade the kernel and firmware to versions that break hardware compatibility. Use <code>sudo apt upgrade</code> (without "full") to install only safe package-level updates.</div>
+      <div class="callout-text"><code>sudo apt full-upgrade</code> can pull in kernel and firmware upgrades that break hardware compatibility with this class's software stack. Always use <code>sudo apt upgrade</code> (without "full") to install only safe package-level updates.</div>
     </div>
   </div>
 </section>
@@ -1027,45 +1027,45 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
     <div class="sec-badges"><span class="badge badge-new">Optional</span></div>
   </div>
 
-  <p>Key-based SSH authentication is more secure and more convenient than passwords — you never type a password, and your private key cannot be brute-forced over the network. This is strongly recommended if you SSH into your Pi frequently during development.</p>
+  <p>Key-based SSH authentication lets you connect to the Pi without typing a password each time. Instead of a password, your laptop uses a cryptographic key pair — a private key that stays on your laptop and a public key stored on the Pi. When you connect, SSH verifies the keys automatically. This is both more convenient and more secure than password auth.</p>
 
   <h3>Step 1 — Generate a Key Pair on Your Laptop</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Your laptop terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Install rsync if not already installed (Linux/WSL)</span>
-<span class="k">sudo apt-get install</span> rsync
+  <p>Run this command on your laptop (not the Pi). When prompted for a save location and passphrase, pressing Enter each time will use the default location (<code>~/.ssh/id_rsa</code>) with no passphrase — which is fine for development.</p>
 
-<span class="c"># Generate an RSA key pair — press Enter to accept default location</span>
-<span class="k">ssh-keygen -t rsa</span></pre></div>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Your laptop terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># Generate an RSA key pair</span>
+<span class="k">ssh-keygen -t rsa</span>
+<span class="c"># Press Enter to accept the default save location (~/.ssh/id_rsa)</span>
+<span class="c"># Press Enter twice to skip the passphrase (or set one if you prefer)</span></pre></div>
 
   <h3>Step 2 — View Your Public Key</h3>
-  <div class="cb"><div class="cb-header"><span class="cb-label">Your laptop terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># macOS / Linux:</span>
-<span class="k">cat</span> ~/.ssh/id_rsa.pub
+  <p>The public key is the part you share with other machines. Print it out so you can copy it in the next step.</p>
 
-<span class="c"># Ubuntu / WSL:</span>
-<span class="k">cat</span> .ssh/id_rsa.pub
+  <div class="cb"><div class="cb-header"><span class="cb-label">Your laptop terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="c"># macOS / Linux / WSL:</span>
+<span class="k">cat</span> ~/.ssh/id_rsa.pub
 
 <span class="c"># Copy the entire output — it starts with "ssh-rsa AAAA..."</span></pre></div>
 
   <h3>Step 3 — Add the Key to the Pi's Authorized Keys</h3>
-  <p>SSH into the Pi and create the <code>.ssh</code> directory if it doesn't exist, then paste your public key into the <code>authorized_keys</code> file.</p>
+  <p>SSH into the Pi using your password (as usual), then create the <code>.ssh</code> directory and paste your public key into the <code>authorized_keys</code> file. The Pi will trust any connection that presents the matching private key.</p>
 
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal (SSH into Pi first)</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">cd</span> ~
-<span class="k">mkdir</span> .ssh          <span class="c"># Safe to ignore "File exists" error</span>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal (SSH into Pi first, then run these commands)</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">cd</span> ~
+<span class="k">mkdir</span> .ssh          <span class="c"># Safe to ignore "File exists" error if it already exists</span>
 <span class="k">chmod</span> 700 .ssh
 <span class="k">sudo chown</span> pi:pi .ssh
 <span class="k">nano</span> .ssh/authorized_keys
-<span class="c"># Paste your public key here (the entire ssh-rsa AAAA... line)</span>
+<span class="c"># Paste your public key on its own line (the entire ssh-rsa AAAA... string)</span>
 <span class="c"># Save: Ctrl-X → Y → Enter</span>
 <span class="k">chmod</span> 600 .ssh/authorized_keys</pre></div>
 
   <h3>Step 4 — Test the Connection</h3>
   <div class="cb"><div class="cb-header"><span class="cb-label">Your laptop terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">ssh</span> pi@ucsdrobocar-148-XX.local
-<span class="c"># Should connect WITHOUT asking for a password</span></pre></div>
+<span class="c"># Should connect WITHOUT prompting for a password</span></pre></div>
 
   <div class="callout tip">
     <div class="callout-icon">✓</div>
     <div class="callout-body">
-      <div class="callout-title">Faster Workflow</div>
-      <div class="callout-text">Once key-based auth is working, tools like <code>scp</code> and <code>rsync</code> also work without passwords — making it easy to transfer trained DonkeyCar models and data logs between your laptop and the Pi.</div>
+      <div class="callout-title">Bonus: Passwordless File Transfers Too</div>
+      <div class="callout-text">Once key-based auth is working, tools like <code>scp</code> and <code>rsync</code> also work without passwords — making it easy to transfer trained DonkeyCar models and collected data logs between your laptop and the Pi.</div>
     </div>
   </div>
 </section>
@@ -1084,45 +1084,46 @@ figcaption { padding: 10px 16px; font-family: var(--font-mono); font-size: 11px;
   <div class="callout new">
     <div class="callout-icon">💾</div>
     <div class="callout-body">
-      <div class="callout-title">Back Up Your SD Card Now</div>
-      <div class="callout-text">You have spent several hours configuring this Pi. Before proceeding to DonkeyCar installation, create a full backup image of your SD card. If anything goes wrong during software installation, you can restore to this working state in minutes instead of starting over.</div>
+      <div class="callout-title">Back Up Your SD Card Before Continuing</div>
+      <div class="callout-text">You have spent significant time configuring this Pi. Before proceeding to DonkeyCar installation, create a full backup image of your SD card. If anything goes wrong during software installation, you can restore this clean working state in minutes instead of starting the entire setup from scratch.</div>
     </div>
   </div>
 
-  <h3>How to Back Up (Raspberry Pi Imager)</h3>
-  <p>Shut down the Pi, remove the SD card, and insert it into your laptop. Open Raspberry Pi Imager. Under <strong>OS</strong>, scroll down to <strong>Use custom</strong> — but instead of writing to the card, use your OS's disk imaging tool (<code>dd</code> on macOS/Linux, Win32DiskImager on Windows) to create a <code>.img</code> file from the card.</p>
+  <h3>How to Back Up Your SD Card</h3>
+  <p>Shut down the Pi gracefully (<code>sudo shutdown now</code>), wait for the green LED to stop blinking, then unplug power and remove the SD card. Insert it into your laptop and use a disk imaging tool to create a complete copy:</p>
+  <p>On <strong>macOS or Linux</strong>, use <code>dd</code> in a terminal to write a bit-for-bit copy to a <code>.img</code> file. On <strong>Windows</strong>, use <a href="https://win32diskimager.org/" style="color: var(--accent);">Win32DiskImager</a> — select your card as the source, choose a destination file path, and click Read.</p>
 
   <h3>Common Issues & Fixes</h3>
   <div class="tw"><table>
     <thead><tr><th>Problem</th><th>Cause</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td>Camera not working, all-black feed</td><td>Installed Debian Trixie (Python 3.13) instead of Legacy</td><td>Re-flash with <strong>Raspberry Pi OS Legacy 64-bit</strong>. There is no fix — you must re-flash.</td></tr>
-      <tr><td><code>apt update</code> fails with SSL errors</td><td>System clock is wrong</td><td>Run <code>date</code> to check. If wrong, follow Section 10 to set the correct time.</td></tr>
-      <tr><td>Pi not found on network after reboot</td><td>WiFi credentials incorrect or Pi still booting</td><td>Wait 3 minutes. If still unreachable, re-check SSID/password in the Imager and re-flash.</td></tr>
-      <tr><td><code>sudo: unable to resolve host</code></td><td>Hostname updated in <code>hostnamectl</code> but not in <code>/etc/hosts</code></td><td>Edit <code>/etc/hosts</code> and update the <code>127.0.1.1</code> line. See Section 9.</td></tr>
-      <tr><td>No space left on device</td><td>Filesystem not expanded after flashing</td><td>Run <code>sudo raspi-config</code> → Advanced Options → A1 Expand Filesystem. See Section 11.</td></tr>
-      <tr><td>Pi reboots unexpectedly under load</td><td>Insufficient power supply</td><td>Use a 5V 5A (25W+) USB-C power supply. Inadequate power causes brownout reboots during heavy computation.</td></tr>
-      <tr><td>Fan not spinning</td><td>Fan cable not connected or plastic protective film not removed from thermal pads</td><td>Disassemble cooler. Remove all plastic film from thermal pads. Reconnect fan cable securely.</td></tr>
-      <tr><td><code>Connection refused</code> on SSH</td><td>SSH not enabled during Imager customisation</td><td>Re-flash and enable SSH in the Remote Access tab. Or connect a keyboard/monitor and enable with <code>sudo raspi-config</code>.</td></tr>
+      <tr><td>Camera not working, all-black feed</td><td>Installed Debian Trixie (Python 3.13) instead of the Legacy image</td><td>Re-flash with <strong>Raspberry Pi OS Legacy 64-bit (Bookworm)</strong>. There is no software fix — you must re-flash the card.</td></tr>
+      <tr><td><code>apt update</code> fails with SSL or certificate errors</td><td>System clock is set to the wrong date/time</td><td>Run <code>date</code> to check. If incorrect, follow Section 10 to set the correct time and install NTP.</td></tr>
+      <tr><td>Pi not found on network after reboot</td><td>WiFi credentials were entered incorrectly, or Pi is still booting</td><td>Wait 3 minutes. If still unreachable, re-check the SSID/password and re-flash, or temporarily use an Ethernet cable.</td></tr>
+      <tr><td><code>sudo: unable to resolve host</code></td><td>Hostname was updated with <code>hostnamectl</code> but <code>/etc/hosts</code> was not updated to match</td><td>Edit <code>/etc/hosts</code> and update the <code>127.0.1.1</code> line to match the new hostname. See Section 9.</td></tr>
+      <tr><td>No space left on device</td><td>Filesystem was not expanded after flashing</td><td>Run <code>sudo raspi-config</code> → Advanced Options → A1 Expand Filesystem, then reboot. See Section 11.</td></tr>
+      <tr><td>Pi reboots unexpectedly under load</td><td>Power supply cannot deliver enough current — causes a voltage brownout</td><td>Use a 5V/5A (25W+) USB-C power supply. Underpowered supplies cause the Pi to reboot during CPU-intensive tasks like inference.</td></tr>
+      <tr><td>Fan not spinning</td><td>Fan cable not connected, or plastic protective film not removed from thermal pads</td><td>Power off, disassemble the cooler, remove all plastic film from both sides of each thermal pad, and reconnect the fan cable firmly.</td></tr>
+      <tr><td><code>Connection refused</code> on SSH</td><td>SSH was not enabled during the Imager customization step</td><td>Re-flash and enable SSH on the Remote Access tab, or connect a keyboard and monitor and run <code>sudo raspi-config</code> → Interface Options → SSH.</td></tr>
     </tbody>
   </table></div>
 
-  <h3>Verify Python Version</h3>
-  <p>After setup, confirm you have the correct Python version for DonkeyCar compatibility.</p>
+  <h3>Verify Your Python Version</h3>
+  <p>After completing setup, run the following commands to confirm you have the correct Python version and OS release for DonkeyCar compatibility.</p>
 
-  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal — verify Python version</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">python3 --version</span>
-<span class="c"># Expected: Python 3.11.x</span>
-<span class="c"># If you see Python 3.13.x — you installed Trixie, you must re-flash</span>
+  <div class="cb"><div class="cb-header"><span class="cb-label">Pi terminal</span><button class="copy-btn" onclick="doCopy(this)">COPY</button></div><pre><span class="k">python3 --version</span>
+<span class="c"># Expected output: Python 3.11.x</span>
+<span class="c"># If you see Python 3.13.x — you flashed Trixie, not Legacy. You must re-flash.</span>
 
 <span class="k">cat /etc/os-release</span>
 <span class="c"># Expected: VERSION_CODENAME=bookworm</span>
-<span class="c"># If you see trixie — you must re-flash with the Legacy image</span></pre></div>
+<span class="c"># If you see trixie — you must re-flash with the Legacy 64-bit image.</span></pre></div>
 
   <div class="callout tip">
     <div class="callout-icon">✓</div>
     <div class="callout-body">
       <div class="callout-title">Setup Complete</div>
-      <div class="callout-text">If <code>python3 --version</code> shows 3.11.x and <code>/etc/os-release</code> shows bookworm, your Pi is correctly configured and ready for DonkeyCar installation. Proceed to the DonkeyCar guide.</div>
+      <div class="callout-text">If <code>python3 --version</code> shows <strong>3.11.x</strong> and <code>/etc/os-release</code> shows <strong>bookworm</strong>, your Pi is correctly configured and ready for DonkeyCar installation. Proceed to the DonkeyCar guide.</div>
     </div>
   </div>
 
